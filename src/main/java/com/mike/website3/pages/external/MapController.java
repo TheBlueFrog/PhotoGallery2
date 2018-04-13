@@ -44,7 +44,7 @@ public class MapController extends BaseController {
 
             String userId = request.getParameter("userId");
             if (userId == null) {
-                // all uses
+                // all users
                 User.findByEnabled(true)
                         .stream()
                         .map(user -> {
@@ -74,7 +74,7 @@ public class MapController extends BaseController {
                                     markers.add(new MapMarker(
                                             address,
                                             MapMarker.Color.white,
-                                            String.format("%.2f %s", user.getActivity().getMetric(), user.getName()),
+                                            user.getName(),
                                             false));
                                 });
                             });
@@ -131,10 +131,6 @@ public class MapController extends BaseController {
         switch(address.getUsage()) {
             case Default:
                 return MapMarker.Color.red;
-            case Delivery:
-                return MapMarker.Color.blue;
-            case Pickup:
-                return MapMarker.Color.green;
             default:
                 return MapMarker.Color.yellow;
         }

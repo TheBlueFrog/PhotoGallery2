@@ -89,7 +89,7 @@ public class UserRoleController extends BaseController {
         String nextPage = "redirect:/user-details/" + username;
         try {
             User sessionUser = getSessionUser(request);
-            if ((sessionUser != null) && (UserRole.does(sessionUser.getId(), UserRole.Role.UserAdmin))) {
+            if ((sessionUser != null) && (UserRole.does(sessionUser.getId(), UserRole.Role.Admin))) {
 
                 // redo this code with error messages
 
@@ -106,41 +106,6 @@ public class UserRoleController extends BaseController {
                             new EmailAddress(target, request.getParameter("newEmailAddress"))
                                     .save();
                         }
-                    }
-                    break;
-                    case "setSendOnCloseEmailAddressId": {
-                        String id = request.getParameter("emailAddressId");
-                        UserPrefs userPrefs = target.getPrefs();
-                        userPrefs.setSendOnCloseEmailAddressId(id.equals("None") ? "" : id);
-                        userPrefs.save();
-                    }
-                    break;
-                    case "setSendSupplieOrderEmailAddressId": {
-                        String id = request.getParameter("emailAddressId");
-                        UserPrefs userPrefs = target.getPrefs();
-                        userPrefs.setSendSupplierOrderEmailId(id.equals("None") ? "" : id);
-                        userPrefs.save();
-                    }
-                    break;
-                    case "setSendOnOpenEmailAddressId": {
-                        String id = request.getParameter("emailAddressId");
-                        UserPrefs userPrefs = target.getPrefs();
-                        userPrefs.setSendOnOpenEmailAddressId(id.equals("None") ? "" : id);
-                        userPrefs.save();
-                    }
-                    break;
-                    case "setSendOnLoginResetEmailAddressId": {
-                        String id = request.getParameter("emailAddressId");
-                        UserPrefs userPrefs = target.getPrefs();
-                        userPrefs.setSendEmailOnLoginResetAddressId(id.equals("None") ? "" : id);
-                        userPrefs.save();
-                    }
-                    break;
-                    case "setSendOnPendingEmailAddressId": {
-                        String id = request.getParameter("emailAddressId");
-                        UserPrefs userPrefs = target.getPrefs();
-                        userPrefs.setSendOnPendingAccountEmailAddressId(id.equals("None") ? "" : id);
-                        userPrefs.save();
                     }
                     break;
                     case "update": {

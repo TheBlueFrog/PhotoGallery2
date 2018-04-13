@@ -247,7 +247,7 @@ public class User implements Serializable {
 
         address.save();
 
-        setupAddress(getId(), Address.Usage.Delivery, firstName, lastName, street, city, state, zip)
+        setupAddress(getId(), Address.Usage.Default, firstName, lastName, street, city, state, zip)
                 .save();
 
         new EmailAddress(this, loginName)
@@ -285,7 +285,7 @@ public class User implements Serializable {
     }
 
     private void setupRoles(String id, String roleS) {
-        UserRole.Role role = UserRole.Role.Eater;
+        UserRole.Role role = UserRole.Role.User;
         if (roleS != null) {
             role = UserRole.Role.valueOf(roleS);
         }
@@ -295,12 +295,8 @@ public class User implements Serializable {
         UserRole.add(id, role);
 
         switch (role) {
-            case Eater:
+            case User:
                 // nothing else
-                break;
-            case Seeder:
-                // all seeders are eaters too
-                UserRole.add(id, UserRole.Role.Eater);
                 break;
             default:
                 String s = String.format("Missing case statement for " + role.toString());
@@ -590,20 +586,13 @@ public class User implements Serializable {
             return false;
         }
 
-        if ( ! validAddress(Address.Usage.Delivery))
-            return false;
-        if ( ! validAddress(Address.Usage.Pickup))
-            return false;
-        if ( ! validAddress(Address.Usage.Stop))
-            return false;
-
         return true;
     }
 
     private boolean validAddress(Address.Usage usage) {
         List<Address> addresses = Address.findByUserIdAndUsageOrderByUsageDesc(
                 this.getUsername(),
-                Address.Usage.Delivery);
+                usage);
         return true;
     }
 
@@ -788,7 +777,7 @@ public class User implements Serializable {
                                                            && UserRole.does(user.getId(), role);
                                                }
                                            },
-                                           Util::sortByComapanyName);
+                                           Util::sortByUserName);
         return x;
     }
 
@@ -798,7 +787,7 @@ public class User implements Serializable {
         List<UserRole> z = UserRole.findByRoleIn(y);
         Set<String> userIds = z.stream().map(r -> r.getUserId()).collect(Collectors.toSet());
         List<User> users = userIds.stream().map(userId -> User.findById(userId)).collect(Collectors.toList());
-        Util.sortByComapanyName(users);
+        Util.sortByUserName(users);
         return users;
     }
 }

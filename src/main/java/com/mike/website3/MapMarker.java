@@ -82,16 +82,10 @@ public class MapMarker {
     }
 
     public MapMarker(User user) {
-        Color color = user.doesRole2(UserRole.Role.Seeder)
-                ? Color.red
-                : user.doesRole2(UserRole.Role.Feeder)
-                    ? Color.blue
-                    : Color.green;
+        Color color = Color.green;
         init (user.getAddress(),
                 color,
-                user.getCompanyName().length() > 0
-                        ? user.getCompanyName()
-                        : user.getName(),
+                user.getName(),
                 user.getPublicHomePageURL(),
                 user.locationFuzzRequested());
     }
@@ -102,9 +96,7 @@ public class MapMarker {
     public MapMarker(User user, Color color, String url) {
         init (user.getAddress(),
                 color,
-                user.getCompanyName().length() > 0
-                ? user.getCompanyName()
-                : user.getName(),
+                user.getName(),
                 url,
                 user.locationFuzzRequested());
     }

@@ -42,9 +42,6 @@ public class Address implements Serializable {
      */
     static public enum Usage {
         Default,        // used for anything
-        Delivery,       // drop address
-        Pickup,         // pickup address
-        Stop,           // stopping but not a pick or drop, no CartOffers
     }
 
     @Id
@@ -296,15 +293,7 @@ public class Address implements Serializable {
 
     public static List<Address> findNewestByUserId(String userId) {
         List<Address> x = new ArrayList<>();
-        Address y = getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Pickup);
-        if (y != null)
-            x.add(y);
-        y = getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Delivery);
-        if (y != null)
-            x.add(y);
-        y = getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Default);
-        if (y != null)
-            x.add(y);
+        x.add(getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Default));
         return x;
     }
 
@@ -323,31 +312,13 @@ public class Address implements Serializable {
     }
     public static List<Address> findNewestByUserIdOrderByUsageDesc(String userId) {
         List<Address> a = new ArrayList<>();
-        Address address = getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Default);
-        if (address != null)
-            a.add(address);
-
-        address = getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Delivery);
-        if (address != null)
-            a.add(address);
-
-        address = getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Pickup);
-        if (address != null)
-            a.add(address);
+        a.add(getRepo().findFirstByUserIdAndUsageOrderByTimestampDesc(userId, Usage.Default));
         return a;
     }
 
 
     public String getUsername() {
         return userId;
-    }
-
-    public String getCompanyName() {
-        return User.findByUsername(userId).getCompanyName();
-    }
-
-    public String getCompanyName(Usage type) {
-        return User.findByUsername(userId).getCompanyName(type);
     }
 
     public String getStreetAddress() {

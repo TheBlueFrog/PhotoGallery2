@@ -253,8 +253,6 @@ public class MySystemState {
     public static void bootstrap() {
 
         setup("AutoUnPendSubject", "Auto-unpended user");
-        setup("PendingUserIncrementalCostThreshold", "100.0");
-//        setup("NextMilkRunClosingTimestamp", Long.toString(getInstance().nowTimestamp().getTime()));
         setup("MaintenanceShutdownBanner", "Maintenance shutdown in 15 minutes");
 
         // see Java 8 ZoneId.of() for what's supported
@@ -279,12 +277,4 @@ public class MySystemState {
         }
     }
 
-    // produce the depot User object, eventually this will probably
-    // take some parameters to pick the right depot, maybe
-    public User getDepot() {
-        List<User> depots = User.findByRole(UserRole.Role.Depot);
-        if (depots.size() > 0)
-            return depots.get(0);
-        return null;
-    }
 }

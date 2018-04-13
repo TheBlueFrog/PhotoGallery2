@@ -388,7 +388,6 @@ public class UserRestController {
     private JSONObject getUser(User user) {
         JSONObject u = new JSONObject();
         u.put("username", user.getUsername());
-        u.put("companyName", user.getCompanyName());
         u.put("enabled", user.getEnabled());
 
         {

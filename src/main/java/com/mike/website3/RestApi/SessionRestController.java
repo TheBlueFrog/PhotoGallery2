@@ -85,46 +85,6 @@ public class SessionRestController {
         }
     }
 
-    @RequestMapping(value = "/create/notice/milkrunClosing", method = RequestMethod.GET, produces = "application/text")
-    public String get2(HttpServletRequest request) {
-
-        MySessionState ss = (MySessionState) request.getSession().getAttribute(appSession);
-        MySystemState systemState = MySystemState.getInstance();
-
-        if (ss != null) {
-            User user = ss.getUser();
-            if ((user != null) &&(user.isAnAdmin())) {
-
-                SystemNotice notice = createSystemNoticeForClosing(MilkRunDB.findOpen().getEstClosingTimestamp());
-
-//                // magical dance to figure out when 7pm PDT today is in UTC
-//
-//                Instant instant = Instant.now();
-//                ZoneOffset currentOffset = MySystemState.getInstance().getUIZone().getRules().getOffset(instant);
-//
-//                LocalDateTime localTimeNow = LocalDateTime.ofInstant(instant, MySystemState.getInstance().getUIZone());
-//
-//                int hour = localTimeNow.getHour();
-//                LocalDateTime localTimeThen = localTimeNow.plusHours(19 - hour);
-//                int minute = localTimeNow.getMinute();
-//                localTimeThen = localTimeThen.minusMinutes(minute);
-//
-//                Instant then = localTimeThen.toInstant(currentOffset);
-//
-//                SystemNotice notice = new SystemNotice(
-//                        new Timestamp(MySystemState.getInstance().now()),
-//                        new Timestamp(then.toEpochMilli()),
-//                        String.format(StringData.findByUserIdAndKey("", "MilkRunClosingBanner").getValue()));
-
-                notice.save();
-                return "OK";
-            }
-        }
-
-        return "Error";
-    }
-
-
     // this method gets called by page loads to clear transitory
     // state we are showing to users
     //
@@ -134,19 +94,6 @@ public class SessionRestController {
 //        MySessionState sessionState = (MySessionState) request.getSession().getAttribute(appSession);
 //        sessionState.clearSessionErrors();
 //        sessionState.putPageData(request.getParameter("pageName"), null);
-        return "OK";
-    }
-
-    @RequestMapping(value = "/milkrun/set", method = RequestMethod.GET, produces = "application/text")
-    public String get9(HttpServletRequest request) {
-
-        MySessionState ss = (MySessionState) request.getSession().getAttribute(appSession);
-        String milkRunId = request.getParameter("milkRunId");
-        String color = request.getParameter("color");
-
-        MilkRunDB m = MilkRunDB.findById(milkRunId);
-        m.setColor("#" + color);
-        m.save();
         return "OK";
     }
 

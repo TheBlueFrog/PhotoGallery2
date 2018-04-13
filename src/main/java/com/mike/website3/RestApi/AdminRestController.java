@@ -100,7 +100,7 @@ public class AdminRestController {
             String columnsS = request.getParameter("columns");
             String[] columns = columnsS.split("[,]"); // "email, lastName..."
 
-            return MySystemState.dump(list, Arrays.asList(columns));
+            return "";//MySystemState.dump(list, Arrays.asList(columns));
         }
         catch (Exception e) {
             return e.toString();
@@ -192,16 +192,10 @@ public class AdminRestController {
             User user = User.findByUserId(loginName.getUserId());
 
             if (loginName.hasPasswordBeenReset()) {
-                return String.format("The login %s has already been reset.  <br>Email with a reset link was sent to %s." +
-                                "<br>Please check your spam or deleted email." +
-                                "<br>If you need further assistance contact <a href=\"/contact\">customer support.</a>",
-                        loginNameS,
-                        EmailAddress.findById(emailId).getEmail());
+                return String.format("The login %s has already been reset.");
             }
 
             loginName.resetPassword();
-
-            user.sendLoginResetEmail(loginName, emailId);
 
             SystemEvent.save(user, String.format("Login %s reset by user %s (%8.8s)",
                     loginName.getLoginName(),

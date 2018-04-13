@@ -49,65 +49,25 @@ public class UserRole implements Serializable {
     }
 
     public static enum Role  {
-        SupremeLeader,          // is a god, can make users Admin
         Admin,                  // a lesser god, can make users *Admins
-
-        OpenPhaseAdmin,         // manage a run through marking it Closed
-        RoutingAdmin,           // perform routing, between Closing and Routed states
-        ClosedPhaseAdmin,       // manage a run Unrouted through Delivered except for routing
-
-        StripeAdmin,            // allowed to use Stripe functions
-
-        BrowsingAdmin,          // read-only access to most of the Admin UI
-
-        UserAdmin,              // users designated to handle AccountPending users, assumed to be Admins
-
-        ProductAdmin,           // manages seeders, items and offers
-
-        Driver,                 // people that send in RunnerTracking events during delivery of a MilkRun
-                                // there is also a special home page for them
-
-
-
-
         // these are used to control which public UI is presented
 
         AccountPending,         // new accounts are created in this state, they may have
                                 // this removed automatically or manually by an Admin
-        Eater,
-        Seeder,
-        Feeder,
+        User,
 
-        Farmer,                 // specializations of a user
-        Butcher,
-        Baker,
-        Maker,
-        Chef,
-
-
-        InDevelopment, Depot,          // enable code still in-dev
+        InDevelopment,          // enable code still in-dev
     };
 
     private static List<Role> allAdminsRoles = Arrays.asList(
             new UserRole.Role[] {
-                    SupremeLeader,
                     Admin,
-                    OpenPhaseAdmin,
-                    ClosedPhaseAdmin,
-                    StripeAdmin,
-                    BrowsingAdmin,
-                    UserAdmin,
-                    ProductAdmin,
             });
 
     static public List<Role>  getAllAdminsRoles() { return allAdminsRoles; }
 
     static private List<Role> singletonRoles = new ArrayList<>();
     static {
-        singletonRoles.add(OpenPhaseAdmin);
-        singletonRoles.add(RoutingAdmin);
-        singletonRoles.add(ClosedPhaseAdmin);
-        singletonRoles.add(StripeAdmin);
     }
 
     @Id
@@ -282,16 +242,6 @@ public class UserRole implements Serializable {
                 return; // already does
         }
 
-        if (role.equals(Role.Seeder)) {
-            // must have a Pickup Address
-            Address address = Address.findNewestByUserIdAndUsage(username, Address.Usage.Pickup);
-            if (address == null) {
-                // dupe the Default
-                address = Address.findNewestByUserIdAndUsage(username, Address.Usage.Default);
-                Address.duplicate(address, Address.Usage.Pickup);
-            }
-        }
-
         new UserRole(username, role).save();
     }
 
@@ -309,26 +259,11 @@ public class UserRole implements Serializable {
     // showing more than it should
     public static void changeRole(User sessionUser, User targetUser, boolean on, UserRole.Role role) {
         switch(role) {
-            case SupremeLeader:
-                return; // can't be changed via code
             case Admin:
-                if (UserRole.is(sessionUser.getId(), SupremeLeader))    // only by SupremeLeader
+                if (UserRole.is(sessionUser.getId(), Admin))    // only by Admin
                     change(targetUser, role, on);
                 return;
 
-            case StripeAdmin:
-            case ProductAdmin:
-            case UserAdmin:
-            case BrowsingAdmin:
-            case OpenPhaseAdmin:
-            case ClosedPhaseAdmin:
-                if (UserRole.does(sessionUser.getId(), Admin))    // only by a full Admin
-                    change(targetUser, role, on);
-                return;
-            case AccountPending:
-                if (UserRole.does(sessionUser.getId(), UserAdmin))    // only by a the UserAdmin may be overly restrictive
-                    change(targetUser, role, on);
-                return;
             default:
                 if (UserRole.isAnAdmin(sessionUser.getId()))        // the rest by any Admin
                     change(targetUser, role, on);

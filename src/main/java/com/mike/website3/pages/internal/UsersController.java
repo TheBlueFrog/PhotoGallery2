@@ -11,10 +11,7 @@ import com.mike.util.Log;
 import com.mike.util.Util;
 import com.mike.website3.Constants;
 import com.mike.website3.MySessionState;
-import com.mike.website3.SendGrid.SendGrid;
 import com.mike.website3.Website;
-import com.mike.website3.dataAnalysis.UserCharts;
-import com.mike.website3.db.Stripe.StripeCustomer;
 import com.mike.website3.db.SystemEvent;
 import com.mike.website3.db.User;
 import com.mike.website3.db.UserRole;
@@ -70,31 +67,6 @@ public class UsersController extends BaseController {
         }
     }
 
-    // this gets redirected to the MilkRun static pages which live
-    // in milkrunFiles/milkrun/
-
-    @RequestMapping(value = "/milkrun/{resource}/**", method = RequestMethod.GET)
-    public void get2a(@PathVariable("resource") String resource,
-                     HttpServletRequest request, Model model, HttpServletResponse response) {
-
-        String requestURI = request.getRequestURI();
-        String s = requestURI.replace("/milkrun/", "");
-        File milkrunStaticFilesDir = new File(Website.getMilkRunFilesDir(), "milkrun");
-        File thing = new File(milkrunStaticFilesDir, s);
-        if (thing.exists()) {
-
-            Path path = thing.toPath();
-            try {
-                Files.copy(path, response.getOutputStream());
-                response.flushBuffer();
-            } catch (IOException ex) {
-                Log.e(TAG, String.format("Error copying file %s to response", path.toString()));
-            }
-        }
-    }
-
-    // present a list of pending accounts
-
     @RequestMapping(value = "/pending-accounts", method = RequestMethod.GET)
     public String get1(HttpServletRequest request, Model model, HttpServletResponse response) {
         try {
@@ -133,10 +105,6 @@ public class UsersController extends BaseController {
                             // allow this user into the system
                             UserRole.remove(user.getUsername(), UserRole.Role.AccountPending);
 
-                            if (request.getParameter("new-user-email-" + username) != null) {
-                                user.sendNewUserLoginEmail();
-                            }
-
                             SystemEvent.save(user,
                                     String.format("Remove AccountPending for user %s, auth by %s",
                                     user.getUsername(),
@@ -146,9 +114,9 @@ public class UsersController extends BaseController {
 
                             boolean eater = request.getParameter("eater-" + username) != null;
                             if (eater) {
-                                UserRole.add(user.getUsername(), UserRole.Role.Eater);
-                            } else if (UserRole.does(user.getId(), UserRole.Role.Eater))
-                                UserRole.remove(user.getUsername(), UserRole.Role.Eater);
+                                UserRole.add(user.getUsername(), UserRole.Role.User);
+                            } else if (UserRole.does(user.getId(), UserRole.Role.User))
+                                UserRole.remove(user.getUsername(), UserRole.Role.User);
 
                             boolean enabled = request.getParameter("enable-" + username) != null;
                             user.setEnabled(enabled);
@@ -189,26 +157,6 @@ public class UsersController extends BaseController {
             if ((user == null) || (!user.isAnAdmin()))
                 showErrorPage("Unauthorized Access", request, model);
 
-            model.addAttribute("seeders",
-                    User.getSortedUsers(
-                            new User.UserSelector() {
-                                @Override
-                                public boolean select(User user) {
-                                    return user.getEnabled() && UserRole.does(user.getId(), UserRole.Role.Seeder);
-                                }
-                            },
-                            Util::sortByComapanyName));
-
-            model.addAttribute("feeders",
-                    User.getSortedUsers(
-                            new User.UserSelector() {
-                                @Override
-                                public boolean select(User user) {
-                                    return user.getEnabled() && UserRole.does(user.getId(), UserRole.Role.Feeder);
-                                }
-                            },
-                            Util::sortByComapanyName));
-
             model.addAttribute("admins",
                     User.getSortedUsers(
                             new User.UserSelector() {
@@ -219,12 +167,12 @@ public class UsersController extends BaseController {
                             },
                             Util::sortByUserName));
 
-            model.addAttribute("nonSeeders",
+            model.addAttribute("nonAdmins",
                     User.getSortedUsers(
                             new User.UserSelector() {
                                 @Override
                                 public boolean select(User user) {
-                                    return user.getEnabled() && (!UserRole.does(user.getId(), UserRole.Role.Seeder));
+                                    return user.getEnabled() && ( ! UserRole.isAnAdmin(user.getId()));
                                 }
                             },
                             Util::sortByUserName));
@@ -238,27 +186,6 @@ public class UsersController extends BaseController {
                                 }
                             },
                             Util::sortByUserName));
-
-            model.addAttribute("stripers",
-                    User.getSortedUsers(
-                            new User.UserSelector() {
-                                @Override
-                                public boolean select(User user) {
-                                    return user.getEnabled() && (StripeCustomer.findByUserId(user.getId()) != null);
-                                }
-                            },
-                            Util::sortByUserName));
-
-            model.addAttribute("depots",
-                    User.getSortedUsers(
-                            new User.UserSelector() {
-                                @Override
-                                public boolean select(User user) {
-                                    return user.getEnabled() && user.doesRole2(UserRole.Role.Depot);
-                                }
-                            },
-                            Util::sortByUserName));
-
 
             return super.get(request, model, "users2");
         }
@@ -315,20 +242,8 @@ public class UsersController extends BaseController {
                     case "update": {
                         User u = User.findByUsername(username);
                         {
-                            boolean on = request.getParameter("Eater") != null;
-                            changeRole (u, on, UserRole.Role.Eater);
-                        }
-                        {
-                            boolean on = request.getParameter("Seeder") != null;
-                            changeRole (u, on, UserRole.Role.Seeder);
-                        }
-                        {
-                            boolean on = request.getParameter("Feeder") != null;
-                            changeRole (u, on, UserRole.Role.Feeder);
-                        }
-                        {
-                            boolean on = request.getParameter("Driver") != null;
-                            changeRole (u, on, UserRole.Role.Driver);
+                            boolean on = request.getParameter("User") != null;
+                            changeRole (u, on, UserRole.Role.User);
                         }
                         {
                             boolean on = request.getParameter(UserRole.Role.Admin.toString()) != null;
@@ -354,20 +269,6 @@ public class UsersController extends BaseController {
             UserRole.add(user.getUsername(), role);
         } else {
             UserRole.remove(user.getUsername(), role);
-        }
-    }
-
-    @RequestMapping(value = "/users/create/contact-list", method = RequestMethod.GET)
-    public String get5(HttpServletRequest req, Model model) {
-
-        Map<String, Object> returns = new HashMap<>();
-        try {
-            returns = SendGrid.createContactList(req.getParameter("listName"), "email-dump.csv");
-            return "ok";
-        }
-        catch (Exception ex) {
-            returns.put("Exception", ex.getMessage());
-            return "Error";
         }
     }
 }

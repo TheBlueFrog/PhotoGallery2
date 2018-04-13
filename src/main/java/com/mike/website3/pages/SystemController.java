@@ -33,10 +33,7 @@ public class SystemController extends BaseController {
             if ((user == null) || ( ! user.isAnAdmin()))
                 return showErrorPage("Unauthorized Access", request, model);
 
-            getSessionState(request).setMilkRun(null);
-
             model.addAttribute("recentLogins", MySystemState.getInstance().getTodaysLogins());
-            model.addAttribute("recentOrders", MySystemState.getInstance().getTodaysOrders());
             model.addAttribute("dbSnapshot", dbSnapshotOutput);
             model.addAttribute("milkrunFilesRefreshOutput", milkrunFilesRefreshOutput);
 
@@ -60,10 +57,7 @@ public class SystemController extends BaseController {
             if ((user == null) || ( ! user.isAnAdmin()))
                 return showErrorPage("Unauthorized Access", request, model);
 
-            getSessionState(request).setMilkRun(null);
-
             model.addAttribute("recentLogins", MySystemState.getInstance().getTodaysLogins());
-            model.addAttribute("recentOrders", MySystemState.getInstance().getTodaysOrders());
             model.addAttribute("dbSnapshot", dbSnapshotOutput);
             model.addAttribute("milkrunFilesRefreshOutput", milkrunFilesRefreshOutput);
 

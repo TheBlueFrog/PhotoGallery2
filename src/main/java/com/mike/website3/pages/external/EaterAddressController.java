@@ -20,9 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mike.website3.db.UserNote.Status.Open;
-
-
 @Controller
 public class EaterAddressController extends BaseController2 {
     private static final String TAG = EaterAddressController.class.getSimpleName();
@@ -43,12 +40,6 @@ public class EaterAddressController extends BaseController2 {
                 switch (address.getUsage()) {
                     case Default:
                         state.setAttribute("profileCurTab", "billingTab");
-                        break;
-                    case Delivery:
-                        state.setAttribute("profileCurTab", "deliverTab");
-                        break;
-                    case Pickup:
-                        state.setAttribute("profileCurTab", "pickupTab");
                         break;
                 }
 
@@ -75,17 +66,6 @@ public class EaterAddressController extends BaseController2 {
                 }
             }
             break;
-
-            case "updateCompanyName": {
-                state.setAttribute("profileCurTab", "deliveryTab");
-
-                user.setCompanyName(request.getParameter("companyName"));
-                user.save();
-                String s = String.format("User changed the company name to %s", user.getCompanyName());
-                SystemEvent.save(user, s);
-                setMessage(state,"");
-            }
-            break;
             case "changePassword": {
                 state.setAttribute("profileCurTab", "passwordTab");
 
@@ -100,59 +80,10 @@ public class EaterAddressController extends BaseController2 {
                 setSessionUser(request, loginName, user);
                 user.login();
 
+                // signal that we don't want normal page flow
                 return false;
             }
 //            break;
-            case "setEmailing": {
-                state.setAttribute("profileCurTab", "emailTab");
-
-                UserPrefs userPrefs = user.getPrefs();
-
-//                String id = request.getParameter("sendOnOpen");
-//                userPrefs.setSendOnOpenEmailAddressId(id.equals("None") ? "" : id);
-
-                String id = request.getParameter("sendOnClose");
-                userPrefs.setSendOnCloseEmailAddressId(id.equals("None") ? "" : id);
-
-                if (user.doesRole2(UserRole.Role.UserAdmin)) {
-                    id = request.getParameter("sendOnPending");
-                    userPrefs.setSendOnPendingAccountEmailAddressId(id.equals("None") ? "" : id);
-                }
-
-                userPrefs.save();
-            }
-            break;
-            case "closeNote": {
-                state.setAttribute("profileCurTab", "messageTab");
-                UserNote note = UserNote.findById(request.getParameter("noteId"));
-                note.setStatus(UserNote.Status.Closed);
-                note.save();
-            }
-            break;
-            case "openNote": {
-                state.setAttribute("profileCurTab", "messageTab");
-                UserNote note = UserNote.findById(request.getParameter("noteId"));
-                note.setStatus(Open);
-                note.save();
-            }
-            break;
-            case "msgCloseAll": {
-                state.setAttribute("profileCurTab", "messageTab");
-                UserNote.findByUserIdAndColorAndStatusOrderByTimestampDesc(
-                        user.getId(),
-                        "Private",
-                        "Open").forEach(note -> {
-                        note.setStatus(UserNote.Status.Closed);
-                        note.save();
-                });
-            }
-            break;
-            case "msgShowClosed": {
-                state.setAttribute("profileCurTab", "messageTab");
-                boolean show = request.getParameter("msg-showClosed") != null;
-                state.setAttribute("profileMsgShowClosed", show);
-            }
-            break;
         }
         return true;
     }
@@ -181,54 +112,9 @@ public class EaterAddressController extends BaseController2 {
             zip = zip.substring(0, zip.indexOf("-"));
         address.setZip(zip);
 
-        String userInstruction = request.getParameter("userInstruction");
-        if (userInstruction != null) {
-
-            // the supplied instructions are now the current, note that if the
-            // new instructions are "" that's important because the user is saying
-            // any previous instructions are not valid anymore
-
-            List<UserNote> x = UserNote.findByUserIdAndColorAndStatusOrderByTimestampDesc(
-                    user.getId(),
-                    UserNote.Color.UserInstruction,
-                    Open);
-            if (x.size() > 0) {
-                x.get(0).setBody(userInstruction);
-                x.get(0).save();
-            }
-            else {
-                UserNote userNote = new UserNote(userInstruction);
-                userNote.setUserId(user.getId());
-                userNote.setColor(UserNote.Color.UserInstruction);
-                userNote.save();
-            }
-        }
-
         try {
             address.geoCodeAddress();
             address.save();
-
-            if (address.getUsage().equals(Address.Usage.Delivery)) {
-                Address defaultAddress = Address.findNewestByUserIdAndUsage(address.getUserId(), Address.Usage.Default);
-                if (   (defaultAddress.getFirstName().length() == 0)
-                    && (defaultAddress.getLastName().length() == 0)
-                    && (defaultAddress.getStreet().length() == 0)
-                    && (defaultAddress.getCity().length() == 0))
-                //    && (defaultAddress.getZip().length() == 0))
-                {
-                    // the user is setting the Delivery and the Default is blank
-                    // make a new default also
-                    defaultAddress = new Address(user.getId());
-                    defaultAddress.setFirstName(address.getFirstName());
-                    defaultAddress.setLastName(address.getLastName());
-                    defaultAddress.setStreet(address.getStreet());
-                    defaultAddress.setCity(address.getCity());
-                    defaultAddress.setState(address.getState());
-                    defaultAddress.setZip(address.getZip());
-                    defaultAddress.save();
-                }
-            }
-
             return true;
         } catch (InvalidAddressException e) {
             setMessage(state, "The address you entered cannot be geo-coded.  <br>" +
@@ -275,14 +161,6 @@ public class EaterAddressController extends BaseController2 {
                 statusList.add("Routed");
 
             state.setAttribute("msgStatusList", statusList);
-
-            // cover a bug, for a while new Seeders were not getting made
-            // with Pickup address records, ensure we have one
-            String userId = state.getUser().getId();
-            if (state.getUser().doesRole2(UserRole.Role.Seeder)
-                && (Address.findNewestByUserIdAndUsage(userId, Address.Usage.Pickup) == null)) {
-                Address.duplicate(Address.findNewestByUserIdAndUsage(userId, Address.Usage.Default), Address.Usage.Pickup);
-            }
 
             return get2(request, model, "eater-address-editor");
         }

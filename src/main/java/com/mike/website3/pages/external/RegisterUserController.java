@@ -125,9 +125,6 @@ public class RegisterUserController extends BaseController2 {
         } catch (InvalidAddressException e) {
             setMessage(state, String.format("The address you entered cannot be geo-coded (we use Google Maps for geo-coding). Please check it carefully."));
             return errorPage;
-        } catch (UnsupportedZipCode e) {
-            setMessage(state, String.format("Zip code %s is not supported.  Please use a supported zip code", e.getMessage()));
-            return errorPage;
         } catch (IllegalArgumentException e) {
             setMessage(state, String.format("Internal error: %s", e.toString()));
             return errorPage;
@@ -184,15 +181,6 @@ public class RegisterUserController extends BaseController2 {
 
         setSessionUser(request, request.getParameter("username"), user);
         user.login();
-        initializePrefs(user);
-
-        String referrer = request.getParameter("referrer");
-        if ((referrer != null) && (referrer.length() > 5)) {
-            UserNote note = new UserNote("Referred by: " + referrer);
-            note.setUserId(user.getId());
-            note.setColor(UserNote.Color.Referrer);
-            note.save();
-        }
 
         // newly minted users are usually pending, some can be automatically un-pended
 
@@ -201,28 +189,9 @@ public class RegisterUserController extends BaseController2 {
 //            double incCost = user.getPendingUserIncrementalCostMetric();
 //            double threshold = MySystemState.getInstance().getMetric("PendingUserIncrementalCostThreshold");
             String zip = (String) state.getAttribute("registerZip");
-            if (MySystemState.getInstance().isSupportedZipCode(zip)) {
-                    //|| (incCost < threshold)) {
-                // good to go
-                user.removeRole(UserRole.Role.AccountPending);
+            user.removeRole(UserRole.Role.AccountPending);
 
-                User.notifyAdminsOfAutoUnPendUser(user,
-                        String.format("Auto-unpended, %s, (%8.8s...) zip code %s",
-                                user.getName(), user.getId(),
-                                zip));
-
-                return "redirect:/first-login";
-            }
-            else {
-                setSessionUser(request, null, null);  // log them back out
-                String s = String.format("Pending user, %s, (%8.8s...) zip code %s is unsupported.",
-                                user.getName(), user.getId(),
-                                zip);
-                User.notifyAdminsOfNewPendingUser(user, s);
-                SystemEvent.save(s);
-
-                return "redirect:/pending-account";
-            }
+            return "redirect:/first-login";
         }
         else {
             // a not-immediately pending user
@@ -230,16 +199,4 @@ public class RegisterUserController extends BaseController2 {
         }
     }
 
-    private void initializePrefs(User user) {
-        List<EmailAddress> emails = user.getEmailAddresses();
-        if (emails.size() != 1) {
-            SystemEvent.save(user, "New user has more than one email address?");
-        }
-
-        UserPrefs prefs = user.getPrefs();
-        prefs.setSendEmailOnLoginResetAddressId(emails.get(0).getId());
-        prefs.setSendOnCloseEmailAddressId(emails.get(0).getId());
-        prefs.setSendSupplierOrderEmailId(emails.get(0).getId());
-        prefs.save();
-    }
 }

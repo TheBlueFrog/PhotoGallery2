@@ -189,21 +189,6 @@ public class LoginController extends BaseController2 {
             response.addCookie(cookie);
 
             if (user.getHasLoggedIn()) {
-                if (user.doesRole2(UserRole.Role.Driver))
-                    return "redirect:/drivers-home";
-
-                if (user.doesRole2(UserRole.Role.Seeder))
-                    return "redirect:/seeder-milkrun?milkRunId=" + MilkRunDB.findOpen().getId();
-
-                String offerIdS = (String) state.getAttribute("loginOfferId");
-                if (offerIdS != null) {
-                    state.removeAttribute("loginOfferId");
-                    Timestamp offerId = new Timestamp(Long.parseLong(offerIdS));
-                    user.addToCart(offerId, 1);
-
-                    return "redirect:/shop-list-view2";
-                }
-
                 return "redirect:/";
             } else {
                 user.setHasLoggedIn();
