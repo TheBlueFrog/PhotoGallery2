@@ -1,0 +1,81 @@
+<html>
+<head>
+
+    <style>
+        th { text-align: left; }
+        td {
+            text-align: left;
+            vertical-align: text-top;
+        }
+        #shortOne {
+            font-style: italic;
+            font-size: 1.4em;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Deliverables for ${session.user.username}</h1>
+
+    <#-- packing is the list of my CartOffer-s in everyone's carts -->
+
+    <h2>Packing List</h2>
+    <table width="80%">
+        <tr>
+            <th>Ident.</th>
+            <th>Description</th>
+            <th>Short One</th>
+            <th>User</th>
+            <th>Addresss</th>
+            <th>City</th>
+            <th>GPS</th>
+        </tr>
+        <#list packing as cartOffer>
+            <tr>
+                <td>${cartOffer.item.identification}</td>
+                <td>${cartOffer.item.description}</td>
+                <td>${cartOffer.item.shortOne}</td>
+                <td>${cartOffer.buyer.firstName}</td>
+                <td>${cartOffer.buyer.street}</td>
+                <td>${cartOffer.buyer.city} <br> ${cartOffer.buyer.state}, ${cartOffer.buyer.zip}</td>
+                <td>${cartOffer.buyer.longitude}, ${cartOffer.buyer.latitude}</td>
+            </tr>
+       </#list>
+    </table>
+
+    <h2>Delivery List</h2>
+    <table width="80%">
+        <tr>
+            <th>User</th>
+            <th>Addresss</th>
+            <th>City</th>
+            <th>GPS</th>
+            <th>Ident.</th>
+            <th>Description</th>
+            <th>Short One</th>
+        </tr>
+        <#assign who = 0>
+        <#list delivery as cartOffer>
+            <tr>
+                <#if who == cartOffer.buyer.id>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                <#else>
+                    <td>${cartOffer.buyer.firstName}</td>
+                    <td>${cartOffer.buyer.street}</td>
+                    <td>${cartOffer.buyer.city} <br> ${cartOffer.buyer.state}, ${cartOffer.buyer.zip}</td>
+                    <td>${cartOffer.buyer.longitude}, ${cartOffer.buyer.latitude}</td>
+                </#if>
+                <#assign who = cartOffer.buyer.id>
+
+                <td>${cartOffer.item.identification}</td>
+                <td>${cartOffer.item.description}</td>
+                <td>${cartOffer.item.shortOne}</td>
+            </tr>
+       </#list>
+    </table>
+
+</body>
+</html>

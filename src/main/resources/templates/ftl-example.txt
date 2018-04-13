@@ -1,0 +1,462 @@
+cart3.ftl:                      ${system.site.Company}
+cart3.ftl:                      ${cartOffer.item.shortOne}
+cart3.ftl:                      ${cartOffer.item.supplier.companyName}
+cart3.ftl:                      ${cartOffer.item.description}
+cart3.ftl:                      ${cartOffer.quantity} ${cartOffer.offer.units}
+cart3.ftl:                      ${cartOffer.quantity} ${cartOffer.offer.units}
+cart3.ftl:                      ${cartOffer.offer.quantity} ${cartOffer.offer.units} ${cartOffer.offer.priceAsString}
+cart3.ftl:                      ${cartOffer.frequency}
+cart3.ftl:                      ${cartOffer.priceAsString}
+cart3.ftl:                      ${cartOffer.timeAsString}
+cart3.ftl:                      ${cartOffer.frequency}
+cart3.ftl:                      ${cartOffer.quantity}
+cart3.ftl:                      ${session.user.cartTotal}
+cart.ftl:                       ${system.site.indexPage}
+cart.ftl:                       ${cartOffer.offer.item.mainImage.path}
+cart.ftl:                       ${cartOffer.item.shortOne}
+cart.ftl:                       ${cartOffer.item.description}
+cart.ftl:                       ${cartOffer.quantity}cart.ftl:
+cart.ftl:                       ${cartOffer.priceAsString}
+cart.ftl:                       ${cartOffer.priceAsString}
+cart.ftl:                       ${cartOffer.quantity}
+cart.ftl:                       ${cartOffer.frequency}
+cart.ftl:                       ${cartOffer.timeAsString}
+cart.ftl:                       ${session.user.cartTotal}
+delivered-cart.ftl:             ${system.site.indexPage}
+delivered-cart.ftl:             ${cartOffer.offer.item.mainImage.thumbnailPath}
+delivered-cart.ftl:             ${cartOffer.offer.timeAsString}  ${cartOffer.item.shortOne}
+delivered-cart.ftl:             ${cartOffer.orderedTimeDate}
+delivered-cart.ftl:             ${cartOffer.deliveredTimeDate}
+delivered-cart.ftl:             ${cartOffer.quantity}
+delivered-cart.ftl:             ${cartOffer.priceAsString}
+delivered-cart.ftl:             ${cartOffer.priceAsString}
+delivered-cart.ftl:             ${deliveredCartTotal}
+eater-calendar.ftl:             ${session.user.address.firstName}
+eater-calendar.ftl:             ${session.user.username}
+eater-calendar.ftl:             ${session.calendar.getDate(week day)}
+eater-calendar.ftl:             ${news.poster.publicHomePageURL}  ${news.id}
+eater-calendar.ftl:             ${news.title}
+eater-calendar.ftl:             ${session.calendar.getDateLong(week day)}
+eater-calendar.ftl:             ${session.calendar.getDateLong(week day)}
+
+future-cart.ftl:                ${system.site.Company}
+future-cart.ftl:                ${system.site.indexPage}
+future-cart.ftl:                ${cartOffer.offer.item.mainImage.thumbnailPath}
+future-cart.ftl:                ${cartOffer.item.shortOne}
+future-cart.ftl:                ${cartOffer.expectedDeliveryTimeAsDateString}
+future-cart.ftl:                ${cartOffer.frequency}
+future-cart.ftl:                ${cartOffer.quantity}
+future-cart.ftl:                ${cartOffer.priceAsString}
+future-cart.ftl:                ${cartOffer.priceAsString}
+future-cart.ftl:                ${cartOffer.offer.timeAsString}
+future-cart.ftl:                ${futureCartTotal}
+index3.ftl:	                    ${system.site.Company}
+index3.ftl:			            ${featuredOffer.offer.id}
+index3.ftl:		                ${featuredOffer.offer.item.mainImage.path}
+index3.ftl:	                    ${featuredOffer.offer.id}
+index3.ftl:                     ${featuredOffer.offer.item.shortOne}
+index3.ftl:                     ${session.getQuotedPriceAsString(featuredOffer)}
+index3.ftl:                     ${featuredOffer.offer.id}
+index5.ftl:                     ${system.site.indexPage}
+login.ftl:                      ${system.site.Company}
+macros.ftl:                     ${system.site.Company!"Missing value: Company"}
+macros.ftl:                     ${session.user.username}
+macros.ftl:                     ${session.user.publicHomePageURL}
+macros.ftl:                     ${offerId}
+macros.ftl:                     ${pageName}
+macros.ftl:                     ${system.site.SupportEmail}
+macros.ftl:                     ${session.user.cartSize}
+macros.ftl:                     ${cartOffer.item.shortOne}
+macros.ftl:                     ${cartOffer.offer.quantity * cartOffer.quantity} ${cartOffer.offer.units} for ${cartOffer.priceAsString}
+macros.ftl:                     ${cartOffer.offer.timeAsString}&thePage=${thePage}" remove">remove
+macros.ftl:                     ${session.user.cartTotal}
+macros.ftl:                     ${session.searchManager.searchParams.keyWords}
+macros-pageFooter.ftl:          ${system.site.Company}
+macros-pageFooter.ftl:          ${system.site.SiteVersion}
+macros-pageFooter.ftl:          ${system.site.DatabaseVersion}
+macros-pageHeader.ftl:          ${system.site.SupportPhone}
+macros-pageHeader.ftl:          ${system.site.SupportHours}
+macros-pageHeader.ftl:          ${system.site.indexPage}
+macros-pageHeader.ftl:          ${system.site.indexPage}
+macros-pageHeader.ftl:          ${system.site.SupportPhone}
+macros-pageHeader.ftl:          ${system.site.SupportHours}
+milkrun.ftl:                    ${milkrunUI.milkRun.id} ${milkrunUI.milkRun.timeAsHumanReadableString}
+milkrun.ftl:                    ${stop.number}
+milkrun.ftl:                    ${stop.type}
+milkrun.ftl:                    ${stop.name}
+milkrun.ftl:                    ${stop.user.username}
+milkrun.ftl:                    ${stop.streetAddress}
+milkrun.ftl:                    ${stop.streetAddress}
+milkrun.ftl:                    ${discrepancy.user.name}
+milkrun.ftl:                    ${discrepancy.discrepancy}
+milkrun.ftl:                    ${milkrunUI.milkRun.id}
+milkrun.ftl:                    ${milkrunUI.getSupplierCell(row,col)}
+milkrun.ftl:                    ${milkrunUI.getDeliveryCell(row,col)}
+milkruns.ftl:                   ${row.date} ${row.pickupTotal} ${row.deliveryTotal} ${row.itemCount} ${row.seederCount} ${row.eaterCount}
+milkruns.ftl:                   ${row.name} ${row.count}
+milkruns.ftl:                   ${row.name} ${row.count}
+milkruns.ftl:                   ${milkrun.timeAsHumanReadableString}
+milkruns.ftl:                   ${milkrun.deliverer.username}
+milkruns.ftl:                   ${milkrun.id}">${milkrun.id}
+my-pages.ftl:                   ${session.user.name}'s Pages
+offer-markup-editor.ftl:        ${markup.category}
+offer-markup-editor.ftl:        ${markup.category}
+offer-markup-editor.ftl:        ${markup.eaterMarkup}
+offer-markup-editor.ftl:        ${markup.feederMarkup}
+offer-markup-editor.ftl:        ${markup.otherMarkup}
+pending-accounts.ftl:           ${user.username}
+pending-accounts.ftl:           ${user.name}
+per-user-milkrun.ftl:           ${milkrunUI.milkRun.id} ${milkrunUI.milkRun.timeAsHumanReadableString}
+per-user-milkrun.ftl:           ${milkrunUI.getDeliveryCell(row,col)}
+producers.ftl:                  ${system.site.indexPage}">Home
+producers.ftl:                  ${user.mainImage.path}
+producers.ftl:                  ${user.publicHomePageURL}   ${user.companyName}
+register-account.ftl:           ${system.site.Company}
+reset-password.ftl:             ${resetAccount}
+reset-password.ftl:             ${resetAccount}
+seeder-home.ftl:                ${system.site.HomePage}
+seeder-home.ftl:                ${item.id}
+seeder-home.ftl:                ${item.enabled?string('Yes', 'No')}
+seeder-home.ftl:                ${item.identification}
+seeder-home.ftl:                ${item.category}
+seeder-home.ftl:                ${item.shortOne}
+seeder-home.ftl:                ${item.shortTwo}
+seeder-home.ftl:                ${item.description}
+seeder-home.ftl:                ${item.note}
+seeder-item-editor.ftl:         ${session.itemToEdit.id}
+seeder-item-editor.ftl:         ${session.itemToEdit.identification}
+seeder-item-editor.ftl:         ${session.itemToEdit.category}
+seeder-item-editor.ftl:         ${session.itemToEdit.shortOne}
+seeder-item-editor.ftl:         ${session.itemToEdit.shortTwo}
+seeder-item-editor.ftl:         ${session.itemToEdit.description}
+seeder-item-editor.ftl:         ${session.itemToEdit.note}
+seeder-item-editor.ftl:         ${offer.timeAsString}
+seeder-item-editor.ftl:         ${session.itemToEdit.id}
+seeder-item-editor.ftl:         ${offer.wholesale?string('wholesale', 'retail')}
+seeder-item-editor.ftl:         ${offer.quantity}
+seeder-item-editor.ftl:         ${offer.units}
+seeder-item-editor.ftl:         ${offer.price}
+seeder-item-editor.ftl:         ${session.itemToEdit.id}
+seeder-item-editor.ftl:         ${image.id}
+seeder-item-editor.ftl:         ${image.path}
+seeder-item-editor.ftl:         ${image.usage}
+seeder-item-editor.ftl:         ${image.filename}
+seeder-item-editor.ftl:         ${image.caption}
+shop-list-view2.ftl:            ${system.site.indexPage}
+shop-list-view2.ftl:            ${offer.timeAsString}  ${offer.item.mainImage.path}
+shop-list-view2.ftl:            ${offer.item.supplier.publicHomePageURL}
+shop-list-view2.ftl:            ${offer.item.supplier.companyName}
+shop-list-view2.ftl:            ${offer.timeAsString}">${offer.item.supplier.mainImage.path}
+shop-list-view2.ftl:            ${offer.item.supplier.publicHomePageURL}
+shop-list-view2.ftl:            ${offer.item.supplier.companyName}
+shop-list-view2.ftl:            ${offer.item.supplier.publicHomePageURL}
+shop-list-view2.ftl:            ${offer.item.supplier.companyName}
+shop-list-view2.ftl:            ${offer.item.shortOne}
+shop-list-view2.ftl:            ${session.getQuotedPriceAsString(offer)} ${offer.units}
+shop-list-view2.ftl:            ${offer.item.description}
+shop-list-view2.ftl:            ${offer.timeAsString}
+shop-list-view2.ftl:            ${offer.avgRating}
+shop-list-view2.ftl:            ${system.site.Company}
+shop-list-view2.ftl:            ${session.searchManager.searchParams.keyWords}
+shop-list-view2.ftl:            ${session.user.cartSize}
+shop-list-view2.ftl:            ${v}
+shop-list-view2.ftl:            ${offer.item.shortOne}
+shop-list-view2.ftl:            ${offer.item.supplier.companyName}
+shop-list-view2.ftl:            ${offer.item.description}
+shop-list-view2.ftl:            ${session.getQuotedPriceAsString(offer)} per ${offer.units}
+shop-list-view2.ftl:            ${session.getQuotedPriceAsString(offer)} per ${offer.quantity} ${offer.units}
+shop-list-view2.ftl:            ${offer.priceAsString}
+shop-list-view2.ftl:            ${offer.timeAsString}
+single-product.ftl:             ${system.site.Company}
+single-product.ftl:             ${system.site.indexPage}
+single-product.ftl:             ${offer.item.shortOne}
+single-product.ftl:             ${offer.item.mainImage.path}
+single-product.ftl:             ${offer.item.mainImage.path}
+single-product.ftl:             ${image.path}">${image.thumbnailPath}
+single-product.ftl:             ${image.path}">${image.thumbnailPath}
+single-product.ftl:             ${offer.timeAsString}  ${offer.item.supplier.mainImage.path}
+single-product.ftl:             ${offer.item.supplier.username}
+single-product.ftl:             ${offer.item.supplier.publicHomePageURL}    ${offer.item.supplier.companyName}
+single-product.ftl:             ${offer.item.shortOne}
+single-product.ftl:             ${offer.ratingCount} 
+single-product.ftl:        	    ${offer.item.description}
+single-product.ftl:             ${session.getQuotedPriceAsString(offer)}  ${offer.units}
+single-product.ftl:             ${session.getQuotedPriceAsString(offer)}  ${offer.quantity} ${offer.units}
+single-product.ftl:             ${offer.timeAsString}
+single-product.ftl:             ${offer.timeAsString}
+single-product.ftl:             ${offer.item.description}
+single-product.ftl:             ${offer.item.note}
+single-product.ftl:             ${offer.ratingCount}
+single-product.ftl:             ${rating.body}
+single-product.ftl:             ${rating.ratee.username}
+single-product.ftl:             ${rating.publishedDate}
+single-product.ftl:             ${rating.rating} 
+single-product.ftl:             ${offer.timeAsString}
+support.ftl:                    ${system.site.Company}
+user-address-editor.ftl:        ${session.user.username}
+user-address-editor.ftl:        ${session.user.companyName}
+user-address-editor.ftl:        ${address.id}
+user-address-editor.ftl:        ${address.usage}
+user-address-editor.ftl:        ${address.firstName}
+user-address-editor.ftl:        ${address.lastName}
+user-address-editor.ftl:        ${address.street}
+user-address-editor.ftl:        ${address.city}
+user-address-editor.ftl:        ${address.state}
+user-address-editor.ftl:        ${address.zip}
+user.ftl:                       ${session.userToEdit.name}
+user.ftl:                       ${session.userToEdit.name}
+user.ftl:                       ${session.userToEdit.username}     ${session.userToEdit.username}
+user.ftl:                       ${session.userToEdit.name}
+user.ftl:                       ${session.userToEdit.username}
+user.ftl:                       ${session.userToEdit.username}
+user.ftl:                       ${session.userToEdit.username}
+user-image-manager.ftl:         ${image.id}
+user-image-manager.ftl:         ${image.path}
+user-image-manager.ftl:         ${image.usage}
+user-image-manager.ftl:         ${image.filename}
+user-image-manager.ftl:         ${image.caption}
+user-map.ftl:                   ${system.site.Company}
+user-map.ftl:                   ${marker.lat}
+user-map.ftl:                   ${marker.lng}
+user-map.ftl:                   ${marker.label}
+user-map.ftl:                   ${marker.color}
+user-map.ftl:                   ${marker.url}"}
+user-notes.ftl:                 ${session.userToEdit.name}
+user-notes.ftl:                 ${session.userToEdit.name}
+user-notes.ftl:                 ${session.userToEdit.username}
+user-notes.ftl:                 ${userNote.id}
+user-notes.ftl:                 ${userNote.timestampAsString}
+user-notes.ftl:                 ${userNote.status}
+user-notes.ftl:                 ${userNote.body}
+user-roles.ftl:                 ${session.userToEdit.name}
+user-roles.ftl:                 ${session.userToEdit.name}
+users.ftl:                      ${user.name}
+users.ftl:                      ${user.username}
+users.ftl:                      ${user.username}
+users.ftl:                      ${user.getReferrer().name}
+
+admin.ftl:                              <#include "macros.ftl">
+cart3.ftl:                              <#include "macros.ftl">
+cart3.ftl:                              <#list session.user.cartOffers as cartOffer>
+cart3.ftl:                              <#if cartOffer?has_next >
+cart3.ftl:                              <#else>
+cart3.ftl:                              <#if cartOffer.offer.quantity == 1 >
+cart3.ftl:                              <#else>
+cart3.ftl:                              <#if (system.site.devEnv) >
+cart3.ftl:                              <#if (cartOffer.frequency != "once") >
+cart.ftl:                               <#list session.user.cartOffers as cartOffer>
+delivered-cart.ftl:                     <#list deliveredCartOffers as cartOffer>
+delivered-cart.ftl:                     <#if (cartOffer.offer.item.numImages > 0) >
+eater-calendar.ftl:                     <#include "macros.ftl">
+eater-calendar.ftl:                     <#list 1..5 as week >
+eater-calendar.ftl:                     <#list 1..7 as day>
+eater-calendar.ftl:                     <#if session.calendar.isToday(week day) >
+eater-calendar.ftl:                     <#else>
+eater-calendar.ftl:                     <#if session.calendar.hasEvents(week day) >
+eater-calendar.ftl:                     <#list session.calendar.getNews(week day) as news >
+eater-calendar.ftl:                     <#if session.calendar.hasDelivered(week day) >
+eater-calendar.ftl:                     <#if session.calendar.hasFutureOrders(week day) >
+eater-calendar.ftl:                     <#else>
+future-cart.ftl:                        <#include "macros.ftl">
+future-cart.ftl:                        <#list futureCartOffers as cartOffer>
+future-cart.ftl:                        <#if (cartOffer.offer.item.numImages > 0) >
+index3.ftl:                             <#include "macros.ftl">
+index3.ftl:		                        <#list system.featuredOffers as featuredOffer >
+index3.ftl:	                            <#if (featuredOffer.offer.item.numImages > 0) >
+index3.ftl:	                            <#else>
+index5.ftl:                             <#include "macros.ftl">
+login.ftl:                              <#include "macros.ftl">
+macros-css.ftl:                         <#macro styleSheets>
+macros-css.ftl:                         <#macro styleSheets3>
+macros-css.ftl:                         <#macro ourStyles>
+macros.ftl:                             <#include "macros-css.ftl">
+macros.ftl:                             <#include "macros-js.ftl">
+macros.ftl:                             <#include "macros-pageHeader.ftl">
+macros.ftl:                             <#include "macros-pageFooter.ftl">
+macros.ftl:                             <#macro showCopyright>
+macros.ftl:                             <#macro showLoginButton>
+macros.ftl:                             <#if session.user?? >
+macros.ftl:                             <#else>
+macros.ftl:                             <#macro showRegisterButton>
+macros.ftl:                             <#if session.user?? >
+macros.ftl:                             <#else>
+macros.ftl:                             <#macro showMyStuffButton>
+macros.ftl:                             <#if session.user?? >
+macros.ftl:                             <#else>
+macros.ftl:                             <#macro categoryMegaMenu>
+macros.ftl:                             <#macro pagesMegaMenu>
+macros.ftl:                             <#if session.user?? >
+macros.ftl:                             <#else>
+macros.ftl:                             <#if session.user?? >
+macros.ftl:                             <#if (session.user.doesRole("Seeder"))>
+macros.ftl:                             <#if (session.user.doesRole("Admin"))>
+macros.ftl:                             <#macro blogSubMenu>
+macros.ftl:                             <#--
+macros.ftl:                             <#macro AddToCartButton offerId pageName>
+macros.ftl:                             <#macro requestSupport>
+macros.ftl:                             <#macro showMiniCart user thePage>
+macros.ftl:                             <#list session.user.cartOffers as cartOffer>
+macros.ftl:                             <#macro showSearchPanel>
+macros.ftl:                             <#if session.searchManager?? >
+macros.ftl:                             <#macro enterRatingStars>
+macros.ftl:                             <#macro showRatingStars rating>
+macros.ftl:                             <#if (rating > 1) >
+macros.ftl:                                 <#else>
+macros.ftl:                             <#if (rating > 2) >
+macros.ftl:                                 <#else>
+macros.ftl:                             <#if (rating > 3) >
+macros.ftl:                                 <#else>
+macros.ftl:                             <#if (rating > 4) >
+macros.ftl:                                 <#else>
+macros-js.ftl:                          <#macro jsIncludes>
+macros-pageFooter.ftl:                  <#macro pageFooter>
+macros-pageHeader.ftl:                  <#macro topOfPageHeader>
+macros-pageHeader.ftl:                      <#if session.user?? >
+macros-pageHeader.ftl:                  <#macro pageHeader thePage>
+macros-pageHeader.ftl:                          <#if session.user?? >
+macros-pageHeader.ftl:                  <#macro pageHeader3>
+milkrun.ftl:                            <#include "macros.ftl">
+milkrun.ftl:                            <#if milkrunUI?? >
+milkrun.ftl:                            <#if milkrunUI.milkRun.id == "" >
+milkrun.ftl:                            <#else>
+milkrun.ftl:                            <#list milkrunUI.milkRun.route.stops as stop >
+milkrun.ftl:                            <#if stop.user.hasUnclosedNotes() >
+milkrun.ftl:                            <#if stop.streetAddress?contains("Unknown") >
+milkrun.ftl:                            <#else>
+milkrun.ftl:                            <#if milkrunUI.milkRun.id == "" >
+milkrun.ftl:                            <#else>
+milkrun.ftl:                                    <#list milkrunUI.discrepancies as discrepancy>
+milkrun.ftl:                                <#list 1..milkrunUI.supplierRows as row>
+milkrun.ftl:                            <#list 1..milkrunUI.supplierCols as col>
+milkrun.ftl:                            <#assign row = 0 >
+milkrun.ftl:                                <#list 1..milkrunUI.deliveryRows as row>
+milkrun.ftl:                            <#list 1..milkrunUI.deliveryCols as col>
+milkrun.ftl:                            <#else>
+milkruns.ftl:                           <#include "macros.ftl">
+milkruns.ftl:                                   <#assign i = 0 >
+milkruns.ftl:                                    <#list chartData.counts as row>
+milkruns.ftl:                           <#if row?has_next >,
+milkruns.ftl:                           <#assign i++ >
+milkruns.ftl:                                    <#if (i == 0) >
+milkruns.ftl:                                    <#list chartData.seederShare as row>
+milkruns.ftl:                           <#if row?has_next >,
+milkruns.ftl:                                    <#list chartData.eaterShare as row>
+milkruns.ftl:                           <#if row?has_next >,
+milkruns.ftl:                                <#list milkruns as milkrun>
+my-pages.ftl:                           <#include "macros.ftl">
+offer-markup-editor.ftl:                <#include "macros.ftl">
+offer-markup-editor.ftl:                <#list session.offerMarkups as markup>
+pending-account.ftl:                    <#include "macros.ftl">
+pending-accounts.ftl:                   <#include "macros.ftl">
+pending-accounts.ftl:                   <#list pendingUsers as user >
+per-user-milkrun.ftl:                   <#include "macros.ftl">
+per-user-milkrun.ftl:                   <#if milkrunUI?? >
+per-user-milkrun.ftl:                   <#if milkrunUI.milkRun.id == "" >
+per-user-milkrun.ftl:                   <#else>
+per-user-milkrun.ftl:                   <#assign row = 0 >
+per-user-milkrun.ftl:                   <#list 1..milkrunUI.deliveryRows as row>
+per-user-milkrun.ftl:                   <#list 1..milkrunUI.deliveryCols as col>
+per-user-milkrun.ftl:                   <#else>
+producers.ftl:                          <#include "macros.ftl">
+producers.ftl:                          <#list system.getUsersByRoles("Seeder Butcher Baker Maker Feeder") as user >
+producers.ftl:                          <#if user.doesRole("Seeder") >
+producers.ftl:                          <#elseif user.doesRole("Butcher") >
+producers.ftl:                          <#elseif user.doesRole("Baker") >
+producers.ftl:                          <#elseif user.doesRole("Maker") >
+producers.ftl:                          <#else>
+producers.ftl:                          <#if user.mainImage?? >
+register-account.ftl:                   <#include "macros.ftl">
+register-account.ftl:                   <#if registerAccountReferrer?? >
+reset-password.ftl:                     <#include "macros.ftl">
+reset-password.ftl:                     <#if  ! resetAccount?? >
+reset-password.ftl:                     <#assign resetAccount = session.user.username >
+seeder-home.ftl:                        <#include "macros.ftl">
+seeder-home.ftl:                        <#if session.showDisabledItems >
+seeder-home.ftl:                        <#list session.user.items as item>
+seeder-home.ftl:                        <#if (session.showDisabledItems || item.enabled) >
+seeder-item-editor.ftl:                 <#include "macros.ftl">
+seeder-item-editor.ftl:                 <#if session.itemToEdit.enabled >
+seeder-item-editor.ftl:                 <#if session.showDisabledOffers >
+seeder-item-editor.ftl:                 <#list session.itemToEdit.offers as offer>
+seeder-item-editor.ftl:                 <#if session.showDisabledOffers || offer.enabled>
+seeder-item-editor.ftl:                 <#if offer.enabled >
+seeder-item-editor.ftl:                 <#list session.itemToEdit.images as image>
+shop-list-view2.ftl:                    <#include "macros.ftl">
+shop-list-view2.ftl:                    <#list session.searchManager.results as offerRanking>
+shop-list-view2.ftl:                    <#assign offer = offerRanking.offer >
+shop-list-view2.ftl:                    <#if (offer.item.numImages > 0) >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#if (offer.item.supplier.numImages > 0) >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#-- this doesn't work any more
+shop-list-view2.ftl:                    <#if (offer.avgRating > 0.0) >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#include "macros.ftl">
+shop-list-view2.ftl:                    <#if session.searchManager.caseSensitive >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#if session.user?? >
+shop-list-view2.ftl:                    <#if session.searchManager.pastOrders >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#if session.user?? >
+shop-list-view2.ftl:                    <#list session.searchManager.results as offerRanking>
+shop-list-view2.ftl:                    <#assign offer = offerRanking.offer >
+shop-list-view2.ftl:                    <#if offerRanking?is_first >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#if offerRanking?is_last >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#assign offer = offerRanking.offer >
+shop-list-view2.ftl:                    <#if offerRanking.haveMatches() >
+shop-list-view2.ftl:                    <#list offerRanking.matches as score >  <!-- in range 0..1 -->
+shop-list-view2.ftl:                    <#assign v = (40-((score * 40) + 1)) >
+shop-list-view2.ftl:                    <#if offer.quantity == 1 >
+shop-list-view2.ftl:                    <#else>
+shop-list-view2.ftl:                    <#if (system.site.devEnv) >
+shop-list-view2.ftl:                    <#if session.user?? >
+single-product.ftl:                     <#include "macros.ftl">
+single-product.ftl:                     <#if (offer.item.numImages > 0) >
+single-product.ftl:                     <#assign x = "">
+single-product.ftl:                     <#list offer.item.images as image>
+single-product.ftl:                     <#if x == "">
+single-product.ftl:                     <#assign x = " ">
+single-product.ftl:                     <#else>
+single-product.ftl:                     <#else>
+single-product.ftl:                     <#if (offer.item.supplier.numImages > 0) >
+single-product.ftl:                     <#else>
+single-product.ftl:                     <#if (offer.avgRating > 0.0) >
+single-product.ftl:                     <#if offer.quantity == 1 >
+single-product.ftl:                     <#else>
+single-product.ftl:                     <#if session.user?? >
+single-product.ftl:                     <#list offer.ratingsOf as rating >
+single-product.ftl:                     <#if session.user?? >
+system.ftl:                             <#list systemCharts.userRows as row >
+system.ftl:                             <#if row?has_next >,
+system.ftl:                             <#list systemCharts.loginsPerDayRows as row >
+system.ftl:                             <#if row?has_next >,
+system.ftl:                             <#list systemCharts.offerCostCountRows as row>
+system.ftl:                             <#if row?has_next >,
+system.ftl:                             <#list systemCharts.cartOfferMetricsByDayRows as row >
+system.ftl:                             <#if row?has_next >,
+system.ftl:                             <#assign i = 0 >
+system.ftl:                             <#list systemCharts.milkRunAveragesRows as row>
+system.ftl:                             <#if row?has_next >,
+system.ftl:                             <#assign i++ >
+system.ftl:                             <#if (i == 0) >
+test.ftl:                               <#list user.phoneNumbers as pn>
+user-address-editor.ftl:                <#if session.user.doesRole("Seeder") >
+user-address-editor.ftl:                <#list session.user.addresses as address>
+user-image-manager.ftl:                 <#list session.user.images as image>
+user-map.ftl:                           <#list mapMarkers as marker>
+user-map.ftl:                           <#if marker?has_next >,
+user-map.ftl:                           <#if mapLines == true >
+user-notes.ftl:                         <#include "macros.ftl">
+user-notes.ftl:                         <#if session.showClosedUserNotes >
+user-notes.ftl:                         <#list userNotes as userNote >
+user-roles.ftl:                         <#include "macros.ftl">
+user-roles.ftl:                         <#if session.userToEdit.doesRole("EaterAlpha") >
+user-roles.ftl:                         <#if session.userToEdit.doesRole("Eater") >
+user-roles.ftl:                         <#if session.userToEdit.doesRole("Seeder") >
+user-roles.ftl:                         <#if session.userToEdit.doesRole("Feeder") >
+user-roles.ftl:                         <#if session.userToEdit.doesRole("Runner") >
+user-roles.ftl:                         <#if session.userToEdit.doesRole("Admin") >
+users.ftl:                              <#list users as user >
+users.ftl:                              <#if user.getReferrer()?? >

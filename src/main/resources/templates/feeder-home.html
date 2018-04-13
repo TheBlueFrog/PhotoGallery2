@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<#include "macros.ftl">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <title>${session.user.address.firstName}'s Home</title>
+    <@styleSheets/>
+    <style>
+        th { text-align: left; }
+        td {
+            text-align: left;
+            vertical-align: text-top;
+        }
+    </style>
+
+</head>
+    <body class="">
+    <header class="header">
+        <@topOfPageHeader/>
+    </header>
+
+    <section class="banner banner-about bg-parallax">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="banner-content text-center">
+                <h2 class="page-title">Home for ${session.user.username}</h2>
+                <div class="breadcrumbs">
+                    <a href="/${system.site.HomePage}">Home</a>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="maincontainer">
+
+        <form class="form-horizontal container" method="post" >
+            <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                    <h2 class="crimson-text font-italic">${session.user.username}</h2>
+                    <#if session.user.username == "" >
+                        <div class="form-group">
+                            <label for="username" class="w3-label">User Name</label>
+                            <input class="form-control" id="username" type="text" name="username" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="w3-label">Password</label>
+                            <input class="submit" id="password" type="text" name="password" value="" required>
+                        </div>
+                    </#if>
+                    <div class="form-group">
+                        <label class="w3-label">Roles</label>
+                        <div class="checkbox">
+                            <#if (session.user.doesRole("Seeder")) >
+                                <label><input type="checkbox" name="seeder"  value="" checked>Seeder</label>
+                                <#else>
+                                    <label><input type="checkbox" name="seeder"  value="" unchecked>Seeder</label>
+                            </#if>
+                        </div>
+                        <div class="checkbox">
+                            <#if (session.user.doesRole("Feeder")) >
+                                <label><input type="checkbox" name="feeder"  value="checked" checked>Feeder</label>
+                                <#else>
+                                    <label><input type="checkbox" name="feeder"  value="unchecked" unchecked>Feeder</label>
+                            </#if>
+                        </div>
+                        <div class="checkbox disabled">
+                            <#if (session.user.doesRole("Eater")) >
+                                <label><input type="checkbox" name="eater"  value="checked" checked>Eater</label>
+                                <#else>
+                                    <label><input type="checkbox" name="eater"  value="unchecked" unchecked>Eater</label>
+                            </#if>
+                        </div>
+                        <div class="checkbox disabled">
+                            <#if (session.user.doesRole("Admin")) >
+                                <label><input type="checkbox" name="admin"  value="checked" checked>Admin</label>
+                                <#else>
+                                    <label><input type="checkbox" name="admin"  value="unchecked" unchecked>Admin</label>
+                            </#if>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="w3-label">GPS Location</label>
+                        ${session.user.address.longitude}, ${session.user.address.latitude}
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="operation" value="UpdateAccount" />
+                        <button class="btn-search">Update</button>
+                    </div>
+                    <p></p>
+                    <p></p>
+                    <button class="btn-search"><a href="feeder-public.html?userId=${session.user.id}">View my public home page</a></button>
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                    <h2 class="crimson-text font-italic">Address</h2>
+                    <div class="form-group">
+                        <label for="firstName" class="w3-label">First Name</label>
+                        <input class="form-control" id="firstName" type="text" name="firstName" value="${session.user.address.firstName}">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="w3-label">Last Name</label>
+                        <input class="form-control" id="lastName" type="text" name="lastName" value="${session.user.address.lastName}">
+                    </div>
+                    <div class="form-group">
+                        <label for="street" class="w3-label">Street Address</label>
+                        <input class="form-control" id="street" type="text" name="street" value="${session.user.address.street}">
+                    </div>
+                    <div class="form-group">
+                        <label for="city" class="w3-label">City</label>
+                        <input class="form-control" id="city" type="text" name="city" value="${session.user.address.city}">
+                    </div>
+                    <div class="form-group">
+                        <label for="state" class="w3-label">State</label>
+                        <input class="form-control" id="state" type="text" name="state" value="${session.user.address.state}">
+                    </div>
+                    <div class="form-group">
+                        <label for="zip" class="w3-label">Zip Code</label>
+                        <input class="form-control" id="zip" type="text" name="zip" value="${session.user.address.zip}">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <#if (session.user.doesRole("Eater")) >
+
+        <!-- Eaters display the cart offers they have received -->
+
+        <div class="maincontainer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <h3>Cart Offers Received by Me (what do we want/need here)</h3>
+
+                        <table style="width:80%">
+                            <tr>
+                                <th >Delivery Time</th>
+                                <th >Order Time</th>
+                                <th >ShortOne</th>
+                                <th >Description</th>
+                            </tr>
+                            <#list session.user.receivedCartOffers as deliveredCartOffer>
+                                <tr>
+                                    <td>${deliveredCartOffer.deliveredTime}</td>
+                                    <td>${deliveredCartOffer.orderedTime}</td>
+                                    <td>${deliveredCartOffer.item.shortOne}</td>
+                                    <td>${deliveredCartOffer.item.description}</td>
+                                </tr>
+                            </#list>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </#if>
+    <#if (session.user.doesRole("Seeder")) >
+
+        <!-- Seeders display the cart offers they have supplied -->
+
+        <div class="maincontainer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <h3>Cart Offers I Have Supplied (what do we want/need here)</h3>
+
+                        <table style="width:80%">
+                            <tr>
+                                <th >Delivery Time</th>
+                                <th >Order Time</th>
+                                <th >ShortOne</th>
+                                <th >Description</th>
+                            </tr>
+                            <!--
+                            <#list session.user.suppliedCartOffers as deliveredCartOffer>
+                                <tr>
+                                    <td>${deliveredCartOffer.deliveredTime}</td>
+                                    <td>${deliveredCartOffer.orderedTime}</td>
+                                    <td>${deliveredCartOffer.item.shortOne}</td>
+                                    <td>${deliveredCartOffer.item.description}</td>
+                                </tr>
+                            </#list>
+                            -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </#if>
+
+    <@pageFooter/>
+    <a href="#" class="scroll_top" title="Scroll to Top">Scroll</a>
+    <@jsIncludes/>
+    </body>
+</html>
