@@ -34,10 +34,10 @@ public class UserRoleController extends BaseController {
                 state.setAttribute("targetUserId", null);
                 return super.get(request, model, Constants.Web.REDIRECT_EATER_ALPHA_HOME);
             }
-            User u = User.findByUsername(username);
+            User u = User.findById(username);
             state.setAttribute("targetUserId", u.getId());
 
-            model.addAttribute("loginNamesOfAccount", LoginName.findAllByUserId(u.getUsername()));
+            model.addAttribute("loginNameOfAccount", u.getLoginName());
             return super.get(request, model, "user-details");
 
         } catch (Exception e) {
@@ -93,12 +93,8 @@ public class UserRoleController extends BaseController {
 
                 // redo this code with error messages
 
-                User target = User.findByUsername(username);
+                User target = User.findById(username);
                 switch (request.getParameter("operation")) {
-                    case "CreateLogin": {
-                        createLoginName(request, model, target);
-                    }
-                    break;
                     case "CreateEmail": {
                         // disallow duplicates
                         if (EmailAddress.findByEmail(request.getParameter("newEmailAddress")).size() == 0) {
@@ -133,53 +129,6 @@ public class UserRoleController extends BaseController {
         }
 
         return super.post(request, model, nextPage);
-    }
-
-    private void createLoginName(HttpServletRequest request, Model model, User user) {
-        String loginname = request.getParameter("NewLoginName");
-        if (!LoginName.validLoginName(loginname)) {
-            SystemEvent.save(user, String.format("Login name %s is not valid, fail create", loginname));
-            return;
-        }
-
-        List<LoginName> existing = LoginName.findByLoginName(loginname);
-        if (existing.size() > 0) {
-            SystemEvent.save(user, String.format("Login name %s already exists, fail create", loginname));
-            return;
-        }
-
-        // login name does not exist in the system
-
-        List<EmailAddress> emailAddress = EmailAddress.findByEmail(user.getId());
-//            Set<String> emails = new HashSet<>();
-//            emailAddress.forEach(emailAddress1 -> {
-//                if ( ! emails.add(emailAddress1.getEmail()))
-//            });
-
-        switch (emailAddress.size()) {
-            case 0: { // no such email in system either, good to go
-                LoginName loginName = new LoginName(user.getId(), loginname);
-                loginName.resetPassword();
-                loginName.save();
-                SystemEvent.save(user, String.format("Login name %s created, password reset", loginname));
-            }
-            break;
-            case 1: { // login name is not in-use but that email exists,
-                // we allow that if, only if it's this user's
-                if (!emailAddress.get(0).getUserId().equals(user.getId())) {
-                    SystemEvent.save(user, String.format("Login name %s matches existing email of another user, fail create", loginname));
-                }
-
-                LoginName loginName = new LoginName(user.getId(), loginname);
-                loginName.resetPassword();
-                loginName.save();
-                SystemEvent.save(user, String.format("Login name %s added to user, already has existing email", loginname));
-            }
-            break;
-            default:
-                SystemEvent.save(user, String.format("Login name %s matches more than 1 existing email, fail create", loginname));
-                break;
-        }
     }
 
 }

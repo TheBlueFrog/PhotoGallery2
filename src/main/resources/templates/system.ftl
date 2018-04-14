@@ -23,7 +23,6 @@
     </style>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawStacked);
@@ -31,9 +30,6 @@
       google.charts.setOnLoadCallback(drawCountCostChart);
       google.charts.setOnLoadCallback(drawCartOfferMetricsByDayChart);
       google.charts.setOnLoadCallback(drawMilkRunAveragesChart);
-      google.charts.setOnLoadCallback(drawPieChart);
-      google.charts.setOnLoadCallback(drawPieChart2);
-      google.charts.setOnLoadCallback(drawCountsChart);
 
         function drawStacked() {
           var data = new google.visualization.DataTable();
@@ -58,7 +54,7 @@
               format: 'M/d/yy',
             viewWindow: {
                 min: new Date(2017, 1, 1),
-                max: new Date(2017, 7, 1)
+                max: new Date(2017, 3, 1)
               }
             },
             vAxis: {
@@ -94,7 +90,7 @@
 //              format: 'h:mm a',
               viewWindow: {
                 min: new Date(2017, 1, 1),
-                max: new Date(2017, 7, 1)
+                max: new Date(2017, 3, 1)
               }
             },
             vAxis: {
@@ -114,6 +110,9 @@
                 <#if row?has_next >,
                 </#if>
             </#list>
+//          [ 8,      12],
+//          [ 4,      5.5],
+//          [ 6.5,    7]
         ]);
 
         var options = {
@@ -151,7 +150,7 @@
 //              format: 'h:mm a',
               viewWindow: {
                 min: new Date(2017, 1, 1),
-                max: new Date(2017, 7, 1)
+                max: new Date(2017, 3, 1)
               }
             },
             vAxis: {
@@ -191,80 +190,21 @@
         chart.draw(data, options);
       }
 
-      function drawCountsChart() {
-        var data = google.visualization.arrayToDataTable([
-           ['Date', 'Pickup $', 'Delivery $', 'Items', 'Seeders', 'Eaters'],
-
-           <#assign i = 0 >
-            <#list chartData.counts as row>
-                ['${row.date}', ${row.pickupTotal}, ${row.deliveryTotal}, ${row.itemCount}, ${row.seederCount}, ${row.eaterCount} ]
-                <#if row?has_next >,
-                </#if>
-                <#assign i++ >
-            </#list>
-
-            <#if (i == 0) >
-                ['06/01/2017', '20', '30', 17, 2, 5 ]
-            </#if>
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Information about MilkRuns',
-            subtitle: 'Pickup and Delivery money and some counts',
-          }
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('countsChart'));
-        chart.draw(data, options);
-      }
-
-      function drawPieChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Seeder', 'Items'],
-            <#list chartData.seederShare as row>
-                ['${row.name}', ${row.count} ]
-                <#if row?has_next >,
-                </#if>
-            </#list>
-//          ['Work',     11]
-        ]);
-
-        var options = {
-          title: 'Per-Seeder Share of Items',
-          subtitle: 'For all MilkRuns'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
-      }
-
-      function drawPieChart2() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Eater', 'Items'],
-            <#list chartData.eaterShare as row>
-                ['${row.name}', ${row.count} ]
-                <#if row?has_next >,
-                </#if>
-            </#list>
-//          ['Work',     11]
-        ]);
-
-        var options = {
-          title: 'Per-Eater Share of Items',
-          subtitle: 'For all MilkRuns'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
-        chart.draw(data, options);
-      }
 
     </script>
 </head>
 <body class="">
-    <@pageHeader3 />
+    <@pageHeader3 "system.ftl"/>
+
+    <p></p>
+    <div class="container-fluid">
+        <p></p>
+        <h3>System Management Links</h3>
+        <p></p>
+        <a href="offer-markup-editor"><h4>Offer Markup Editor</h4></a>
+        <p></p>
+    </div>
+
 
     <div class="container-fluid">
         <p></p>
@@ -290,6 +230,7 @@
             </div>
         </row>
         <row>
+            <div class="col-sm-1" ></div>
             <div class="col-sm-10" >
                 <div id="milkRunAverages_div"></div>
             </div>
@@ -298,22 +239,6 @@
         <row>
             <div class="col-sm-10" >
                 <div id="countCostChart" ></div>
-                <p></p>
-            </div>
-        </row>
-
-        <row>
-            <div class="col-sm-10" >
-                <div id="countsChart" ></div>
-            </div>
-        </row>
-
-        <row>
-            <div class="col-sm-6" >
-                <div id="piechart" ></div>
-            </div>
-            <div class="col-sm-6" >
-                <div id="piechart2" ></div>
             </div>
         </row>
     </div>

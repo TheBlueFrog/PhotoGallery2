@@ -28,8 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class UsersController extends BaseController {
@@ -99,16 +97,16 @@ public class UsersController extends BaseController {
                 case "update": {
                     String[] usernames = request.getParameterMap().get("username");
                     for (String username : usernames) {
-                        User user = User.findByUsername(username);
+                        User user = User.findById(username);
 
                         if (request.getParameter("pending-" + username) == null) {
                             // allow this user into the system
                             UserRole.remove(user.getUsername(), UserRole.Role.AccountPending);
 
                             SystemEvent.save(user,
-                                    String.format("Remove AccountPending for user %s, auth by %s",
-                                    user.getUsername(),
-                                    user.getUsernameShort()));
+                                    String.format("Remove AccountPending for user %8.8s, auth by %8.8s",
+                                    user.getId(),
+                                    adminUser.getId()));
 
                             // set a couple other bits from the UI
 
@@ -165,7 +163,7 @@ public class UsersController extends BaseController {
                                     return user.getEnabled() && UserRole.isAnAdmin(user.getId());
                                 }
                             },
-                            Util::sortByUserName));
+                            Util::sortByLoginName));
 
             model.addAttribute("nonAdmins",
                     User.getSortedUsers(
@@ -175,7 +173,7 @@ public class UsersController extends BaseController {
                                     return user.getEnabled() && ( ! UserRole.isAnAdmin(user.getId()));
                                 }
                             },
-                            Util::sortByUserName));
+                            Util::sortByLoginName));
 
             model.addAttribute("disabledUsers",
                     User.getSortedUsers(
@@ -185,27 +183,9 @@ public class UsersController extends BaseController {
                                     return !user.getEnabled();
                                 }
                             },
-                            Util::sortByUserName));
+                            Util::sortByLoginName));
 
             return super.get(request, model, "users2");
-        }
-        catch (Exception e) {
-            return showExceptionPage(e, request, model);
-        }
-    }
-
-    @RequestMapping(value = "/user-charts/{userId}", method = RequestMethod.GET)
-    public String get4a(@PathVariable("userId") String userId,
-                       HttpServletRequest request, Model model, HttpServletResponse response) {
-        try {
-            {
-                User user = getSessionUser(request);
-                if ((user == null) | (!user.isAnAdmin()))
-                    return showErrorPage("Unauthorized Access", request, model);
-            }
-            model.addAttribute("user", User.findById(userId));
-            model.addAttribute("userCharts", UserCharts.getSystemCharts(userId));
-            return super.get(request, model, "user-charts");
         }
         catch (Exception e) {
             return showExceptionPage(e, request, model);
@@ -222,7 +202,7 @@ public class UsersController extends BaseController {
         if ((user == null) || ( ! user.isAnAdmin()))
             return super.get(request, model, Constants.Web.REDIRECT_EATER_ALPHA_HOME);
 
-        state.setAttribute ("targetUserId", User.findByUsername(username));
+        state.setAttribute ("targetUserId", User.findById(username));
         return super.get(request, model, "user");
     }
 
@@ -240,7 +220,7 @@ public class UsersController extends BaseController {
 
                 switch (request.getParameter("operation")) {
                     case "update": {
-                        User u = User.findByUsername(username);
+                        User u = User.findById(username);
                         {
                             boolean on = request.getParameter("User") != null;
                             changeRole (u, on, UserRole.Role.User);

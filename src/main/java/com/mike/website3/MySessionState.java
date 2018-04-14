@@ -5,15 +5,12 @@ package com.mike.website3;
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
-import com.mike.util.Log;
 import com.mike.util.Util;
 import com.mike.website3.db.User;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +76,7 @@ public class MySessionState {
                         return true;
                     }
                 },
-                Util::sortByUserName);
+                Util::sortByLoginName);
     }
 
     // recover the SessionState object from the request the current thread

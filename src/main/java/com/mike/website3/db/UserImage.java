@@ -85,12 +85,12 @@ public class UserImage implements Serializable {
 
     public String getPath () {
         return String.format("/users/%s/images/%s",
-                User.findByUsername(userId).getUsername(),
+                userId,
                 getFilename());
     }
     public String getThumbnailPath () {
         return String.format("/users/%s/images/%s-thumbnail",
-                User.findByUsername(userId).getUsername(),
+                userId,
                 getFilename());
     }
 

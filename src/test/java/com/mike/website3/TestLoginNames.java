@@ -2,7 +2,6 @@ package com.mike.website3;
 
 import com.mike.util.Log;
 import com.mike.website3.db.EmailAddress;
-import com.mike.website3.db.LoginName;
 import com.mike.website3.db.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -34,7 +34,6 @@ public abstract class BaseController  {
 
     static private TemplateHashModel utilStatics = null;
     static private TemplateHashModel userStatics = null;
-    static private TemplateHashModel addressStatics = null;
     static private TemplateHashModel emailAddressStatics = null;
     static private TemplateHashModel itemImageStatics = null;
     static private TemplateHashModel phoneNumberStatics = null;
@@ -58,7 +57,6 @@ public abstract class BaseController  {
         try {
             utilStatics = (TemplateHashModel) staticModels.get("com.mike.util.Util");
             userStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.User");
-            addressStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.Address");
             emailAddressStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.EmailAddress");
             itemImageStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.ItemImage");
             phoneNumberStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.PhoneNumber");
@@ -85,7 +83,6 @@ public abstract class BaseController  {
 
             staticsMap.put("String", stringStatics);
 
-            staticsMap.put("Address", addressStatics);
             staticsMap.put("EmailAddress", emailAddressStatics);
             staticsMap.put("ItemImage", itemImageStatics);
             staticsMap.put("Location", locationStatics);

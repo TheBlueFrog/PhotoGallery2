@@ -1,7 +1,6 @@
 package com.mike.website3;
 
 import com.mike.util.Location;
-import com.mike.website3.db.Address;
 import com.mike.website3.db.User;
 
 import java.util.Set;

@@ -73,7 +73,7 @@ public class UploadController extends BaseController {
                                    HttpServletRequest request) {
 
         MySessionState state = getSessionState(request);
-        User user = User.findByUserId(state.getAttributeS("targetUserId"));
+        User user = User.findById(state.getAttributeS("targetUserId"));
         if (user != null) {
             user.checkForUserDirectory();
             for (MultipartFile f : files) {

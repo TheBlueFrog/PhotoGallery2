@@ -2,11 +2,10 @@
 <html lang="en">
 <#include "macros.ftl">
 <head>
-    <@analytics />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8">
-    <title>Join the ${system.site.Company}</title>
+    <title>Join the Photo Gallery</title>
     <@styleSheets/>
 
     <style>
@@ -26,12 +25,11 @@
 
 </head>
 <body class="">
-    <@pageHeader "register-account.ftl" />
+    <@pageHeader3 />
 
-    <section class="banner banner-short bg-parallax">
-        <div class="overlay"></div>
+    <section class=" banner-short ">
         <div class="container">
-            <div class="banner-content text-center">
+            <div class=" text-center">
                 <h2 class="page-title">Create Your Account</h2>
                 <div class="breadcrumbs">
                     <a href="/">Home</a>
@@ -90,25 +88,24 @@
 <script type="text/javascript" language=JavaScript>
 
 function validateForm() {
-    var xx = document.forms["usernameForm"]["username"].value;
-    if (xx.match(/[^a-zA-Z0-9_\-+@\.]/)) {
-        alert("Invalid characters in email address.");
-        return false;
-    }
-    if ((xx.match(/[@]/) == null) || (xx.match(/[.]/) == null)) {
-        alert("Email does not look like a valid email address.");
-        return false;
+    // var xx = document.forms["usernameForm"]["username"].value;
+    // if (xx.match(/[^a-zA-Z0-9_\-+@\.]/)) {
+    //     alert("Invalid characters in email address.");
+    //     return false;
+    // }
+    // if ((xx.match(/[@]/) == null) || (xx.match(/[.]/) == null)) {
+    //     alert("Email does not look like a valid email address.");
+    //     return false;
+    // }
+
+    var x = document.forms["usernameForm"]["password"].value;
+    var y = document.forms["usernameForm"]["password2"].value;
+    if (x == y) {
+        return true;
     }
     else {
-        var x = document.forms["usernameForm"]["password"].value;
-        var y = document.forms["usernameForm"]["password2"].value;
-        if (x == y) {
-            return true;
-        }
-        else {
-            alert("Passwords do not match.");
-            return false;
-        }
+        alert("Passwords do not match.");
+        return false;
     }
 }
 function filterChars(e) {

@@ -116,7 +116,7 @@ public class LoginController extends BaseController2 {
             String adminName = admin.getUsername();
             state.setPushedUser(admin);
 
-            User user = User.findByUsername(request.getParameter("userId"));
+            User user = User.findById(request.getParameter("userId"));
             if (user == null) {
                 state.setPushedUser(null);
                 return showErrorPage("Failed to load user " + request.getParameter("userId"), request, model);
@@ -149,12 +149,12 @@ public class LoginController extends BaseController2 {
     }
 
     private String login(HttpServletRequest request, Model model, HttpServletResponse response) {
-        String loginname = request.getParameter("userId");
+        String loginname = request.getParameter("loginName");
         MySessionState state = getSessionState(request);
 
         Log.d(TAG, String.format("Login user: %s", loginname == null ? "" : loginname));
         if (loginname.length() == 0) {
-            setMessage(state,  String.format("Empty email address"));
+            setMessage(state,  String.format("Empty Login Name"));
             return get2(request, model, "login");
         }
         try {
@@ -196,7 +196,7 @@ public class LoginController extends BaseController2 {
                 new SystemEvent(user.getUsername(), String.format("First login of %s (%s)",
                         user.getName(), user.getId()))
                         .save();
-                return "redirect:/first-login";
+                return "redirect:/";
             }
         }
         catch (PasswordResetException e) {
@@ -234,17 +234,4 @@ public class LoginController extends BaseController2 {
         }
     }
 
-    @RequestMapping(value = "/first-login", method = RequestMethod.GET)
-    public String getx(HttpServletRequest request, Model model) {
-        try {
-            User user = getSessionUser(request);
-            if (user == null)
-                return "/";  // session may have died
-
-            return get2(request, model, "first-login");
-        }
-        catch (Exception e) {
-            return showExceptionPage(e, request, model);
-        }
-    }
 }

@@ -6,7 +6,6 @@ package com.mike.website3.pages.external;
  */
 
 import com.mike.website3.MySessionState;
-import com.mike.website3.db.LoginName;
 import com.mike.website3.db.SystemEvent;
 import com.mike.website3.db.User;
 import com.mike.website3.pages.BaseController2;
@@ -86,22 +85,22 @@ public class ResetPasswordController extends BaseController2 {
 
         // verify stuff
 
-        List<LoginName> x = LoginName.findByLoginName(getResetLogin());
-        if (x.size() != 1) {
+        User user = User.findByLoginName(getResetLogin());
+        if (user == null) {
             setMessage(state, String.format("The login (%s) in the URL does not match a known login.",
                     getResetLogin()));
             return;
         }
-        if ( ! x.get(0).hasPasswordBeenReset()) {
+        if ( ! user.hasPasswordBeenReset()) {
             setMessage(state, String.format("The reset URL has already been used and cannot be reused"));
             return;
         }
-        if ( ! x.get(0).getPwHash().equals(getResetCode())) {
+        if ( ! user.getPwHash().equals(getResetCode())) {
             setMessage(state, String.format("The reset code (%s) in the URL not correct.", resetCode));
             return;
         }
 
-        resetUser = User.findByUserId(x.get(0).getUserId());
+        resetUser = user;
     }
 
     private void doPost(HttpServletRequest request, Model model) {
@@ -116,10 +115,10 @@ public class ResetPasswordController extends BaseController2 {
         }
 
         String loginName = getResetLogin();
-        resetUser.resetPassword(loginName);
+        resetUser.resetPassword();
 
         try {
-            resetUser.hashPassword(loginName, request.getParameter("password"));
+            resetUser.hashPassword(request.getParameter("password"));
         } catch (NoSuchAlgorithmException e) {
             setMessage(state, String.format("Internal error, %s", e.toString()));
             return;

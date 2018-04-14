@@ -24,17 +24,17 @@ public class IndexController extends BaseController2 {
             HttpServletResponse response,
             Model model) {
         try {
-            return get2(request, model, "index3");
+            return "forward:/index";
 
         } catch (Exception e) {
             return showExceptionPage(e, request, model);
         }
     }
 
-    @RequestMapping(value = "/index3", method = RequestMethod.GET)
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String get(HttpServletRequest request, Model model) {
         try {
-            return get2(request, model, "index3");
+            return get2(request, model, "index");
 
         } catch (Exception e) {
             return showExceptionPage(e, request, model);

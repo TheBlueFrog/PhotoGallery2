@@ -149,12 +149,6 @@ public class Website {
         if ( ! staticDataDir.exists())
             staticDataDir.mkdir();
 
-        toolsDir = new File(rootDir, "tools");
-        if ( ! toolsDir.exists()) {
-            Log.e(TAG, "No tools dir, exiting");
-            System.exit(1);
-        }
-
         usersDir = new File(staticDataDir, "users");
         if ( ! usersDir.exists()) {
             Log.e(TAG, "No users dir, exiting");
@@ -165,29 +159,7 @@ public class Website {
         if ( ! tmpTemplateDir.exists())
             tmpTemplateDir.mkdir();
 
-        // files here are accessible to HTML via href="tmp/xxx", like images
-        tmpDir = new File(staticDataDir, "tmp");
-        if ( ! tmpDir.exists())
-            tmpDir.mkdir();
-
-        generatedDataDir = new File(staticDataDir, "generated-data");
-        if ( ! generatedDataDir.exists())
-            generatedDataDir.mkdir();
-
-//        if ( ! DB.open(new Version(minDBVersion), "milkrun")) {
-//            System.exit(1);
-//        }
-
         systemState = new MySystemState();
-
-        {
-            String apiKey = System.getenv("SENDGRID_API_KEY");
-            if ((apiKey == null) && (getProduction())) {
-                Log.e(TAG, "--production but no SendGrid API key???");
-            }
-
-            setEmailEnabled(getProduction() && (apiKey != null));
-        }
 
         Log.i(TAG, String.format("Website version %s", builtVersion.getVersion()));
 //        Log.i(TAG, String.format("DB version %s", AbstractDB.getVersion()));

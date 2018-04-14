@@ -2,7 +2,6 @@ package com.mike.website3;
 
 import com.mike.util.Log;
 import com.mike.website3.dataAnalysis.MilkRunCollection;
-import com.mike.website3.db.Address;
 import com.mike.website3.db.User;
 import com.mike.website3.milkrun.MilkRun;
 import org.junit.Test;

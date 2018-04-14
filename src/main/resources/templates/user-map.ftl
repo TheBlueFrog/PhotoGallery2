@@ -28,8 +28,8 @@
       function initMap() {
         var locations = [
             <#list mapMarkers as marker>
-                {   lat: ${String.format("%.6f", marker.lat)},
-                    lng: ${String.format("%.6f", marker.lng)},
+                {   lat: ${marker.lat},
+                    lng: ${marker.lng},
                     label: "${marker.label}",
                     color: "${marker.color}",
                     url: "${marker.url}"}
@@ -54,12 +54,8 @@
         });
 
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: ${zoom},
-          <#if centerIndex?? >
-              center: locations[${centerIndex}]
-          <#else>
-              center: { lat: ${centerLat}, lng: ${centerLng} }
-          </#if>
+          zoom: 10,
+          center: locations[0]
         });
 
         <#if mapLines == true >
@@ -72,8 +68,7 @@
               position: locations[i],
               map: map,
               title: locations[i].label,
-              icon: 'http://maps.gstatic.com/mapfiles/ridefinder-images/' + locations[i].color + '.png',
-//              icon: 'http://maps.google.com/mapfiles/ms/icons/' + locations[i].color + '-dot.png',
+              icon: 'http://maps.google.com/mapfiles/ms/icons/' + locations[i].color + '-dot.png',
               url: locations[i].url
             });
 

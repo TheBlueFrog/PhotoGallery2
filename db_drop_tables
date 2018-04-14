@@ -1,81 +1,18 @@
--- dead ??
-drop table  route_cart_offers                   cascade;
-drop table  route_records                       cascade;
-drop table  route_stops                         cascade;
-drop table  future_cart_offers cascade;
-drop table  delivered_cart_offers cascade;
-drop table  milkrun_discrepancies cascade;
-drop table  support_requests cascade;
-drop table  security_events cascade;
-drop table offer_markups cascade;
-drop table milkrun_cart_offers                  cascade;
-drop table seller_markups                       cascade;
-drop table outgoing_email                       cascade;
-drop table beta_transition                      cascade;
-drop table travel_time                          cascade;
-drop table discount                             cascade;
 
-
-drop table  user_phone_numbers cascade;
-drop table  user_emails cascade;
-drop table  addresses cascade;
-drop table  items cascade;
-drop table  item_images cascade;
-drop table  user_images cascade;
-drop table  users cascade;
-drop table  units cascade;
-drop table  featured_offers cascade;
-drop table  offers cascade;
-drop table  cart_offers cascade;
-drop table  faqs cascade;
-drop table  search_params cascade;
-drop table  ratings cascade;
-drop table  version cascade;
-drop table  news_feed cascade;
-drop table  milkruns cascade;
-drop table user_notes cascade;
-drop table runner_tracking;
-drop table referrers;
-drop table system_notices                       cascade;
-drop table milkrun_cart_offer_status            cascade;
-drop table milkruns2                            cascade;
-drop table user_roles                           cascade;
-drop table login_names                          cascade;
-drop table offer_roles                          cascade;
-drop table milkrun_extra_stops                  cascade;
 drop table database_config                      cascade;
-drop table offer_pricing                        cascade;
-drop table cd_user_spend                        cascade;
-drop table offer_availability                   cascade;
-drop table travel_time2                         cascade;
-drop table frozen_route                         cascade;
-drop table user_prefs                           cascade;
-drop table milkrun_state                        cascade;
-drop table stripe_cc_tokens                     cascade;
-drop table stripe_customers                     cascade;
-drop table stripe_charges                       cascade;
-drop table stop_dwell_time                      cascade;
-drop table miniwebsite_data                     cascade;
+drop table images                               cascade;
 drop table string_data                          cascade;
 drop table system_events                        cascade;
-drop table service_area                         cascade;
-drop table future_service_area                  cascade;
-drop table milkrun_charge_auth                  cascade;
-drop table discounts                            cascade;
-drop table cart_discount                        cascade;
-drop table deleted_cart_offers                  cascade;
-drop table favorites                            cascade;
-drop table item_price                           cascade;
-drop table item_availability                    cascade;
-drop table participation                        cascade;
-drop table standing_orders                      cascade;
-drop table frozen_route2                        cascade;
-drop table offer_change_history                 cascade;
-drop table item_category                        cascade;
-drop table item_category_binding                cascade;
-drop table offer_run_status                     cascade;
+drop table system_notices                       cascade;
+drop table users                                cascade;
+drop table user_roles                           cascade;
+drop table user_images                          cascade;
+drop table user_emails                          cascade;
+drop table user_phone_numbers                   cascade;
 
 
 -- this should say table_name has zero rows
 --
 SELECT table_name FROM information_schema.tables WHERE table_schema='public';
+
+-- insert into database_config (timestamp, defect, text) values ( now(), 'CodeBuild', '0.1');

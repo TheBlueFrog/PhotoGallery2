@@ -8,20 +8,17 @@ package com.mike.website3.RestApi;
 import com.mike.util.Log;
 import com.mike.util.Util;
 import com.mike.website3.MySessionState;
-import com.mike.website3.MySystemState;
 import com.mike.website3.Website;
 import com.mike.website3.db.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,7 +91,7 @@ public class AdminRestController {
                     .filter(user -> filterByRoles(user, roles))
                     .collect(Collectors.toList());
 
-            List<User> list = Util.sortByUserName(x);
+            List<User> list = Util.sortByLoginName(x);
 
             // assemble columns
             String columnsS = request.getParameter("columns");
@@ -162,44 +159,22 @@ public class AdminRestController {
 //        }
 //    }
 
-    private boolean hasAddress(List<Address> addresses, Address.Usage usage) {
-        for(Address a : addresses)
-            if (a.getUsage().equals(usage))
-                return true;
-        return false;
-    }
-
-    private int findIndexOf(Address address, List<Address> addresses) {
-        for (int i = 0; i < addresses.size(); ++i)
-            if (addresses.get(i).getId().equals(address.getId()))
-                return i;
-        return -1;
-    }
-
     @RequestMapping(value = "/reset-login", method = RequestMethod.GET, produces = "application/text")
     public String get4g(HttpServletRequest request, Model model) {
         try {
             MySessionState ss = (MySessionState) request.getSession().getAttribute(appSession);
 
             String loginNameS = request.getParameter("loginName");
-            List<LoginName> loginNames = LoginName.findByLoginName(loginNameS);
-            if (loginNames.size() == 0)
-                return "No such login name " + loginNameS;
-            if (loginNames.size() > 1)
-                return "Non-unique login name " + loginNameS;
+            User user = User.findByLoginName(loginNameS);
 
-            LoginName loginName = loginNames.get(0);
-            User user = User.findByUserId(loginName.getUserId());
-
-            if (loginName.hasPasswordBeenReset()) {
+            if (user.hasPasswordBeenReset()) {
                 return String.format("The login %s has already been reset.");
             }
 
-            loginName.resetPassword();
+            user.resetPassword();
 
-            SystemEvent.save(user, String.format("Login %s reset by user %s (%8.8s)",
-                    loginName.getLoginName(),
-                    user.getName(),
+            SystemEvent.save(user, String.format("LoginName %s reset by user.",
+                    user.getLoginName(),
                     user.getId()));
 
             return "OK";

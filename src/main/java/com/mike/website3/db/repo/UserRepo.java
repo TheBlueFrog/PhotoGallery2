@@ -15,7 +15,9 @@ public interface UserRepo extends CrudRepository<User, String> {
 
     List<User> findAll();
 
-    User findByUsername(String username);
+    User findByUserId(String userId);
 
     List<User> findByEnabled(boolean enabled);
+
+    User findByLoginName(String loginName);
 }

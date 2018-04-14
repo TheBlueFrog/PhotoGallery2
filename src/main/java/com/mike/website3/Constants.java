@@ -37,14 +37,13 @@ public class Constants {
     public class Web {
         // sometime when things are quiet remove the EATER_ALPHA altogether
 
-        public static final String EATER_ALPHA_HOME = "index3";
-        public static final String INDEX_HTML = "index3";
+        public static final String INDEX_HTML = "index";
 
         public static final String REDIRECT_EATER_ALPHA_HOME = "redirect:/" + INDEX_HTML;
         public static final String REDIRECT_INDEX_HOME = "redirect:/" + INDEX_HTML;
         public static final String REDIRECT_PENDING_ACCOUNT = "redirect:/pending-account";
 
-        public static final String DNS_NAME = "localmilkrun.com";
+        public static final String DNS_NAME = "mikesfunstuff.com";
     }
 
     public class Templates {

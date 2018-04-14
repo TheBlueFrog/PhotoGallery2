@@ -24,51 +24,52 @@
 
 </head>
 <body class="">
-    <@pageHeader "shop-list-view2.ftl"/>
+    <@pageHeader3 "reset-password.ftl"/>
 
-    <section class="banner banner-short bg-parallax">
-        <div class="overlay"></div>
+    <section class="banner banner-about bg-parallax">
+        <div class="overlay">       </div>
         <div class="container">
             <div class="banner-content text-center">
-                <h2 class="page-title">Set Password</h2>
+                <h2 class="page-title"><img src="/images/thelook/MilkRun_logo_white.png" alt="MilkRun Farm Delivery" /></h2>
                 <div class="breadcrumbs">
-                    <a href="shop-list-view2">Home</a>
-                    <span>Set Password</span>
+                    <a href="shop-list-view3">Home</a>
+                    <span>Reset Password</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <@messageHeader session.getAttributeS("resetPasswordController-message") />
-
     <div class="maincontainer">
-        <#if pageState.getResetUser()?? >
-            <form class="form-horizontal container" name="login" method="post"  onsubmit="return validateForm()" action="/reset-password" >
-                <div class="row">
-                    <div class="col-sm-5 col-md-offset-2">
-                        <div class="login-box">
-                            <div class="form-group">
-                                <label>Set the password for &nbsp; </label> ${pageState.getResetLogin()}</label>
-                            </div>
-                            <div class="form-group">
-                                <label>New password</label>
-                                <input type="password" class="form-control" name="password" placeholder="Password" value="" required/>
-                            </div>
-                            <div class="form-group">
-                                <label>New password again</label>
-                                <input type="password" class="form-control" name="password2" placeholder="Password" value="" required/>
-                            </div>
-                            <div class="form-group text-right">
-                                <input type="hidden" name="operation" value="SetPasswordOfUser" />
-                                <input type="hidden" name="resetUser" value="${pageState.getResetUser().getId()}"/>
-                                <input type="hidden" name="resetLogin" value="${pageState.getResetLogin()}" />
-                                <button class="btn btn-default" >Set Password</button>
-                            </div>
-                        </div>
+        <form class="form-horizontal container"  name="login" method="post"  onsubmit="return validateForm()" >
+            <div class="row">
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                    <h5>This will reset the password for your account.</h5>
+                    <div class="form-group">
+                        <#if  ! resetAccount?? >
+                            <#assign resetAccount = session.user.username >
+                        </#if>
+                        <label>Username: ${resetAccount}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>New password</label>
+                        <input type="hidden" name="username" value="${resetAccount}"/>
+                        <input type="password" class="form-control" name="password" placeholder="Password" value="" required/>
+                    </div>
+                    <div class="form-group">
+                        <label>New password again</label>
+                        <input type="password" class="form-control" name="password2" placeholder="Password" value="" required/>
                     </div>
                 </div>
-            </form>
-        </#if>
+                <div class="col-sm-1 col-md-1 col-lg-1"></div>
+                <div class="col-sm-5 col-md-5 col-lg-5">
+                    <div class="form-group">
+                        <p></p>
+                        <input type="hidden" name="operation" value="ResetPassword" />
+                        <button class="cart-button">Reset Password</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <@pageFooter/>
     <a href="#" class="scroll_top" title="Scroll to Top">Scroll</a>

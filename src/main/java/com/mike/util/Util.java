@@ -6,7 +6,6 @@ package com.mike.util;
  */
 
 import com.mike.website3.MySystemState;
-import com.mike.website3.db.Address;
 import com.mike.website3.db.User;
 
 import java.sql.Timestamp;
@@ -31,20 +30,6 @@ public class Util
     }
     static public Timestamp url2Timestamp (String s) {
         return Timestamp.valueOf(s.replace("+", " "));
-    }
-
-    static public String encodeUrlUUID(List<Address> addresses) {
-        StringBuilder sb = new StringBuilder();
-        addresses.forEach(address -> sb.append(address.getUsername()).append("|"));
-        return sb.toString();
-    }
-    static public List<String> decodeUrlUUID(String encoded) {
-        String[] a = encoded.split("[|]");
-        List<String> v = new ArrayList<>();
-        for(String s : a)
-            if (s.length() > 0)
-                v.add(s);
-        return v;
     }
 
     static public String flatten(Map<String, String> map) {
@@ -182,61 +167,13 @@ public class Util
             return a.get(0);
     }
 
-    /**
-     * sort the incoming username list into our cannonical ordering
-     * by last name and then first name
-     *
-     * @param users
-     * @param userCache optional cache of already looked up User object,
-     *                  if available it is used, if not we make a local one
-     */
-    public static void sortByUserName(List<String> users, Map<String, User> userCache) {
-        Map<String, User> localUserCache = userCache;
-        if (localUserCache == null) {
-            localUserCache = new HashMap<>();
-            for(String username : users) {
-                localUserCache.put(username, User.findByUsername(username));
-            }
-        }
 
-        Map<String, User> finalLocalUserCache = localUserCache;
-        Collections.sort(users, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                Address a1 = finalLocalUserCache.get(o1).getAddress();
-                Address a2 = finalLocalUserCache.get(o2).getAddress();
-
-                if (a1.getLastName().equals(a2.getLastName())) {
-                    return a1.getFirstName().compareTo(a2.getFirstName());
-                } else
-                    return a1.getLastName().compareTo(a2.getLastName());
-            }
-        });
-
-    }
-
-    public static List<User> sortByUserName(List<User> users) {
-        return sortByUserName(users, Address.Usage.Default);
-    }
-    public static List<User> sortByUserName(List<User> users, Address.Usage usage) {
-        Map<User, Address> addressCache = new HashMap<>();
-        return sortByUserName2(users, usage, addressCache);
-    }
-
-    public static List<User> sortByUserName2(List<User> users, Address.Usage usage, Map<User, Address> addressCache) {
-
-        users.forEach(user1 -> {
-            Address address = user1.getAddress(usage);
-            addressCache.put(user1, address);
-        });
+    public static List<User> sortByLoginName(List<User> users) {
 
         Collections.sort(users, new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                if (addressCache.get(o1).getLastName().equals(addressCache.get(o2).getLastName())) {
-                    return addressCache.get(o1).getFirstName().compareTo(addressCache.get(o2).getFirstName());
-                } else
-                    return addressCache.get(o1).getLastName().compareTo(addressCache.get(o2).getLastName());
+                return o1.getLoginName().compareTo(o2.getLoginName());
             }
         });
 

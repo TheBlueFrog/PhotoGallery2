@@ -5,54 +5,32 @@
 <#include "macros-pageHeader.ftl">
 <#include "macros-pageFooter.ftl">
 
-    <style>
-        td {
-            text-align: left;
-            vertical-align: text-top;
-        }
-        .td-total {
-            text-align: right;
-        }
-    </style>
-
-<#macro messageHeader message >
-    <@messageHeader2 message false />
-</#macro>
-
-<#macro messageHeader2 message pink >
-    <#if (message?length > 0) >
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-8" style="text-align:center">
-                    <br>
-                    <h3 <#if pink > style="background-color: hotpink" </#if> >
-                        ${message}
-                    </h3>
-                    <p></p>
-                </div>
-                <div class="col-sm-2"></div>
-            </div>
-        </div>
-    </#if>
-</#macro>
-
-
 
 <#macro showCopyright>
     <p>Copyright by ${system.site.Company!"Missing value: Company"}</p>
 </#macro>
 
 <#macro showLoginButton>
-    <#if session.user?? >        
-        <i class="fa fa-key"></i> ${session.user.name}
+    <#if session.user?? >
+        <a href="/logout"><i class="fa fa-key"></i>LOGOUT ${session.user.username}</a>
     <#else>
-        <#-- force login over https -->
-        <#if Website.getProduction() >
-            <a href="https://localmilkrun.com/login"><i class="fa fa-key"></i>LOGIN</a>
-        <#else>
-            <a href="/login"><i class="fa fa-key"></i>LOGIN</a>
-        </#if>
+        <a href="/login"><i class="fa fa-key"></i>LOGIN</a>
+    </#if>
+</#macro>
+
+<#macro showUploadButton>
+    <#if session.user?? >
+        <a href="/upload"><i class="fa fa-key"></i>Upload</a>
+    </#if>
+</#macro>
+
+<#macro showGalleryButton>
+    <a href="/gallery"><i class="fa fa-key"></i>Public Gallery</a>
+</#macro>
+
+<#macro showMyGalleryButton>
+    <#if session.user?? >
+        <a href="/gallery/${session.user.username}"><i class="fa fa-key"></i>My Gallery</a>
     </#if>
 </#macro>
 
@@ -60,106 +38,169 @@
     <#if session.user?? >
 
     <#else>
-        <li><a href="/service-area"><i class="fa fa-user"></i>JOIN</a></li>
-    </#if>
-</#macro>
-
-<#macro showMyStuffButton>
-    <#if session.user?? >
-    <#else>
-    </#if>
-</#macro>
-
-<#macro maybeStartNewColumn count >
-    <#assign count = count + 1 >
-    <#if (count % 4) == 0 >
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-2">
-            <div class="widget">
-                <ul>
+        <li><a href="register-account"><i class="fa fa-user"></i>JOIN</a></li>
     </#if>
 </#macro>
 
 <#macro categoryMegaMenu>
-    <a href="/shop-list-view2">Shop</a>
-    <div class="sub-menu mega-menu">
+    <a href="#">Category</a>
+    <div class="sub-menu mega-menu style2">
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-2">
                 <div class="widget">
+                    <h3 class="widgettitle">FASHION</h3>
                     <ul>
-                        <#assign count = 0 >
-                        <#if session.user?? >
-                            <@maybeStartNewColumn count />
-                            <li > <a href="/shop-list-view2/category/my-favorites">My Favorites</a></li>
-                        </#if>
-
-                        <@maybeStartNewColumn count />
-                        <li > <a href="/shop-list-view2/category/favorites">Favorites</a></li>
-                        <@maybeStartNewColumn count />
-                        <li > <a href="/shop-list-view2/category/hot-items">Most Popular</a></li>
-
-                        <#if session.user?? && session.getUser().doesRole("InDevelopment") >
-                            <@maybeStartNewColumn count />
-                            <li> <a href="/shop-list-view2/category/my-history">My History</a> </li>
-                        </#if>
-
-                        <@maybeStartNewColumn count />
-                        <li><a href="/shop-list-view2/category/none">All Products </a></li>
-
-                        <#list ItemCategory.getItemCategories() as category>
-                            <@maybeStartNewColumn count />
-                            <li><a href="/shop-list-view2/category/${category}">${category} </a></li>
-                        </#list>
+                        <li><a href="#">MEN'S</a></li>
+                        <li><a href="#">WOMAN</a></li>
+                        <li><a href="#">KID'S</a></li>
+                        <li><a href="#">BAG & SHOES</a></li>
+                        <li><a href="#">LOOKBOOK</a></li>
+                        <li><a href="#">ACCESORIES</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-sm-2">
-                
+                <div class="widget">
+                    <h3 class="widgettitle">FURNITURE</h3>
+                    <ul>
+                        <li><a href="#">COLLECTIONS</a></li>
+                        <li><a href="#">ACCESSOREIS</a></li>
+                        <li><a href="#">LAMBS</a></li>
+                        <li><a href="#">PICTURES</a></li>
+                        <li><a href="#">HANDI CRAFT</a></li>
+                        <li><a href="#">PRESS ROOM</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="widget">
+                    <h3 class="widgettitle">ELECTRONIC</h3>
+                    <ul>
+                        <li><a href="#">TV</a></li>
+                        <li><a href="#">PHONE</a></li>
+                        <li><a href="#">TABLET</a></li>
+                        <li><a href="#">SMART WATCH</a></li>
+                        <li><a href="#">WASH MACHINE</a></li>
+                        <li><a href="#">AUDIO</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="widget">
+                    <a href="#"><img src="/images/megamenus/banner5.jpg" alt="" /></a>
+                </div>
+                <div class="widget">
+                    <a href="#"><img src="/images/megamenus/banner6.jpg" alt="" /></a>
+                </div>
             </div>
         </div>
     </div>
 </#macro>
 
 <#macro pagesMegaMenu>
-    <a href="#">Pages</a>
-    <div class="sub-menu mega-menu">
-        <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-2">
-                <div class="widget">
-                    <h3 class="widgettitle">My MilkRun</h3>
-                    <ul>                    
-                        <li><a href="shop-list-view2">Shop list view 2</a></li>
-                        <li><a href="shop-list-view2">Shop list view 3</a></li>
+<a href="#">Pages</a>
+<div class="sub-menu mega-menu">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2">
+            <div class="widget">
+                <h3 class="widgettitle">Shop pages</h3>
+                <ul>
+                    <!--
+                    <li><a href="shop-fullwidth.html">Shop fullwidth</a></li>
+                    <li><a href="shop-with-colection.html">Shop with Collection</a></li>
+                    <li><a href="shop-left-sidebar.html">Shop left sidebar</a></li>
+                    <li><a href="shop-list-view.html">Shop list view</a></li>
+                    -->
+                    <li><a href="shop-list-view2">Shop list view 2</a></li>
+                    <li><a href="shop-list-view3">Shop list view 3</a></li>
 
-                        <#if session.user?? >
-                            <li><a href="cart">Cart page</a></li>
-                            <li><a href="checkout">Checkout page</a></li>
-                        <#else>
-                            <li style opacity="0.6">Cart page</li>
-                            <li style opacity="0.6">Checkout page</li>
+                    <#if session.user?? >
+                        <li><a href="cart">Cart page</a></li>
+                        <li><a href="checkout">Checkout page</a></li>
+                    <#else>
+                        <li style opacity="0.6">Cart page</li>
+                        <li style opacity="0.6">Checkout page</li>
+                    </#if>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="widget">
+                <h3 class="widgettitle">Inner page</h3>
+                <ul><li><a href="about">About Us</a></li>
+                    <li><a href="contact">Contact Us</a></li>
+                    <li><a href="faq">Faq</a></li>
+
+                    <li><a href="user-map" >Map of Users</a></li>
+
+                    <#if session.user?? >
+                        <li>
+                            <a href="user-address-editor" >Edit My Addresses</a>
+                        </li>
+                        <li>
+                            <a href="${session.user.publicHomePageURL}">Visit My Home Page</a>
+                        </li>
+                        <li>
+                            <a href="eater-calendar">My Calendar</a>
+                        </li>
+                        <#if (session.user.doesRole("Seeder"))>
+                            <li>
+                                <a href="seeder-home">Edit My Items and Offers</a>
+                            </li>
                         </#if>
-                    </ul>
-                </div>
-            </div>        
+                        <#if (session.user.doesRole("Admin"))>
+                            <li>
+                                <a href="milkrun">Next Milk Run</a>
+                                <br>
+                                <a href="milkruns">Milk Run History</a>
+
+                                <br>
+                                <a href="system">System Management</a>
+                                <!--
+                                    the admin-home page has some remnants of file
+                                    upload code that did work.  we're not using it
+                                    but let's keep it around for a while
+                                -->
+                                <!--<br>-->
+                                <!--<a href="admin-home">Admin Home</a>-->
+                            </li>
+                        </#if>
+                    </#if>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget">
+                <a href="#"><img src="/images/megamenus/banner1.jpg" alt="" /></a>
+            </div>
+            <div class="widget">
+                <a href="#"><img src="/images/megamenus/banner2.jpg" alt="" /></a>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="widget">
+                <a href="#"><img src="/images/megamenus/banner3.jpg" alt="" /></a>
+            </div>
+            <div class="widget">
+                <a href="#"><img src="/images/megamenus/banner4.jpg" alt="" /></a>
+            </div>
         </div>
     </div>
+</div>
 </#macro>
 
 <#macro blogSubMenu>
-    <a href="blog-list.html">Blog</a>
-    <ul class="sub-menu">
-        <li><a href="blog-list.html">Blog list</a></li>
-        <li><a href="blog-grid-2columns.html">Blog Grid 2 columns</a></li>
-        <li><a href="blog-grid-3columns.html">Blog Grid 3 columns</a></li>
-        <li><a href="blog-masonry.html">Blog masonry</a></li>
-        <li><a href="blog-detail.html">Blog Single post</a></li>
-    </ul>
+<a href="blog-list.html">Blog</a>
+<ul class="sub-menu">
+    <li><a href="blog-list.html">Blog list</a></li>
+    <li><a href="blog-grid-2columns.html">Blog Grid 2 columns</a></li>
+    <li><a href="blog-grid-3columns.html">Blog Grid 3 columns</a></li>
+    <li><a href="blog-masonry.html">Blog masonry</a></li>
+    <li><a href="blog-detail.html">Blog Single post</a></li>
+</ul>
 </#macro>
-
 
 
 <#--
@@ -194,31 +235,51 @@
 
 <#macro showMiniCart user thePage>
     <div class="mini-cart">
-        <#-- we have a session user, what kind? -->
-        <#if ! StripeCustomer.findByUserId(user.getId())?? >
-            <a class="icon" href="/cart-no-cc">Cart <span class="count">${session.user.cartSize}</span></a>
-        <#elseif ! StripeCustomer.isChargeable(user.getId()) >
-            <a class="icon" href="/cart-cc-not-chargeable">Cart <span class="count">${session.user.cartSize}</span></a>
-        <#else >
-            <a class="icon" href="/cart-cc">Cart <span class="count">${session.user.cartSize}</span></a>
-        </#if>
+        <a class="icon" href="#">Cart <span class="count">${session.user.cartSize}</span></a>
+        <div class="mini-cart-content">
+            <ul class="list-cart-product">
+                <#list session.user.cartOffers as cartOffer>
+                    <li>
+                        <div class="product-info">
+                            <h5 ><a href="#">${cartOffer.item.shortOne}</a></h5>
+
+                            ${cartOffer.offer.quantity * cartOffer.quantity} ${cartOffer.offer.units} for ${cartOffer.priceAsString}
+
+                            <a href="/removeItemFromCart?offerId=${cartOffer.offer.timeAsString}&thePage=${thePage}" class="remove">remove</a>
+                        </div>
+                    </li>
+                </#list>
+            </ul>
+            <p class="sub-toal-wapper">
+                <span>TOTAL</span>
+                <span class="sub-toal">${session.user.cartTotal}</span>
+            </p>
+            <!--<a href="cart.html" class="btn-view-cart">VIEW SHOPPING CART</a>-->
+            <!--<a href="#" class="btn-check-out">PROCEED TO CHECK OUT</a>-->
+        </div>
     </div>
 </#macro>
 
 <#macro showSearchPanel>
     <div class="search-panel">
-        <div class="icon-search">
-            <span class="icon"><i class="fa fa-search"></i></span>
+        <a class="icon" href="#">Cart</a>
+        <div class="mini-cart-content">
+            <h4>Search Filters</h4>
+            <form class="login"  method="post">
+                <p>
+                    <label>Enter keywords, empty matches everything</label>
+                    <#if session.searchManager?? >
+                        <input type="text" name="searchString" placeholder="" value="${session.searchManager.searchParams.keyWords}"/>
+                    </#if>
+                </p>
+                <p>
+                    <input type="hidden" name="operation" value="Search" />
+                    <input type="submit" class="button" value="Search" />
+                </p>
+            </form>
         </div>
     </div>
 </#macro>
-
-<#--<#if session.user?? >-->
-<#--<div class="icon-search-fav">-->
-    <#--<a class="btn" href="/shop-list-view2/category/favorites">-->
-        <#--<i class="fa fa-heart" style="font-size: 18pt"></i></a>-->
-<#--</div>-->
-<#--</#if>-->
 
 <#macro enterRatingStars>
     <span class="rating">
@@ -241,11 +302,7 @@
 </#macro>
 
 <#macro showRatingStars rating>
-    <#if (rating > 0) >
-        <i class="fa fa-star"></i>
-        <#else>
-            <i class="fa fa-star-o"></i>
-    </#if>
+    <i class="fa fa-star"></i>
     <#if (rating > 1) >
         <i class="fa fa-star"></i>
         <#else>
@@ -266,118 +323,4 @@
         <#else>
             <i class="fa fa-star-o"></i>
     </#if>
-</#macro>
-
-<#macro productModal>
-
-    <div id="modalDetail" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog add-to-cart-wrapper" role="document">
-            <!-- <form method="post">
-                <input type="hidden" name="operation" value="AddToCart" />
-                <input type="hidden" name="offerId" id="modalOfferId" />
-                <input type="hidden" name="pageName" value="shop-list-view2"/> -->
-                
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modalTitle">Modal title</h4>
-                    </div>
-                    <div class="modal-body" id="modalBody">
-
-                        <div class="row alert-message-container">
-                            <div class="alert alert-success alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                You have added <span class="alert-message"></span> to your cart.
-                            </div>
-                        </div>
-
-                        <div id="modalDescription"></div>
-                        
-                        <br />
-                        <label for="quantity">Quantity</label>
-                        <input id="quantity" name="quantity" type="number" min="1" max="10" value="1"/>
-                        <input type="hidden" name="frequency" value="once" />
-                        <!-- <br /><br />
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default active">
-                                <input type="radio" id="frequency1" name="frequency" value="once" checked="checked">Once
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" id="frequency2" name="frequency" value="weekly">Weekly
-                            </label>
-                            <label class="btn btn-default">
-                                <input type="radio" id="frequency3" name="frequency" value="bi-weekly">Bi-weekly
-                            </label>
-                        </div> -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                
-                        <#if session.user?? > 
-                            <button type="button" class="btn btn-primary button-add-to-cart add-to-cart">Add To Cart</button>
-                        <#else>
-                            <a href="/login" class="btn btn-primary button-add-to-cart">LOGIN TO ADD</a>
-                        </#if>
-                        
-                    </div>
-                </div><!-- /.modal-content -->
-            <!-- </form> -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-</#macro>
-
-<#macro analytics>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109057402-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-109057402-1');
-    </script>
-</#macro>
-
-<#macro pastStripeCharges user >
-    <table >
-        <thead>
-        <tr>
-            <th width="10%">Status</th>
-            <th width="15%">Date</th>
-            <th width="50%">Description</th>
-            <th width="20%" class="td-total">Amount</th>
-        </tr>
-        </thead>
-        <tbody>
-            <#assign customer = StripeCustomer.findByUserId(user.getId()) >
-            <#assign total = 0 >
-            <#list StripeCharge.findByUserIdOrderByTimestampDesc(user.getId()).getCharges()
-                    as charge >
-                <tr >
-                    <td
-                        <#if charge.status != "succeeded" > style="color: crimson" </#if>
-                    >
-                        ${charge.status}
-                    </td>
-                    <td>
-                        <a href="/stripe-charge-details?userId=${user.getId()}&id=${charge.getId()}">
-                           ${Util.formatTimestamp(charge.getCreated()*1000, "MMM d, YY HH:mm")}
-                        </a>
-                    </td>
-                    <td >
-                        ${charge.getDescription()}</a>
-                    </td>
-                    <td >
-                        <span class="td-total">
-                            ${String.format("$ %.2f", StripeCharge.toDollars(charge.getAmount()))}
-                        </span>
-                    </td>
-                </tr>
-            </#list>
-            <tr>
-                <td></td>
-                <td></td>
-                <td class="td-total">${String.format("$ %.2f", total)}</td>
-            </tr>
-        </tbody>
-    </table>
 </#macro>

@@ -15,7 +15,7 @@
             <div class="banner-content text-center">
                 <h2 class="page-title">Delivered Orders</h2>
                 <div class="breadcrumbs">
-                    <a href="/">Home</a>
+                    <a href="${system.site.indexPage}">Home</a>
                     <span>Delivered Orders</span>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                         <tr class="cart_item">
                             <td class="product-thumbnail">
                                 <#if (cartOffer.offer.item.numImages > 0) >
-                                    <img src="${cartOffer.offer.item.getImage("Main").getThumbnailPath()}">
+                                    <img src="${cartOffer.offer.item.mainImage.thumbnailPath}">
                                 </#if>
                             </td>
                             <td class="product-name">
@@ -59,11 +59,11 @@
                                 <span class="amount">${cartOffer.quantity}</span>
                             </td>
                             <td class="product-price">
-                                <span class="amount">${cartOffer.getOurSellPriceAsString()}</span>
+                                <span class="amount">${cartOffer.priceAsString}</span>
                             </td>
 
                             <td class="product-subtotal">
-                                <span class="amount">${cartOffer.getOurSellPriceAsString()}</span>
+                                <span class="amount">${cartOffer.priceAsString}</span>
                             </td>
                         </tr>
                     </#list>

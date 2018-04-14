@@ -100,30 +100,15 @@ public class RegisterUserController extends BaseController2 {
         state.setAttribute("registerUsername", request.getParameter("username"));
 
         User user = null;
-        String errorPage = "redirect:/register-account?registerZip=" + state.getAttribute("registerZip");
+        String errorPage = "redirect:/register-account";
         try {
 
-            if (EmailAddress.findByEmail((String) state.getAttribute("registerUsername")).size() > 0) {
-                setMessage(state,String.format("The login name %s already exists as an email address.", request.getParameter("username")));
-                return errorPage;
-            }
             user = new User((String) state.getAttribute("registerUsername"),
                     request.getParameter("password"),
-                    request.getParameter("role"),
-                    "",//(String) state.getAttribute("registerFirstName"),
-                    "",//(String) state.getAttribute("registerLastName"),
-                    "",//(String) state.getAttribute("registerStreet"),
-                    "",//(String) state.getAttribute("registerCity"),
-                    "Oregon", //(String) state.getAttribute("registerState"),
-                    (String) state.getAttribute("registerZip"));
-        } catch (InvalidLoginNameException e) {
-            setMessage(state, String.format("The login name %s is not valid.", request.getParameter("username")));
-            return errorPage;
-        } catch (UserExistsException e) {
+                    request.getParameter("role"));
+
+        } catch (LoginNameExists e) {
             setMessage(state, String.format("The login name %s is already registered.", request.getParameter("username")));
-            return errorPage;
-        } catch (InvalidAddressException e) {
-            setMessage(state, String.format("The address you entered cannot be geo-coded (we use Google Maps for geo-coding). Please check it carefully."));
             return errorPage;
         } catch (IllegalArgumentException e) {
             setMessage(state, String.format("Internal error: %s", e.toString()));
@@ -185,18 +170,8 @@ public class RegisterUserController extends BaseController2 {
         // newly minted users are usually pending, some can be automatically un-pended
 
         if (user.doesRole2(UserRole.Role.AccountPending)) {
-
-//            double incCost = user.getPendingUserIncrementalCostMetric();
-//            double threshold = MySystemState.getInstance().getMetric("PendingUserIncrementalCostThreshold");
-            String zip = (String) state.getAttribute("registerZip");
             user.removeRole(UserRole.Role.AccountPending);
-
-            return "redirect:/first-login";
         }
-        else {
-            // a not-immediately pending user
-            return "redirect:/first-login";
-        }
+        return "redirect:/index";
     }
-
 }

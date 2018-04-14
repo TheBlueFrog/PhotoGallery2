@@ -10,8 +10,6 @@ import com.mike.util.*;
 import com.mike.website3.Constants;
 import com.mike.website3.*;
 import com.mike.website3.db.repo.UserRepo;
-import com.mike.website3.pages.BaseController;
-import com.mike.website3.util.UnsupportedZipCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,8 +24,6 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.mike.website3.pages.BaseController.getBasicData;
-
 /**
  * class wrapped around the database users table
  */
@@ -39,7 +35,11 @@ public class User implements Serializable {
     private static final long serialVersionUID = 8100551514802474132L;
 
     @Id
-    @Column(name = "username")                  private String username;      // UUID
+    @Column(name = "user_id")                   private String userId;      // UUID
+    @Column(name = "login_name")                private String loginName;     //
+
+    @Column(name = "pw_salt")                   private String pwSalt = "";     //
+    @Column(name = "pw_hash")                   private String pwHash = "";     //
 
     @Column(name = "enabled", columnDefinition = "boolean default true") private boolean enabled = true;
 
@@ -48,23 +48,47 @@ public class User implements Serializable {
 
     @Column(name = "join_timestamp")            private Timestamp joinTimestamp;
 
+
     protected User() { }
 
-    public String getUsername() {
-        return username;
+    public static User findByLoginName(String loginName) {
+        User x = getRepo().findByLoginName(loginName);
+        return x;
     }
+
     public String getId() {
-        return username;
+        return userId;
     }
+    public String getUsername() {
+        return userId;
+    }
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public String getPwSalt() {
+        return pwSalt;
+    }
+    public String getPwHash() {
+        return pwHash;
+    }
+
     public boolean getEnabled() { return enabled; }
     public boolean getHasLoggedIn() { return hasLoggedIn; }
     public Timestamp getJoinTimestamp() {
         return joinTimestamp;
     }
 
-    private void setUsername(String username) {
-        this.username = username;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
+    public void setPwHash(String pwHash) {
+        this.pwHash = pwHash;
+    }
+    public void setPwSalt(String pwSalt) {
+        this.pwSalt = pwSalt;
+    }
+
     public void setJoinTimestamp(Timestamp timestamp) {
         this.joinTimestamp = timestamp;
     }
@@ -80,7 +104,7 @@ public class User implements Serializable {
         this.hasLoggedIn = true;
     }
 
-    public static List<String> findAllUsernames() {
+    public static List<String> findAllUserIds() {
         List<String> users = new ArrayList<>();
         findByEnabled(true).forEach(user -> users.add(user.getUsername()));
         return users;
@@ -101,7 +125,7 @@ public class User implements Serializable {
 
     public static List<User> findAllOrderByNameAsc() {
         List<User> x = findAll();
-        Util.sortByUserName(x);
+        Util.sortByLoginName(x);
         return x;
     }
 
@@ -110,54 +134,28 @@ public class User implements Serializable {
         getRepo().save(this);
     }
 
-    public static User findByUsername(String username) {
-        return getRepo().findByUsername(username);
-    }
-    public static User findByUserId(String username) {
-        return getRepo().findByUsername(username);
-    }
-    public static User findById(String username) {
-        return getRepo().findByUsername(username);
+    public static User findById(String userId) {
+        return getRepo().findByUserId(userId);
     }
 
-    public static List<User> findByEnabledOrderByName(boolean enabled) {
-        return Util.sortByUserName(getRepo().findByEnabled(true));
+    public static List<User> findByEnabledOrderByLoginName(boolean enabled) {
+        return Util.sortByLoginName(getRepo().findByEnabled(true));
     }
 
-    public static void dropOldColumns() {
+    public boolean hasPasswordBeenReset() {
+        return getPwHash().length() == Constants.Code.RESET_PW_LENGTH;
     }
-
-    public String getSalt(String loginName) {
-        LoginName ln = LoginName.findByLoginName(loginName).get(0);
-        return ln.getSalt();
-    }
-    private void setSalt(String loginName, String salt) {
-        LoginName ln = LoginName.findByLoginName(loginName).get(0);
-        ln.setSalt(salt);
-        ln.save();
-    }
-
-    private String getPwHash(String loginName) {
-        LoginName ln = LoginName.findByLoginName(loginName).get(0);
-        return ln.getPwHash();
-    }
-    public void setPwHash(String loginName, String hash) {
-        LoginName ln = LoginName.findByLoginName(loginName).get(0);
-        ln.setPwHash(hash);
-        ln.save();
-    }
-
-    public boolean passwordHasBeenReset(String loginName) {
-        return LoginName.hasPasswordBeenReset(loginName);
+    public boolean passwordHasBeenReset() {
+        return getPwHash().length() == Constants.Code.RESET_PW_LENGTH;
     }
 
     public boolean isPasswordResetCode(String loginName, String resetCode) {
-        return (getPwHash(loginName).length() == Constants.Code.RESET_PW_LENGTH) &&
-                getPwHash(loginName).equals(resetCode);
+        return (getPwHash().length() == Constants.Code.RESET_PW_LENGTH) &&
+                getPwHash().equals(resetCode);
     }
 
-    public String getResetCode(String loginName) {
-        String s = getPwHash(loginName);
+    public String getResetCode() {
+        String s = getPwHash();
         if (s.length() == Constants.Code.RESET_PW_LENGTH)
             return s;
         else
@@ -165,21 +163,16 @@ public class User implements Serializable {
     }
 
     // called by reset password to put a new PW in
-    public void hashPassword(String loginname, String newPassword) throws NoSuchAlgorithmException {
+    public void hashPassword(String newPassword) throws NoSuchAlgorithmException {
         String salt = genSalt();
         String hashedPassword = secureHash(newPassword, salt);
-        setHashedPassword(loginname, salt, hashedPassword);
+        setPwSalt(salt);
+        setPwHash(hashedPassword);
     }
 
-    public void setHashedPassword(String loginname, String salt, String hashedPassword) {
-        setSalt(loginname, salt);
-        setPwHash(loginname, hashedPassword);
-//        update();
-    }
-
-    public void setAuthentication(String loginname, String salt, String hashedPassword) {
-        setSalt(loginname, salt);
-        setPwHash(loginname, hashedPassword);
+    public void setAuthentication(String salt, String hashedPassword) {
+        setPwSalt(salt);
+        setPwHash(hashedPassword);
     }
 
     /**
@@ -187,55 +180,33 @@ public class User implements Serializable {
      * we will email this to the user and they have to enter it in
      * the reset pw page
      */
-    public void resetPassword(String loginname) {
-
+    public void resetPassword() {
         int i = MySystemState.getInstance().getRandom().nextInt(100000);
-        setPwHash(loginname, String.format("%05d", i));
+        setPwHash(String.format("%05d", i));
         save();
     }
 
-    public User(String username,
+    public User(String loginName,
                 String password,
-                String role,
-                String firstName,
-                String lastName,
-                String street,
-                String city,
-                String state,
-                String zip)
-            throws InvalidAddressException,
-            UserExistsException,
-            UserDirectoryExistsException,
-            InvalidLoginNameException,
+                String role)
+            throws UserDirectoryExistsException,
             NoSuchAlgorithmException,
-            IllegalArgumentException
-    {
-        setUsername(UUID.randomUUID().toString());
+            IllegalArgumentException, LoginNameExists {
+        User u = getRepo().findByLoginName(loginName);
+        if (u != null)
+            throw new LoginNameExists(loginName);
+
+        userId = UUID.randomUUID().toString();
         joinTimestamp = MySystemState.getInstance().nowTimestamp();
 
-        String loginName = username;
-        boolean validLogin = LoginName.validLoginName(loginName);
-        if ( ! validLogin) {
-            throw new InvalidLoginNameException("Login name contains invalid characters: " + loginName);
-        }
-
-        if (LoginName.findByLoginName(loginName).size() > 0)
-            throw new UserExistsException(String.format("Login name %s already exists.", loginName));
-        if (EmailAddress.findByEmail(loginName).size() > 0)
-            throw new UserExistsException(String.format("Login name %s already exists as an email address.", loginName));
-
-        Address address = setupAddress(getId(), Address.Usage.Default, firstName, lastName, street, city, state, zip);
+        this.loginName = loginName;
 
         // if we fail out after this we have dead directories
         setupUserDirectory();
 
-        /// the pw etc are in another table, do that now
-        new LoginName(getId(), loginName)
-                .save();
-
         String salt = genSalt();
         String hashedPassword = secureHash(password, salt);
-        setAuthentication(loginName, salt, hashedPassword);
+        setAuthentication(salt, hashedPassword);
 
         this.save();
 
@@ -244,44 +215,6 @@ public class User implements Serializable {
         // user now exists do other DB stuff
 
         setupRoles(getId(), role);
-
-        address.save();
-
-        setupAddress(getId(), Address.Usage.Default, firstName, lastName, street, city, state, zip)
-                .save();
-
-        new EmailAddress(this, loginName)
-                .save();
-    }
-
-    private Address setupAddress(String userId,
-                                 Address.Usage usage,
-                                 String firstName,
-                                 String lastName,
-                                 String street,
-                                 String city,
-                                 String state,
-                                 String zip)
-            throws InvalidAddressException {
-
-        Address address = new Address(userId);
-        address.setFirstName(firstName);
-        address.setLastName(lastName);
-        address.setStreet(street);
-        address.setCity(city);
-        address.setState(state);
-        address.setZip(zip);
-
-        address.setUsage(usage);
-        address.geoCodeAddress();
-
-        if ( ! address.hasValidGeoLocation()) {
-            throw new InvalidAddressException("Cannot geo-code address");
-        }
-
-        address.setUserId(userId);
-
-        return address;
     }
 
     private void setupRoles(String id, String roleS) {
@@ -357,27 +290,21 @@ public class User implements Serializable {
         if (password.isEmpty())
             throw new PasswordEmpty();
 
-        String username = LoginName.getUsernameFromLoginName(loginName);
-        if (username == null) {
-            // no such login name
+        User user = getRepo().findByLoginName(loginName);
+        if (user == null) {
             throw new NoSuchLoginName(loginName);
         }
-
-        User user = findByUsername(username);
-
-        if (user == null)
-            throw new NoSuchUserId(username);
 
         if ( ! user.enabled)
             throw new AccountIsDisabled(user);
 
-        if (user.passwordHasBeenReset(loginName)) {
+        if (user.passwordHasBeenReset()) {
             // password has been reset, force it to be changed
             throw new PasswordResetException ("Password has been reset.");
         }
 
-        String hashedPassword = secureHash(password, user.getSalt(loginName));
-        if (hashedPassword.equals(user.getPwHash(loginName)))
+        String hashedPassword = secureHash(password, user.getPwSalt());
+        if (hashedPassword.equals(user.getPwHash()))
             return user;
         else
             return null;    // nope
@@ -547,10 +474,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return getAddress().toString();
-    }
-    public String getTitle() {
-        return getAddress().getFirstName() + " " + getAddress().getLastName();
+        return String.format("%8.8s", getId());
     }
 
     public String getPublicHomePageURL() {
@@ -558,78 +482,6 @@ public class User implements Serializable {
             return "#";
         }
         return String.format("/mini-website?userId=%s", getUsername());
-    }
-
-    public List<Address> getAddresses() {
-        return Address.findNewestByUserIdOrderByUsageDesc(this.getUsername());
-    }
-
-    /** return the primary address for the use */
-    public Address getAddress() {
-        List<Address> addresses = Address.findByUserIdAndUsageOrderByUsageDesc(
-                this.getUsername(),
-                Address.Usage.Default);
-
-        if (addresses.size() == 0) {
-            return buildBadAddress();
-        }
-
-        return addresses.get(0);
-    }
-
-    public boolean validAddress() {
-        List<Address> addresses = Address.findByUserIdAndUsageOrderByUsageDesc(
-                this.getUsername(),
-                Address.Usage.Default);
-
-        if (addresses.size() == 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean validAddress(Address.Usage usage) {
-        List<Address> addresses = Address.findByUserIdAndUsageOrderByUsageDesc(
-                this.getUsername(),
-                usage);
-        return true;
-    }
-
-    public Address findRightAddress(Address.Usage type) {
-
-        try {
-            return findRightAddress(getAddresses(), type);
-        } catch (InvalidAddressException e) {
-            return buildBadAddress();
-        }
-    }
-
-    private Address buildBadAddress() {
-        Address address = new Address(getId());
-        address.setFirstName("Missing Address Record");
-        address.setLastName("Missing Address Record");
-        return address;
-    }
-
-    private Address findRightAddress(List<Address> addresses, Address.Usage type) throws InvalidAddressException {
-
-        if (addresses.size() < 1) {
-            throw new InvalidAddressException(String.format("User %s has no address records.", getId()));
-        }
-
-        // look for an exact match on the usage field
-        for (Address address : addresses)
-            if (address.getUsage().equals(type))
-                return address;
-
-        // find the default address
-        for (Address address : addresses)
-            if (address.getUsage().equals(Address.Usage.Default))
-                return address;
-
-        // punt
-        return addresses.get(0);
     }
 
     public void removePhone(String value) {
@@ -679,14 +531,6 @@ public class User implements Serializable {
         return UserRole.isAnAdmin(getId());
     }
 
-    // explicit match
-    public boolean hasAddress(Address.Usage tag) {
-        for(Address address : getAddresses())
-            if (address.getUsage().equals(tag))
-                return true;
-        return false;
-    }
-
     static public List<User> findPending(boolean includeDisabled) {
         List<User> pending = null;
         if (includeDisabled)
@@ -709,8 +553,6 @@ public class User implements Serializable {
 
     static public List<User> getSortedUsers(UserSelector selector, UserSorter sorter) {
 
-        Map<User, Address> addressCache = new HashMap<>();
-
         List<User> users = User.findAll().stream()
                 .filter(user1 -> selector.select(user1))
                 .collect(Collectors.toList());
@@ -718,50 +560,8 @@ public class User implements Serializable {
         return sorter.sort(users);
     }
 
-    public String getStreetAddress(Address.Usage type) {
-        return findRightAddress(type).getStreetAddress();
-    }
-
-    public Location getLocation(Address.Usage type) {
-        return findRightAddress(type).getLocation();
-    }
-
     public String getName() {
-        return getName(Address.Usage.Default);
-    }
-
-    public String getName(String usage) {
-        return getName(Address.Usage.valueOf(usage));
-    }
-    public String getName(Address.Usage usage) {
-
-        Address address = null;
-        try {
-            address = findRightAddress(getAddresses(), usage);
-            String name = address.getName();
-            if (name.length() < 2)
-                name = String.format("%8.8s...", getId());
-            return name;
-        } catch (InvalidAddressException e) {
-            return e.getMessage();
-        }
-    }
-
-    public Address getAddress(String usage) {
-        return getAddress(Address.Usage.valueOf(usage));
-    }
-
-    public Address getAddress(Address.Usage tag) {
-        return findRightAddress(tag);
-    }
-
-    public String getUsernameShort() {
-        String s = getId();
-        return s.length() > 8 ? s.substring(0, 8) : s;
-    }
-    public String getIdShort() {
-        String s = getId();
-        return s.length() > 8 ? s.substring(0, 8) : s;
+        return String.format("8.8s", getId());
     }
 
     static public List<User> findByRole(String role) {
@@ -777,7 +577,7 @@ public class User implements Serializable {
                                                            && UserRole.does(user.getId(), role);
                                                }
                                            },
-                                           Util::sortByUserName);
+                                           Util::sortByLoginName);
         return x;
     }
 
@@ -787,7 +587,7 @@ public class User implements Serializable {
         List<UserRole> z = UserRole.findByRoleIn(y);
         Set<String> userIds = z.stream().map(r -> r.getUserId()).collect(Collectors.toSet());
         List<User> users = userIds.stream().map(userId -> User.findById(userId)).collect(Collectors.toList());
-        Util.sortByUserName(users);
+        Util.sortByLoginName(users);
         return users;
     }
 }

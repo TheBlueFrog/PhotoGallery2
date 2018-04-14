@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<#include "macros.ftl">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <title>System Admin Home</title>
+    <@styleSheets/>
+    <style>
+        th { text-align: left; }
+        td {
+            text-align: left;
+            vertical-align: text-top;
+        }
+        li{
+            padding: 0;
+            padding-left: 0px;
+            margin-left: 20px;
+            margin-right: 0;
+        }
+        .button1{
+            padding: 0;
+            padding-left: 0px;
+            margin-left: 100px;
+            margin-right: 0;
+        }
+    </style>
+
+</head>
+<body class="">
+    <header class="header">
+        <@topOfPageHeader/>
+    </header>
+    <!--
+        this file is not used but has remanants of file upload support
+        might be useful some day
+    -->
+    <div class="maincontainer">
+        <form id="ImportForm" method="post" enctype='multipart/form-data'>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 class="crimson-text font-italic">Import User</h2>
+                        <p>A complete user can be defined in a JSON file.</p>
+                        <h4>Notes</h4>
+                        <ul>
+                            <li>Importing the same user file multiple times will
+                                result in a usable but confusing database.</li>
+                            <li>If the user name already exists a unique name will
+                                be generated.</li>
+                        </ul>
+                        <p></p>
+                        <label>Select the local file to import</label>
+                        <input type="file" name="fileToImport" placeholder="file name" value="" required>
+                        <input type="submit" value="Import">
+                    </div>
+                    <div class="col-sm-6">
+                        <h2 class="crimson-text font-italic">Import Status</h2>
+                        <#if status?? >
+                            <#list session.importStatus as line>
+                                ${line}<br>
+                            </#list>
+                        </#if>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <br>
+    <a href="#" class="scroll_top" title="Scroll to Top">Scroll</a>
+    <@jsIncludes/>
+</body>
+</html>

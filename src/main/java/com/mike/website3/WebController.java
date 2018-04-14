@@ -28,12 +28,10 @@ public class WebController {
     @Autowired      EmailAddressRepo emailRepo;
     @Autowired      PhoneNumberRepo phoneNumberRepo;
     @Autowired      SystemEventRepo systemEventRepo;
-    @Autowired      AddressRepo addressRepo;
     @Autowired      private ImageRepo imageRepo;
     @Autowired      private UserImageRepo userImageRepo;
     @Autowired      private SystemNoticeRepo systemNoticeRepo;
     @Autowired      private UserRoleRepo userRoleRepo;
-    @Autowired      private LoginNameRepo loginNameRepo;
     @Autowired      private UserRepo userRepo;
     @Autowired      private DatabaseConfigRepo databaseConfigRepo;
     @Autowired      private StringDataRepo miniWebsiteDataRepo;
@@ -117,9 +115,6 @@ public class WebController {
     public SystemEventRepo getSystemEventRepo() {
         return systemEventRepo;
     }
-    public AddressRepo getAddressRepo() {
-        return addressRepo;
-    }
     public ImageRepo getImageRepo() {
         return imageRepo;
     }
@@ -131,9 +126,6 @@ public class WebController {
     }
     public UserRoleRepo getUserRoleRepo() {
         return userRoleRepo;
-    }
-    public LoginNameRepo getLoginNameRepo() {
-        return loginNameRepo;
     }
     public UserRepo getUserRepo() {
         return userRepo;
