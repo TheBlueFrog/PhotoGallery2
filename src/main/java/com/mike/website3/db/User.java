@@ -393,48 +393,14 @@ public class User implements Serializable {
     }
 
 
-    public UserImage getMainImage() {
-        List<UserImage> v = UserImage.findAllByUserIdAndUsage(this.getUsername(), "Main");
-        if (v.size() > 0) {
-            int i = MySystemState.getInstance().getRandom().nextInt(v.size());
-            return v.get(i);
-        }
-        v = UserImage.findAllByUserId(this.getUsername());
-        if (v.size() > 0) {
-            int i = MySystemState.getInstance().getRandom().nextInt(v.size());
-            return v.get(i);
-        }
-        return null;
-    }
-    public int getNumImages() {
-        return UserImage.findAllByUserId(this.getUsername()).size();
-    }
-    public List<UserImage> getImages() {
-
-        List<UserImage> list = UserImage.findAllByUserId(this.getUsername());
-        return list;
-    }
-    public UserImage getImage(String tag) {
-        List<UserImage> images = getImages();
-        if (images.size() > 0) {
-            for(UserImage image : images) {
-                if (image.getUsage().equals(tag))
-                    return image;
-            }
-
-//            return images.get(0);
-        }
-        return null;
-    }
-
-    public List<String> getStoredImages() {
-        List<String> paths = new ArrayList<>();
-        Website.getStorageService().loadAll(this).forEach(path -> {
-            String s = path.toFile().getName();
-            paths.add(path.toFile().getName());
-        });
-        return paths;
-    }
+//    public List<String> getStoredImages() {
+//        List<String> paths = new ArrayList<>();
+//        Website.getStorageService().loadAll(this).forEach(path -> {
+//            String s = path.toFile().getName();
+//            paths.add(path.toFile().getName());
+//        });
+//        return paths;
+//    }
 
 
     public List<PhoneNumber> getPhoneNumbers() {
@@ -500,21 +466,6 @@ public class User implements Serializable {
                 return;
             }
         }
-    }
-
-    /**
-     * remove all images whose ID starts with id
-     * this does not change the contents of the user image
-     * dirctory, only the database record of the image
-     *
-     * @param id
-     */
-    public void removeMatchingImages(String id) {
-        UserImage.findAllByUserId(getUsername())
-                .forEach(userImage -> {
-                    if (userImage.getId().startsWith(id))
-                        userImage.delete();
-                });
     }
 
     /**
@@ -590,5 +541,11 @@ public class User implements Serializable {
         Util.sortByLoginName(users);
         return users;
     }
+
+    public List<Image> getImages() {
+        List<Image> x = Image.findByUserId(getId());
+        return x;
+    }
+
 }
 

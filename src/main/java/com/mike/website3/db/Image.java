@@ -7,11 +7,9 @@ package com.mike.website3.db;
 
 import com.mike.website3.WebController;
 import com.mike.website3.Website;
+import com.mike.website3.db.repo.ImageRepo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
@@ -24,19 +22,26 @@ import java.util.UUID;
 @Table(name="images")
 public class Image implements Serializable {
 
+    static public enum Visibility {
+        Public,
+        Private,
+    };
+
     @Id
     @Column(name = "id")                        private String id;
 
-    @Column(name = "username")                  private String username;
+    @Column(name = "user_id")                   private String userId;
     @Column(name = "caption")                   private String caption = "";
     @Column(name = "filename")                  private String filename = "";
-    @Column(name = "visibility")                private String visibility = "Public";
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility = Visibility.Public;
 
     public String getId() { return id; }
 
-    public String getUsername() { return username; }
+    public String getUserId() { return userId; }
     private void setUsername(String username) {
-        this.username = username;
+        this.userId = username;
     }
 
     public String getCaption() {
@@ -54,20 +59,14 @@ public class Image implements Serializable {
     }
 
     public boolean isPublic() {
-        return visibility.contains("Public");
+        return visibility.equals(Visibility.Public);
     }
 
     public void setPublic(boolean b) {
-        if (b) {
-            if (!visibility.contains("Public"))
-                visibility += " Public";
-        }
-        else {
-            if (visibility.contains("Public"))
-                visibility = visibility.replace("Public", "");
-        }
-
-        visibility = visibility.replace("  ", " ");
+        if (b)
+            visibility = Visibility.Public;
+        else
+            visibility = Visibility.Private;
     }
 
     /**
@@ -75,8 +74,9 @@ public class Image implements Serializable {
      * @return the actual path to the image
      */
     public String getPath() {
-        File f = new File(new File(new File(Website.getUserDir(), this.username),"images"), this.filename);
-        return f.getPath();
+//        File f = new File(new File(new File(Website.getUserDir(), this.userId),"images"), this.filename);
+//        return f.getPath();
+        return String.format("/users/%s/images/%s", getUserId(), filename);
     }
 
     protected Image() { }
@@ -95,7 +95,7 @@ public class Image implements Serializable {
                 this.getFilename());
     }
 
-    private static com.mike.website3.db.ImageRepo getRepo() {
+    private static ImageRepo getRepo() {
         return Website.getRepoOwner().getImageRepo();
     }
 
@@ -106,12 +106,23 @@ public class Image implements Serializable {
         getRepo().delete(this);
     }
 
-    public static List<Image> findAllByUsername(String username) {
-        return getRepo().findAllByUsername(username);
-    }
-
     public static Image findById(String id) {
         return getRepo().findById(id);
     }
+
+    public static List<Image> findByUserId(String userId) {
+        return getRepo().findByUserId(userId);
+    }
+
+    public static Image findByUserIdAndFilename(String userId, String name) {
+        Image x = getRepo().findByUserIdAndFilename(userId, name);
+        return x;
+    }
+
+    public static List<Image> findByVisibility(Visibility visibility) {
+        List<Image> x = getRepo().findByVisibility(visibility);
+        return x;
+    }
+
 
 }

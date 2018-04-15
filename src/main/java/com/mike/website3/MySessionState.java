@@ -6,11 +6,13 @@ package com.mike.website3;
  */
 
 import com.mike.util.Util;
+import com.mike.website3.db.Image;
 import com.mike.website3.db.User;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,8 @@ public class MySessionState {
     private User pushedUser = null;
 
     public MySessionState() {
+
+        Website.autoLogin(this);
     }
 
     public User getUser() {
@@ -149,5 +153,10 @@ public class MySessionState {
 
     public void removeAttribute(String name) {
         attributes.remove(name);
+    }
+
+    public List<Image> getPublicImages() {
+        List<Image> images = Image.findByVisibility(Image.Visibility.Public);
+        return images;
     }
 }

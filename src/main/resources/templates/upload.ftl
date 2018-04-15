@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8">
     <@styleSheets/>
-    <title>Upload Files</title>
+    <title>Upload Images</title>
     <style>
         th { text-align: left; }
         td {
@@ -20,7 +20,7 @@
 
 </head>
 <body>
-    <@pageHeader3 "upload.ftl"/>
+    <@pageHeader3 />
 
     <p></p>
     <div>
@@ -28,7 +28,7 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-11">
 
-                <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/">
+                <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/upload-image">
                     Files to upload &nbsp;
                     <input type="file" name="files" multiple/> &nbsp;
                     <input type="submit" value="Upload" />
@@ -43,17 +43,17 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <table width="100%">
-                <#list session.images as image >
+                <#list session.getUser().getImages() as image >
                     <tr>
                         <form class="form-horizontal" method="POST" action="/update">
-                            <input type="hidden" name="id" value="${image.id}" />
+                            <input type="hidden" name="id" value="${image.getId()}" />
                             <td width="20%">
-                                <img src="${image.path}" alt="" width="100" height="100"/>
+                                <img src="${image.getPath()}" alt="" width="100" height="100"/>
                                 &nbsp;
-                                <a href="/view/${image.path}">${image.filename}</a>
+                                <a href="/view/${image.getPath()}">${image.getFilename()}</a>
                             </td>
                             <td width="50%">
-                                <input type="text" name="caption" value="${image.caption}" size="50"/>
+                                <input type="text" name="caption" value="${image.getCaption()}" size="50"/>
                             </td>
                             <td width="20%">
                                 <#if (image.isPublic()) >

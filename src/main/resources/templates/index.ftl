@@ -11,12 +11,6 @@
 
     <@pageHeader3 />
 
-    <#if session.getUser()?? >
-        <p>Hello ${session.getUser().getLoginName()}</p>
-    <#else>
-        <p>Hello visitor</p>
-    </#if>
-
     <@jsIncludes/>
 </body>
 </html>

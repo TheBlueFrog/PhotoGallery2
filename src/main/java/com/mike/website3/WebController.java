@@ -7,7 +7,6 @@ package com.mike.website3;
 
 import com.mike.util.Log;
 import com.mike.website3.db.*;
-import com.mike.website3.db.ImageRepo;
 import com.mike.website3.db.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,6 @@ public class WebController {
     @Autowired      PhoneNumberRepo phoneNumberRepo;
     @Autowired      SystemEventRepo systemEventRepo;
     @Autowired      private ImageRepo imageRepo;
-    @Autowired      private UserImageRepo userImageRepo;
     @Autowired      private SystemNoticeRepo systemNoticeRepo;
     @Autowired      private UserRoleRepo userRoleRepo;
     @Autowired      private UserRepo userRepo;
@@ -117,9 +115,6 @@ public class WebController {
     }
     public ImageRepo getImageRepo() {
         return imageRepo;
-    }
-    public UserImageRepo getUserImageRepo() {
-        return userImageRepo;
     }
     public SystemNoticeRepo getSystemNoticeRepo() {
         return systemNoticeRepo;

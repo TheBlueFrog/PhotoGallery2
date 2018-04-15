@@ -35,15 +35,11 @@ public abstract class BaseController  {
     static private TemplateHashModel utilStatics = null;
     static private TemplateHashModel userStatics = null;
     static private TemplateHashModel emailAddressStatics = null;
-    static private TemplateHashModel itemImageStatics = null;
+    static private TemplateHashModel imageStatics = null;
     static private TemplateHashModel phoneNumberStatics = null;
-    static private TemplateHashModel userImageStatics = null;
     static private TemplateHashModel systemEventStatics = null;
-    static private TemplateHashModel loginNameStatics = null;
     static private TemplateHashModel websiteStatics = null;
     static private TemplateHashModel userRoleStatics = null;
-    static private TemplateHashModel locationStatics = null;
-    static private TemplateHashModel metricsStatics = null;
     static private TemplateHashModel mySystemStateStatics = null;
 
     static Map<String, Object> models = null;
@@ -55,19 +51,16 @@ public abstract class BaseController  {
 
         TemplateHashModel staticModels = wrapper.getStaticModels();
         try {
+            stringStatics = (TemplateHashModel) staticModels.get("java.lang.String");
+
             utilStatics = (TemplateHashModel) staticModels.get("com.mike.util.Util");
             userStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.User");
             emailAddressStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.EmailAddress");
-            itemImageStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.ItemImage");
+            imageStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.Image");
             phoneNumberStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.PhoneNumber");
-            userImageStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.UserImage");
             systemEventStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.SystemEvent");
-            loginNameStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.LoginName");
             websiteStatics = (TemplateHashModel) staticModels.get("com.mike.website3.Website");
             userRoleStatics = (TemplateHashModel) staticModels.get("com.mike.website3.db.UserRole");
-            locationStatics = (TemplateHashModel) staticModels.get("com.mike.util.Location");
-            metricsStatics = (TemplateHashModel) staticModels.get("com.mike.website3.milkrun.routing.Metrics");
-            stringStatics = (TemplateHashModel) staticModels.get("java.lang.String");
             mySystemStateStatics = (TemplateHashModel) staticModels.get("com.mike.website3.MySystemState");
 
         } catch (TemplateModelException e) {
@@ -84,16 +77,12 @@ public abstract class BaseController  {
             staticsMap.put("String", stringStatics);
 
             staticsMap.put("EmailAddress", emailAddressStatics);
-            staticsMap.put("ItemImage", itemImageStatics);
-            staticsMap.put("Location", locationStatics);
-            staticsMap.put("LoginName", loginNameStatics);
-            staticsMap.put("Metrics", metricsStatics);
+            staticsMap.put("Image", imageStatics);
             staticsMap.put("MySystemState", mySystemStateStatics);
             staticsMap.put("PhoneNumber", phoneNumberStatics);
             staticsMap.put("SystemEvent", systemEventStatics);
             staticsMap.put("Util", utilStatics);
             staticsMap.put("User", userStatics);
-            staticsMap.put("UserImage", userImageStatics);
             staticsMap.put("UserRole", userRoleStatics);
             staticsMap.put("Website", websiteStatics);
         }

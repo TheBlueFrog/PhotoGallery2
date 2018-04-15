@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -226,15 +227,47 @@ public class Website {
         String release = ThisVersion.substring(0, ThisVersion.lastIndexOf("."));
 
         DatabaseConfig s = DatabaseConfig.findByDefect("CodeBuild");
+        if (s == null) {
+            // new db
+            s = new DatabaseConfig("CodeBuild", "0.1");
+            s.save();
+        }
+
         if ( ! s.getNote().equals(release)){
             Log.e(TAG, String.format("Database is tagged %s, must be %s", s.getNote(), release));
             System.exit(-1);
         }
-        Log.e(TAG, String.format("Database is tagged %s, code is %s", s.getNote(), release));
+        Log.d(TAG, String.format("Database matches the code, %s", release));
 
         SystemNotice.cleanShutdownNotices();    // remove any shutdown notices since we're back up
 
         MySystemState.bootstrap();  // this is ongoing and stays forever
+
+        updateImages();
+    }
+
+    /**
+     * look through the users/X/images for new images, if found
+     * add to database
+     */
+    private static void updateImages() {
+        User.findAll().forEach(user -> {
+            File imageDir = new File(new File(Website.getUserDir(), user.getId()), "images");
+            try {
+                Files.list(imageDir.toPath())
+                        .forEach(file -> {
+                            String fileName = file.toFile().getName();
+                            Image image = Image.findByUserIdAndFilename(user.getId(), fileName);
+                            if (image == null) {
+                                new Image(user, "", fileName)
+                                        .save();
+                            }
+                        });
+            }
+            catch (Exception e) {
+                Log.e(TAG, e);
+            }
+        });
     }
 
     static private String clean (String s) {
@@ -305,7 +338,7 @@ public class Website {
     }
 
     public static User autoLogin(MySessionState mySessionState) {
-        if (( ! autoUser.equals("")) &&( ! autoPw.equals(""))) {
+        if (( ! autoUser.equals("")) && ( ! autoPw.equals(""))) {
             try {
                 User user = User.authenticate(autoUser, autoPw);
                 mySessionState.setUser(autoUser, user);
@@ -317,6 +350,10 @@ public class Website {
                 Log.e(TAG, e);
             }
         }
+
+        autoUser = "";
+        autoPw = "";
+
         return null;
     }
 

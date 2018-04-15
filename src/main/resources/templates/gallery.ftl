@@ -4,7 +4,7 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charset="UTF-8">
-        <title>${system.site.Company}</title>
+        <title>Photo Gallery</title>
         <@styleSheets/>
 
     <style>
@@ -68,27 +68,31 @@ img {
 </style>
 </head>
 <body>
-<@pageHeader3 "gallery.ftl"/>
+    <@pageHeader3 />
 
-<h4>Image Gallery</h4>
+    <#if session.getUser()?? >
+        <#assign images = session.getUser().getImages() >
+    <#else >
+        <#assign images = session.getPublicImages() >
+    </#if>
 
-<#list session.images as image >
-    <div class="responsive">
-        <div class="img">
-            <a target="_blank" href="${image.path}">
-                <img src="${image.path}" alt="" width="300" height="300">
-            </a>
-            <div class="desc">
-                ${image.caption}
+        <#list images as image >
+            <div class="responsive">
+                <div class="img">
+                    <a target="_blank" href="${image.getPath()}">
+                        <img src="${image.getPath()}" alt="" width="300" height="300">
+                    </a>
+                    <div class="desc">
+                        ${image.getCaption()}
+                    </div>
+                </div>
             </div>
-        </div>
+        </#list>
+
+    <div class="clearfix"></div>
+
+    <div style="padding:6px;">
     </div>
-</#list>
-
-<div class="clearfix"></div>
-
-<div style="padding:6px;">
-</div>
 
 </body>
 </html>
