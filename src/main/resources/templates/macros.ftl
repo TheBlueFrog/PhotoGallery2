@@ -8,25 +8,25 @@
 
 <#macro showLoginButton>
     <#if session.getUser()?? >
-        <a href="/logout"><i class="fa fa-key"></i>LOGOUT ${session.getUser().getLoginName()}</a>
+        <a href="/logout">LOGOUT ${session.getUser().getLoginName()}</a>
     <#else>
-        <a href="/login"><i class="fa fa-key"></i>LOGIN</a>
+        <a href="/login">LOGIN</a>
     </#if>
 </#macro>
 
 <#macro showUploadButton>
     <#if session.getUser()?? >
-        <a href="/upload"><i class="fa fa-key"></i>Upload</a>
+        <a href="/upload">Upload</a>
     </#if>
 </#macro>
 
 <#macro showGalleryButton>
-    <a href="/gallery"><i class="fa fa-key"></i>Public Gallery</a>
+    <a href="/gallery">Public Gallery</a>
 </#macro>
 
 <#macro showMyGalleryButton>
     <#if session.getUser()?? >
-        <a href="/gallery/${session.getUser().getLoginName()}"><i class="fa fa-key"></i>My Gallery</a>
+        <a href="/gallery/${session.getUser().getLoginName()}">My Gallery</a>
     </#if>
 </#macro>
 

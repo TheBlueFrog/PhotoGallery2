@@ -94,7 +94,7 @@ public class LoginController extends BaseController2 {
                 setSessionUser(request, "?", state.getPushedUser());
                 SystemEvent.save(state.getPushedUser(), "Restored from switch-user");
                 state.setPushedUser(null);
-                return get2(request, model, "redirect:/users2");
+                return get2(request, model, "redirect:/gallery");
             }
         }
         catch (Exception e) {
