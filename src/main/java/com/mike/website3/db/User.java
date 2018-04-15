@@ -168,6 +168,7 @@ public class User implements Serializable {
         String hashedPassword = secureHash(newPassword, salt);
         setPwSalt(salt);
         setPwHash(hashedPassword);
+        save();
     }
 
     public void setAuthentication(String salt, String hashedPassword) {

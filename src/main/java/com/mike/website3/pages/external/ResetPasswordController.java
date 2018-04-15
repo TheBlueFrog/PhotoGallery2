@@ -58,50 +58,41 @@ public class ResetPasswordController extends BaseController2 {
         }
     }
 
-    private String resetLogin;
-    public String getResetLogin() {
-        return resetLogin;
-    }
-
-    private String resetCode;
-    public String getResetCode() {
-        return resetCode;
-    }
-
-    private User resetUser = null;
-    public User getResetUser() {
-        return resetUser;
-    }
-
     private void doGet(HttpServletRequest request, Model model) {
         MySessionState state = getSessionState(request);
 
         setSessionUser(request, null, null);
         setMessage(state, "");
-        resetUser = null;
 
-        resetLogin = request.getParameter("resetLogin");
-        resetCode = request.getParameter("resetCode");
+        String resetUser = null;
+        String resetLogin = request.getParameter("resetLogin");
+        String resetCode = request.getParameter("resetCode");
+
+        state.setAttribute("resetUser", resetUser);
 
         // verify stuff
 
-        User user = User.findByLoginName(getResetLogin());
+        User user = User.findByLoginName(resetLogin);
         if (user == null) {
             setMessage(state, String.format("The login (%s) in the URL does not match a known login.",
-                    getResetLogin()));
+                    resetLogin));
             return;
         }
         if ( ! user.hasPasswordBeenReset()) {
             setMessage(state, String.format("The reset URL has already been used and cannot be reused"));
             return;
         }
-        if ( ! user.getPwHash().equals(getResetCode())) {
+        if ( ! user.getPwHash().equals(resetCode)) {
             setMessage(state, String.format("The reset code (%s) in the URL not correct.", resetCode));
             return;
         }
 
-        resetUser = user;
+        state.setAttribute("resetLogin", resetLogin);
+        state.setAttribute("resetCode", resetCode);
+        state.setAttribute("resetUser", user);
     }
+
+    // http://localhost:8080/reset-password?resetCode=92989&resetLogin=mike
 
     private void doPost(HttpServletRequest request, Model model) {
 
@@ -110,25 +101,32 @@ public class ResetPasswordController extends BaseController2 {
         if (op == null) {
             return;
         }
-        if ( ! op.equals("SetPasswordOfUser")) {
+        if ( ! op.equals("ResetPassword")) {
             return;
         }
 
-        String loginName = getResetLogin();
-        resetUser.resetPassword();
+        String loginName = state.getAttributeS("resetLogin");
+
+        state.removeAttribute("resetCode");
+        state.removeAttribute("resetLogin");
+
+        User user = (User) state.getAttribute("resetUser");
+        state.removeAttribute("resetUser");
+
+        user.resetPassword();   // kill existing reset code,
 
         try {
-            resetUser.hashPassword(request.getParameter("password"));
+            user.hashPassword(request.getParameter("password"));
         } catch (NoSuchAlgorithmException e) {
             setMessage(state, String.format("Internal error, %s", e.toString()));
             return;
         }
 
-        setSessionUser(request, loginName, resetUser);
-        resetUser.login();
+        setSessionUser(request, loginName, user);
+        user.login();
 
-        SystemEvent.save(resetUser, String.format("%s used the resetCode to reset their password", loginName));
-        SystemEvent.save(resetUser, String.format("Logged in using %s", loginName));
+        SystemEvent.save(user, String.format("%s used the resetCode to reset their password", loginName));
+        SystemEvent.save(user, String.format("Logged in using %s", loginName));
 
         setMessage(state, "");
     }

@@ -177,7 +177,7 @@ public class AdminRestController {
                     user.getLoginName(),
                     user.getId()));
 
-            return "OK";
+            return "success";
 
         } catch (Exception e) {
             return e.toString();
