@@ -20,34 +20,58 @@
 
     <@pageHeader3 />
 
-    <#if session.getAttribute("userGallery")?? >
-        <#assign images = User.findById(session.getAttributeS("userGallery")).getImages() >
+    <#if session.getUser()?? >
+        <#assign images = session.getUser().getImages() >
     <#else >
         <#assign images = session.getPublicImages() >
     </#if>
 
+    <div class="w3-content" style="max-width:1200px">
 
-    <div class="w3-content w3-display-container">
-
-        <#assign i = 0 >
         <#list images as image >
-            <div class="w3-display-container mySlides">
-                <img src="${image.getPath()}" style="width:100%">
+                <div class="w3-display-container mySlides">
+                    <img src="${image.getPath()}" style="width:100%">
 
-                <#if (image.getCaption()?length > 0) >
-                    <div class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-gray">
-                        ${image.getCaption()}
-                    </div>
-                </#if>
-            </div>
-            <#assign i = i + 1 >
+                    <#if (image.getCaption()?length > 0) >
+                        <div class="w3-display-bottomright w3-container w3-padding-16 w3-black">
+                            ${image.getCaption()}
+                        </div>
+                    </#if>
+                </div>
         </#list>
 
-        <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">&#10094;</button>
-        <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
-
+        <div class="w3-row-padding w3-section">
+            <#assign i = 0 >
+            <#list images as image >
+                    <img class="demo w3-opacity w3-hover-opacity-off"
+                         src="${image.getPath()}"
+                         style="width:10%" onclick="currentDiv(${i})">
+                <#assign i = i + 1 >
+            </#list>
+        </div>
     </div>
 
+
+<#--
+
+        <#list images as image >
+            <div class="responsive">
+                <div class="img">
+                    <a target="_blank" href="${image.getPath()}">
+                        <img src="${image.getPath()}" alt="" width="300" height="300">
+                    </a>
+                    <div class="desc">
+                        ${image.getCaption()}
+                    </div>
+                </div>
+            </div>
+        </#list>
+
+    <div class="clearfix"></div>
+
+    <div style="padding:6px;">
+    </div>
+-->
     <script>
         var slideIndex = 0;
         showDivs(slideIndex);

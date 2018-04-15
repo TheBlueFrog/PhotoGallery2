@@ -5,6 +5,7 @@ package com.mike.website3.pages.external;
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import com.mike.website3.MySessionState;
 import com.mike.website3.db.User;
 import com.mike.website3.pages.BaseController;
 import com.mike.website3.pages.BaseController2;
@@ -23,21 +24,17 @@ public class GalleryController extends BaseController2 {
     @RequestMapping(value = "/gallery", method = RequestMethod.GET)
     public String get(HttpServletRequest request, Model model) {
 
-//        User user = getSessionUser(request);
-//        if (user != null) {
-//            getSessionState(request).setImages();
-//        }
+        MySessionState state = getSessionState(request);
+        state.removeAttribute("userGallery");
 
         return get2(request, model, "gallery");
     }
 
-    @RequestMapping(value = "/gallery/{username}", method = RequestMethod.GET)
-    public String get1(@PathVariable("username") String username, HttpServletRequest request, Model model) {
+    @RequestMapping(value = "/gallery/{userId}", method = RequestMethod.GET)
+    public String get1(@PathVariable("userId") String userId, HttpServletRequest request, Model model) {
 
-//        User user = User.findByUsername(username);
-//        if (user != null) {
-//            getSessionState(request).setImages(user);
-//        }
+        MySessionState state = getSessionState(request);
+        state.setAttribute("userGallery", userId);
 
         return get2(request, model, "gallery");
     }

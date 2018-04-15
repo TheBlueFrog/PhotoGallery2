@@ -26,7 +26,7 @@
 
 <#macro showMyGalleryButton>
     <#if session.getUser()?? >
-        <a href="/gallery/${session.getUser().getLoginName()}">My Gallery</a>
+        <a href="/gallery/${session.getUser().getId()}">My Gallery</a>
     </#if>
 </#macro>
 
