@@ -5,6 +5,7 @@ package com.mike.website3.db;
  * file 'LICENSE.txt', which is part of this source code package.
  */
 
+import com.mike.website3.MySystemState;
 import com.mike.website3.WebController;
 import com.mike.website3.Website;
 import com.mike.website3.db.repo.ImageRepo;
@@ -12,6 +13,7 @@ import com.mike.website3.db.repo.ImageRepo;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +32,7 @@ public class Image implements Serializable {
     @Id
     @Column(name = "id")                        private String id;
 
+    @Column(name = "timestamp")                 private Timestamp timestamp;
     @Column(name = "user_id")                   private String userId;
     @Column(name = "caption")                   private String caption = "";
     @Column(name = "filename")                  private String filename = "";
@@ -39,6 +42,9 @@ public class Image implements Serializable {
 
     public String getId() { return id; }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
     public String getUserId() { return userId; }
     private void setUsername(String username) {
         this.userId = username;
@@ -83,6 +89,7 @@ public class Image implements Serializable {
 
     public Image(User user, String caption, String filename) {
         id = UUID.randomUUID().toString();
+        timestamp = MySystemState.getInstance().nowTimestamp();
         setUsername(user.getUsername());
         setCaption(caption);
         setFilename(filename);
@@ -121,6 +128,16 @@ public class Image implements Serializable {
 
     public static List<Image> findByVisibility(Visibility visibility) {
         List<Image> x = getRepo().findByVisibility(visibility);
+        return x;
+    }
+
+    public static List<Image> findByUserIdOrderByTimestampDesc(String id) {
+        List<Image> x = getRepo().findByUserIdOrderByTimestampDesc(id);
+        return x;
+    }
+
+    public static List<Image> findByVisibilityOrderByTimestampDesc(Visibility visibility) {
+        List<Image> x = getRepo().findByVisibilityOrderByTimestampDesc(visibility);
         return x;
     }
 

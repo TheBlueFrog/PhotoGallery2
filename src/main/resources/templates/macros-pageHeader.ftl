@@ -10,6 +10,7 @@
                     <ul>
                         <li><@showMyGalleryButton/></li>
                         <li><@showUploadButton/></li>
+                        <li><@showManageButton/></li>
                         <li><@showRegisterButton/></li>
                         <li><@showLoginButton/></li>
                     </ul>

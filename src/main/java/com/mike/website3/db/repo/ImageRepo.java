@@ -21,4 +21,9 @@ public interface ImageRepo extends CrudRepository<Image, String> {
     Image findByUserIdAndFilename(String userId, String name);
 
     List<Image> findByVisibility(Image.Visibility visibility);
+
+    List<Image> findByUserIdOrderByTimestampDesc(String userId);
+
+    List<Image> findByVisibilityOrderByTimestampDesc(Image.Visibility visibility);
+
 }

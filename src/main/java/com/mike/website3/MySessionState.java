@@ -156,7 +156,7 @@ public class MySessionState {
     }
 
     public List<Image> getPublicImages() {
-        List<Image> images = Image.findByVisibility(Image.Visibility.Public);
+        List<Image> images = Image.findByVisibilityOrderByTimestampDesc(Image.Visibility.Public);
         return images;
     }
 }

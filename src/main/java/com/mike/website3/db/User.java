@@ -544,7 +544,7 @@ public class User implements Serializable {
     }
 
     public List<Image> getImages() {
-        List<Image> x = Image.findByUserId(getId());
+        List<Image> x = Image.findByUserIdOrderByTimestampDesc(getId());
         return x;
     }
 

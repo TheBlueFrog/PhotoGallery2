@@ -110,20 +110,6 @@ public class UploadController extends BaseController {
         return "redirect:/user-image-manager";
     }
 
-    @PostMapping("/update")
-    public String update(HttpServletRequest request) {
-
-        User user = getSessionUser(request);
-        if (user != null) {
-            Image image = Image.findById(request.getParameter("id"));
-            image.setCaption(request.getParameter("caption"));
-            boolean b = request.getParameter("public") != null;
-            image.setPublic(b);
-            image.save();
-        }
-        return "redirect:/upload";
-    }
-
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();

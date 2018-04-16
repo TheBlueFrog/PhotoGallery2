@@ -20,6 +20,12 @@
     </#if>
 </#macro>
 
+<#macro showManageButton>
+    <#if session.getUser()?? >
+        <a href="/manage-items">Manage</a>
+    </#if>
+</#macro>
+
 <#macro showGalleryButton>
     <a href="/gallery">Public Gallery</a>
 </#macro>
