@@ -20,40 +20,22 @@
 
     <@pageHeader3 />
 
-<#--
     <#if session.getAttribute("userGallery")?? >
-        <#assign images = User.findById(session.getAttributeS("userGallery")).getImages() >
+        <#assign images = User.findById(session.getAttributeS("userGallery")).getImages("MP4") >
     <#else >
-        <#assign images = session.getPublicImages("JPG") >
+        <#assign images = session.getPublicImages("MP4") >
     </#if>
 
-    <div class="w3-content w3-display-container">
-
-        <#assign i = 0 >
-        <#list images as image >
-            <div class="w3-display-container mySlides">
-                <img src="${image.getPath()}" style="width:100%">
-
-                <#if (image.getCaption()?length > 0) >
-                    <div class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-gray">
-                        ${image.getCaption()}
-                    </div>
-                </#if>
-            </div>
-            <#assign i = i + 1 >
-        </#list>
-
-        <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">&#10094;</button>
-        <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
-
-    </div>
--->
-
-    <#assign images = session.getPublicImages("M4V") >
     <div class="col-md-12">
 
         <#list images as image >
-            <source src="${image.getPath()}" type="video/mv4">
+            <video width="320" height="240" controls>
+                <source src="${image.getPath()}" type="video/mp4">
+                <source src="movie.ogg" type="video/ogg">
+                Your browser does not support the video tag.
+            </video>
+
+            <#--<source src="" type="video/mv4">-->
         </#list>
 
     </div>

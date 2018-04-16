@@ -45,7 +45,7 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
                 <table width="90%">
-                    <#list session.getUser().getImages() as image >
+                    <#list session.getUser().getImages("JPG") as image >
                         <form class="form-horizontal" >
                             <input type="hidden" name="id" value="${image.getId()}" />
                             <tr>

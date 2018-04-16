@@ -543,8 +543,8 @@ public class User implements Serializable {
         return users;
     }
 
-    public List<Image> getImages() {
-        List<Image> x = Image.findByUserIdOrderByTimestampDesc(getId());
+    public List<Image> getImages(String type) {
+        List<Image> x = Image.findByUserIdAndTypeOrderByTimestampDesc(getId(), type);
         return x;
     }
 

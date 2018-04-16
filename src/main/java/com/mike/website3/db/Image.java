@@ -32,6 +32,7 @@ public class Image implements Serializable {
         Unknown,
         JPG,
         M4V,
+        MP4,
     };
 
     @Id
@@ -115,6 +116,9 @@ public class Image implements Serializable {
             case "m4v":
                 type = Type.M4V;
                 break;
+            case "mp4":
+                type = Type.MP4;
+                break;
             default:
                 type = Type.Unknown;
                 break;
@@ -168,7 +172,20 @@ public class Image implements Serializable {
     }
 
     public static List<Image> findByVisibilityAndTypeOrderByTimestampDesc(Visibility visibility, String type) {
-        List<Image> x = getRepo().findByVisibilityAndTypeOrderByTimestampDesc(visibility, Type.valueOf(type));
+        List<Image> x = findByVisibilityAndTypeOrderByTimestampDesc(visibility, Type.valueOf(type));
+        return x;
+    }
+    public static List<Image> findByVisibilityAndTypeOrderByTimestampDesc(Visibility visibility, Type type) {
+        List<Image> x = getRepo().findByVisibilityAndTypeOrderByTimestampDesc(visibility, type);
+        return x;
+    }
+
+    public static List<Image> findByUserIdAndTypeOrderByTimestampDesc(String userId, String type) {
+        List<Image> x = findByUserIdAndTypeOrderByTimestampDesc(userId, Type.valueOf(type));
+        return x;
+    }
+    public static List<Image> findByUserIdAndTypeOrderByTimestampDesc(String userId, Type type) {
+        List<Image> x = getRepo().findByUserIdAndTypeOrderByTimestampDesc(userId, type);
         return x;
     }
 

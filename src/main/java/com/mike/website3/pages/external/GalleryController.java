@@ -21,22 +21,38 @@ import javax.servlet.http.HttpServletRequest;
 public class GalleryController extends BaseController2 {
     private static final String TAG = GalleryController.class.getSimpleName();
 
-    @RequestMapping(value = "/gallery", method = RequestMethod.GET)
-    public String get(HttpServletRequest request, Model model) {
+    @RequestMapping(value = "/gallery-image", method = RequestMethod.GET)
+    public String geta(HttpServletRequest request, Model model) {
 
         MySessionState state = getSessionState(request);
         state.removeAttribute("userGallery");
 
-        return get2(request, model, "gallery");
+        return get2(request, model, "gallery-image");
+    }
+    @RequestMapping(value = "/gallery-video", method = RequestMethod.GET)
+    public String getb(HttpServletRequest request, Model model) {
+
+        MySessionState state = getSessionState(request);
+        state.removeAttribute("userGallery");
+
+        return get2(request, model, "gallery-video");
     }
 
-    @RequestMapping(value = "/gallery/{userId}", method = RequestMethod.GET)
-    public String get1(@PathVariable("userId") String userId, HttpServletRequest request, Model model) {
+    @RequestMapping(value = "/gallery-image/{userId}", method = RequestMethod.GET)
+    public String get1a(@PathVariable("userId") String userId, HttpServletRequest request, Model model) {
 
         MySessionState state = getSessionState(request);
         state.setAttribute("userGallery", userId);
 
-        return get2(request, model, "gallery");
+        return get2(request, model, "gallery-image");
+    }
+    @RequestMapping(value = "/gallery-video/{userId}", method = RequestMethod.GET)
+    public String get1b(@PathVariable("userId") String userId, HttpServletRequest request, Model model) {
+
+        MySessionState state = getSessionState(request);
+        state.setAttribute("userGallery", userId);
+
+        return get2(request, model, "gallery-video");
     }
 
 

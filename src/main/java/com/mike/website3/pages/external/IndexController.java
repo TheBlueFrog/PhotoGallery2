@@ -24,7 +24,7 @@ public class IndexController extends BaseController2 {
             HttpServletResponse response,
             Model model) {
         try {
-            return "forward:/gallery";
+            return "forward:/gallery-image";
 
         } catch (Exception e) {
             return showExceptionPage(e, request, model);

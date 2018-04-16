@@ -172,6 +172,6 @@ public class RegisterUserController extends BaseController2 {
         if (user.doesRole2(UserRole.Role.AccountPending)) {
             user.removeRole(UserRole.Role.AccountPending);
         }
-        return "redirect:/gallery";
+        return "redirect:/gallery-image";
     }
 }

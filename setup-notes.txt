@@ -7,7 +7,7 @@
     to my images directory, code will notice and import them
 6   same for John
 
-.mp4
+.mp4 is working, sorta
 
 
 

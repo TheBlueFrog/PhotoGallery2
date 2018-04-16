@@ -9,7 +9,7 @@
     A ${error} was caught.  We have noted the error.
     <p>
         Click
-        <a href="/gallery"> here </a>
+        <a href="/gallery-image"> here </a>
         to continue.
     </p>
 </body>
