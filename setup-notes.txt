@@ -1,0 +1,13 @@
+
+1   dump the existing database
+2   start the app, let it build the db
+3   insert into database_config (timestamp, defect, text) values ( now(), 'CodeBuild', '0.1');
+4   create new users
+5   once I've created my account copy the existing uploads
+    to my images directory, code will notice and import them
+6   same for John
+
+.mp4
+
+
+

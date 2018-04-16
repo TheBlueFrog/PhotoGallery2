@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by mike on 12/11/2016.
@@ -155,8 +156,12 @@ public class MySessionState {
         attributes.remove(name);
     }
 
-    public List<Image> getPublicImages() {
-        List<Image> images = Image.findByVisibilityOrderByTimestampDesc(Image.Visibility.Public);
+    public List<Image> getPublicImages(String type) {
+        List<Image> images =
+                Image.findByVisibilityAndTypeOrderByTimestampDesc(
+                        Image.Visibility.Public,
+                        type);
+
         return images;
     }
 }

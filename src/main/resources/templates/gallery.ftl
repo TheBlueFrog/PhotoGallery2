@@ -20,12 +20,12 @@
 
     <@pageHeader3 />
 
+<#--
     <#if session.getAttribute("userGallery")?? >
         <#assign images = User.findById(session.getAttributeS("userGallery")).getImages() >
     <#else >
-        <#assign images = session.getPublicImages() >
+        <#assign images = session.getPublicImages("JPG") >
     </#if>
-
 
     <div class="w3-content w3-display-container">
 
@@ -47,8 +47,18 @@
         <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
 
     </div>
+-->
 
-    <script>
+    <#assign images = session.getPublicImages("M4V") >
+    <div class="col-md-12">
+
+        <#list images as image >
+            <source src="${image.getPath()}" type="video/mv4">
+        </#list>
+
+    </div>
+
+<script>
         var slideIndex = 0;
         showDivs(slideIndex);
 
@@ -63,17 +73,17 @@
         function showDivs(n) {
             var i;
             var x = document.getElementsByClassName("mySlides");
-            var dots = document.getElementsByClassName("demo");
+//            var dots = document.getElementsByClassName("demo");
             if (n >= x.length) {slideIndex = 0}
             if (n < 0) {slideIndex = x.length}
             for (i = 0; i < x.length; i++) {
                 x[i].style.display = "none";
             }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
-            }
+            // for (i = 0; i < dots.length; i++) {
+            //     dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+            // }
             x[slideIndex].style.display = "block";
-            dots[slideIndex].className += " w3-opacity-off";
+//            dots[slideIndex].className += " w3-opacity-off";
         }
     </script>
 

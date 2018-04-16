@@ -28,6 +28,11 @@ public class Image implements Serializable {
         Public,
         Private,
     };
+    static public enum Type {
+        Unknown,
+        JPG,
+        M4V,
+    };
 
     @Id
     @Column(name = "id")                        private String id;
@@ -36,6 +41,9 @@ public class Image implements Serializable {
     @Column(name = "user_id")                   private String userId;
     @Column(name = "caption")                   private String caption = "";
     @Column(name = "filename")                  private String filename = "";
+
+    @Enumerated(EnumType.STRING)
+    private Type type = Type.JPG;
 
     @Enumerated(EnumType.STRING)
     private Visibility visibility = Visibility.Public;
@@ -62,6 +70,10 @@ public class Image implements Serializable {
     }
     public String getFilename() {
         return filename;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public boolean isPublic() {
@@ -93,6 +105,20 @@ public class Image implements Serializable {
         setUsername(user.getUsername());
         setCaption(caption);
         setFilename(filename);
+
+        int i = filename.lastIndexOf(".");
+        String t = filename.toLowerCase().substring(i+1, filename.length());
+        switch (t) {
+            case "jpg":
+                type = Type.JPG;
+                break;
+            case "m4v":
+                type = Type.M4V;
+                break;
+            default:
+                type = Type.Unknown;
+                break;
+        }
     }
 
     @Override
@@ -140,6 +166,12 @@ public class Image implements Serializable {
         List<Image> x = getRepo().findByVisibilityOrderByTimestampDesc(visibility);
         return x;
     }
+
+    public static List<Image> findByVisibilityAndTypeOrderByTimestampDesc(Visibility visibility, String type) {
+        List<Image> x = getRepo().findByVisibilityAndTypeOrderByTimestampDesc(visibility, Type.valueOf(type));
+        return x;
+    }
+
 
 
 }
