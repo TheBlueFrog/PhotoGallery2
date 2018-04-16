@@ -189,6 +189,4 @@ public class Image implements Serializable {
         return x;
     }
 
-
-
 }
