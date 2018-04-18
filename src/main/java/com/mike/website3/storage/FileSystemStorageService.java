@@ -1,5 +1,6 @@
 package com.mike.website3.storage;
 
+import com.mike.website3.Constants;
 import com.mike.website3.Website;
 import com.mike.website3.db.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class FileSystemStorageService implements StorageService {
 
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
+        this.rootLocation = Website.uploadDir.toPath(); // Paths.get(properties.getLocation());
     }
 
     @Override
@@ -36,7 +37,6 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Did not store empty file " + file.getOriginalFilename());
             }
-
 
             File f = new File(Website.getUserDir(user.getUsername()),"images");
             Path p = f.toPath();

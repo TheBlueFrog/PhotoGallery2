@@ -139,12 +139,13 @@ public class Website {
         File wd = new File("");
         String path = wd.getAbsolutePath();
 
-        // where uploads will go
-//        uploadDir = new File("public/uploads");
-//        uploadDir.mkdir(); // create the upload directory if it doesn't exist
-
         rootDir = new File("..");
         // configDir = new File(rootDir, "milkrunUI/config");
+
+        // where uploads will go
+        uploadDir = new File(rootDir, "uploads");
+        if ( ! uploadDir.exists())
+            uploadDir.mkdir(); // create the upload directory if it doesn't exist
 
         staticDataDir = new File(rootDir, "static");
         if ( ! staticDataDir.exists())
