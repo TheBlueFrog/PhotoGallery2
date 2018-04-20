@@ -9,5 +9,9 @@
 
 .mp4 is working, sorta
 
+# to see phyical devices
+sudo lsblkls
 
+sudo mount /dev/sdc users
 
+ls /mnt/disks
