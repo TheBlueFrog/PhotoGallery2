@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-sm-4 col-md-4 col-lg-4">
                     <div class="form-group">
-                        <label for="username" class="w3-label">Email Address</label>
+                        <label for="username" class="w3-label">Login Name</label>
                         <input class="form-control" id="username"
                                type="text" name="username"
                                value="${session.getAttributeS("registerUsername")}" required />
