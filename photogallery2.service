@@ -1,9 +1,24 @@
+#
+# see https://linuxconfig.org/how-to-automatically-execute-shell-script-at-startup-boot-on-systemd-linux
+#
+# this file goes in /etc/systemd/system/milkrun.service
+#
+# file permissions should be set as
+# chmod 664 /etc/systemd/system/photogallery2.service
+#
+# systemctl enable milkrun.service
+#
+# if you change it then
+# systemctl daemon-reload
+#
 [Unit]
 Description=PhotoGallery
 After=mysql.service
+
 [Service]
 User=photo
 Environment="RUNTIME_ENV=production"
 ExecStart=/usr/local/bin/photogallery2.sh
+
 [Install]
 WantedBy=default.target
