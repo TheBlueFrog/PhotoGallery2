@@ -1,0 +1,9 @@
+[Unit]
+Description=PhotoGallery
+After=mysql.service
+[Service]
+User=photo
+Environment="RUNTIME_ENV=production"
+ExecStart=/usr/local/bin/photogallery2.sh
+[Install]
+WantedBy=default.target
