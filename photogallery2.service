@@ -6,7 +6,7 @@
 # file permissions should be set as
 # chmod 664 /etc/systemd/system/photogallery2.service
 #
-# systemctl enable milkrun.service
+# systemctl enable photogallery2.service
 #
 # if you change it then
 # systemctl daemon-reload
