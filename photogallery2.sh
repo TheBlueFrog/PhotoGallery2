@@ -9,8 +9,9 @@
 # get our extra big disk mounted, this is where
 # uploads are stored, this is safe to do multiple times (I think)
 #
-cd /home/photo/static
-sudo mount /dev/sdc users
+# this doesn't work, do it in the VM startup script
+#
+#sudo mount /dev/sdc /home/photo/static/users
 
 # start the server
 #
