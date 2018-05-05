@@ -36,6 +36,10 @@
             </video>
 
             <#--<source src="" type="video/mv4">-->
+
+            ${image.getCaption()}
+            <i>${image.getFilename()}</i>
+            <br>
         </#list>
 
     </div>
