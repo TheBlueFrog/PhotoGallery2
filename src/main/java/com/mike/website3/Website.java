@@ -260,9 +260,14 @@ public class Website {
                             String fileName = file.toFile().getName();
                             Image image = Image.findByUserIdAndFilename(user.getId(), fileName);
                             if (image == null) {
-                                new Image(user, "", fileName)
-                                        .save();
+                                image = new Image(user, "", fileName);
+                                image.save();
+                                Log.d(TAG, String.format("Image %s %s added to db",
+                                        image.getType().toString(), image.getFilename()));
                             }
+                            else
+                                Log.d(TAG, String.format("Image %s %s already in db",
+                                        image.getType().toString(), image.getFilename()));
                         });
             }
             catch (Exception e) {
