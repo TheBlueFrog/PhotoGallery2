@@ -27,14 +27,14 @@
 </#macro>
 
 <#macro showGalleryButton>
-    <a href="/gallery-image">Public Image Gallery</a>
-    <a href="/gallery-video">Public Video Gallery</a>
+    <a href="/gallery-image">Public Images</a>
+    <a href="/gallery-video">Public Videos</a>
 </#macro>
 
 <#macro showMyGalleryButton>
     <#if session.getUser()?? >
-        <a href="/gallery-image/${session.getUser().getId()}">My Image Gallery</a>
-        <a href="/gallery-video/${session.getUser().getId()}">My Video Gallery</a>
+        <a href="/gallery-image/${session.getUser().getId()}">My Images</a>
+        <a href="/gallery-video/${session.getUser().getId()}">My Videos</a>
     </#if>
 </#macro>
 

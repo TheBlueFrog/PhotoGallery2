@@ -11,8 +11,11 @@ import com.mike.util.Log;
 import com.mike.util.NoSuchLoginName;
 import com.mike.util.NoSuchUserId;
 import com.mike.website3.MySessionState;
+import com.mike.website3.Website;
 import com.mike.website3.db.*;
 import com.mike.website3.pages.BaseController2;
+import com.mike.website3.storage.FileSystemStorageService;
+import com.mike.website3.storage.StorageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -187,6 +190,10 @@ public class LoginController extends BaseController2 {
 
             Cookie cookie = new Cookie("loginName", loginname);
             response.addCookie(cookie);
+
+//            Website.getStorageService().loadAll(user).forEach(path -> {
+//                Image.findByUserIdAndFilename(user.getId(), path.toFile().getName());
+//            });
 
             if (user.getHasLoggedIn()) {
                 return "redirect:/";

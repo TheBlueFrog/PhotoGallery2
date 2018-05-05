@@ -29,24 +29,11 @@
 
     <p></p>
     <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
-            <table width="90%">
-                <tr>
-                    <th width="10%">Public</th>
-                    <th width="25%">Thumbnail</th>
-                    <th width="50%">Caption</th>
-                </tr>
-            </table>
-        </div>
-    </div>
-
         <div class="items">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
                 <table width="90%">
                     <#list session.getUser().getImages("JPG") as image >
-                        <form class="form-horizontal" >
                             <input type="hidden" name="id" value="${image.getId()}" />
                             <tr>
                                 <td width="10%">
@@ -58,13 +45,15 @@
                                     ></label>
                                 </td>
                                 <td width="25%">
-                                    <img class="mine" src="${image.getPath()}" alt="" height="200px"/>
+                                    <img class="mine" src="${image.getPath()}" alt="" height="150px"/>
                                     <#--
                                     &nbsp;
                                     <a href="/view/${image.getPath()}">${image.getFilename()}</a>
                                     -->
                                 </td>
                                 <td width="50%">
+                                    <i>${image.getFilename()}</i>
+                                    <br>
                                     <input type="text"
                                            name="caption"
                                            value="${image.getCaption()}"
@@ -73,12 +62,49 @@
                                     />
                                 </td>
                             </tr>
-                        </form>
                     </#list>
                 </table>
             </div>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="items">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <table width="90%">
+                    <#list session.getUser().getImages("MP4") as image >
+                        <tr>
+                            <td width="10%">
+                                <label><input type="checkbox" name="public" value=""
+                                              onchange="updatePublic('${image.getId()}', this.checked)"
+                                    <#if (image.isPublic()) >
+                                        checked
+                                    </#if>
+                                ></label>
+                            </td>
+                            <td width="25%">
+                                <video width="320" height="240" controls>
+                                    <source src="${image.getPath()}" type="video/mp4">
+                                    <source src="movie.ogg" type="video/ogg">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </td>
+                            <td width="50%">
+                                <i>${image.getFilename()}</i>
+                                <br>
+                                <input type="text"
+                                       name="caption"
+                                       value="${image.getCaption()}"
+                                       size="50"
+                                       onfocusout="updateCaption('${image.getId()}', this.value)"
+                                />
+                            </td>
+                        </tr>
+                    </#list>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <a href="#" class="scroll_top" title="Scroll to Top">Scroll</a>
     <@jsIncludes/>
