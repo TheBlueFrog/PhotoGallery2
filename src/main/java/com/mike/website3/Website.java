@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties(StorageProperties.class)
 public class Website {
 
-    private static final String ThisVersion = "0.1.0";
+    private static final String ThisVersion = "0.1.2";
     public static final String minDBVersion = "4.0.0";  // only major version is used, minor/build ignored
 
     // command line switches
