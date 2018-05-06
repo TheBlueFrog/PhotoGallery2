@@ -49,22 +49,19 @@
 
 <script>
         var slideIndex = 0;
-        showDivs(slideIndex);
+
+        showDivs();
 
         function plusDivs(n) {
-            showDivs(slideIndex += n);
+            slideIndex += n;
+            showDivs();
         }
 
-        function currentDiv(n) {
-            showDivs(slideIndex = n);
-        }
-
-        function showDivs(n) {
+        function showDivs() {
             var i;
             var x = document.getElementsByClassName("mySlides");
-//            var dots = document.getElementsByClassName("demo");
-            if (n >= x.length) {slideIndex = 0}
-            if (n < 0) {slideIndex = x.length}
+            if (slideIndex >= x.length) {slideIndex = 0}
+            if (slideIndex < 0) {slideIndex = x.length - 1}
             for (i = 0; i < x.length; i++) {
                 x[i].style.display = "none";
             }
