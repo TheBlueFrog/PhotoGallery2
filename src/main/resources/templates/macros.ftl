@@ -22,20 +22,21 @@
 
 <#macro showManageButton>
     <#if session.getUser()?? >
-        <a href="/manage-items">Manage</a>
+        <a href="/manage-images">Images</a>&nbsp;&nbsp;
+        <a href="/manage-videos">Videos</a>
     </#if>
 </#macro>
 
 <#macro showGalleryButton>
     <a href="/gallery-image">Public Images</a>
     <a href="/gallery-video">Public Videos</a>
-</#macro>
-
-<#macro showMyGalleryButton>
     <#if session.getUser()?? >
         <a href="/gallery-image/${session.getUser().getId()}">My Images</a>
         <a href="/gallery-video/${session.getUser().getId()}">My Videos</a>
     </#if>
+</#macro>
+
+<#macro showMyGalleryButton>
 </#macro>
 
 <#macro showRegisterButton>

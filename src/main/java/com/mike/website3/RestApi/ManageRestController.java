@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +75,21 @@ public class ManageRestController {
             boolean emailOnStage = request.getParameter("emailOnStage").equals("true");
             Website.setEmailEnabled(emailOnStage);
             return "ok";
+        } catch (Exception e) {
+            return e.toString();
+        }
+    }
+
+//  var url = "manage-api/delete?imageId=" + imageId;
+    @RequestMapping(value = "/delete", method = RequestMethod.GET, produces = "application/text")
+    public String get5(HttpServletRequest request, Model model) {
+        try {
+            String imageId = request.getParameter("imageId");
+            Image image = Image.findById(imageId);
+            Path path = Website.getStorageService().load(User.findById(image.getUserId()), image.getFilename());
+            path.toFile().delete();
+            image.delete();
+            return "success";
         } catch (Exception e) {
             return e.toString();
         }

@@ -28,11 +28,15 @@ import java.io.IOException;
 @Controller
 public class ManageController extends BaseController2 {
 
-    @GetMapping("/manage-items")
+    @GetMapping("/manage-images")
     public String get(HttpServletRequest request, Model model) {
-        return get2(request, model, "manage-items");
+        return get2(request, model, "manage-images");
     }
 
+    @GetMapping("/manage-videos")
+    public String get1(HttpServletRequest request, Model model) {
+        return get2(request, model, "manage-videos");
+    }
 
     @PostMapping("/manage-items")
     public String post(HttpServletRequest request) {

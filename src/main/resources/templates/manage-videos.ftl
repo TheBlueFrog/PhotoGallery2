@@ -9,8 +9,10 @@
     <style>
         th { text-align: left; }
         td {
+            padding-top: 0;
             text-align: left;
-            vertical-align: text-top;
+            vertical-align: top;
+            padding-left:20px;
         }
         .mine {
             padding-top: 5px;
@@ -28,45 +30,6 @@
     <@pageHeader3 />
 
     <p></p>
-    <div class="row">
-        <div class="items">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10">
-                <table width="90%">
-                    <#list session.getUser().getImages("JPG") as image >
-                            <input type="hidden" name="id" value="${image.getId()}" />
-                            <tr>
-                                <td width="10%">
-                                    <label><input type="checkbox" name="public" value=""
-                                                  onchange="updatePublic('${image.getId()}', this.checked)"
-                                        <#if (image.isPublic()) >
-                                            checked
-                                        </#if>
-                                    ></label>
-                                </td>
-                                <td width="25%">
-                                    <img class="mine" src="${image.getPath()}" alt="" height="150px"/>
-                                    <#--
-                                    &nbsp;
-                                    <a href="/view/${image.getPath()}">${image.getFilename()}</a>
-                                    -->
-                                </td>
-                                <td width="50%">
-                                    <i>${image.getFilename()}</i>
-                                    <br>
-                                    <input type="text"
-                                           name="caption"
-                                           value="${image.getCaption()}"
-                                           size="50"
-                                           onfocusout="updateCaption('${image.getId()}', this.value)"
-                                    />
-                                </td>
-                            </tr>
-                    </#list>
-                </table>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="items">
             <div class="col-sm-1"></div>
@@ -138,6 +101,18 @@
                 }
             });
         }
+
+        function deleteItem(imageId) {
+            var url = "manage-api/delete?imageId=" + imageId;
+            $.get(url, function (data, status) {
+                if (status == "success") {
+                    location.reload();
+                }
+                else {
+                }
+            });
+        }
+
     </script>
 </body>
 </html>
