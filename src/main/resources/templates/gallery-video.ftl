@@ -29,17 +29,25 @@
     <div class="col-md-12">
 
         <#list images as image >
+
+            <video width="auto"
+                   height="240"
+                   controls
+                   style="margin-left: auto; margin-right: auto; display: block;">
+                <source src="${image.getPath()}" type="video/mp4">
+            </video>
+<#--
             <video width="320" height="240" controls>
                 <source src="${image.getPath()}" type="video/mp4">
                 <source src="movie.ogg" type="video/ogg">
                 Your browser does not support the video tag.
             </video>
-
+-->
             <#--<source src="" type="video/mv4">-->
-
-            ${image.getCaption()}
+            <br>
             <i>${image.getFilename()}</i>
             <br>
+            ${image.getCaption()}
         </#list>
 
     </div>

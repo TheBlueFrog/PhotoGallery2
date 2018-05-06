@@ -6,16 +6,17 @@ package com.mike.website3.pages.external;
  */
 
 import com.mike.website3.MySessionState;
+import com.mike.website3.db.Image;
 import com.mike.website3.db.User;
 import com.mike.website3.pages.BaseController;
 import com.mike.website3.pages.BaseController2;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
 @Controller
 public class GalleryController extends BaseController2 {
@@ -55,5 +56,14 @@ public class GalleryController extends BaseController2 {
         return get2(request, model, "gallery-video");
     }
 
+    @GetMapping(value = "/videosrc", produces = "video/mp4")
+    @ResponseBody
+    public FileSystemResource videoSource(@RequestParam(value="imageId", required=true) String imageId) {
+        Image image = Image.findById(imageId);
+        if (image != null)
+            return new FileSystemResource(new File(image.getPath()));
+        else
+            return null;
+    }
 
 }
