@@ -83,11 +83,19 @@
                                 ></label>
                             </td>
                             <td width="25%">
+                                <video width="auto"
+                                       height="240"
+                                       controls
+                                       style="margin-left: auto; margin-right: auto; display: block;">
+                                    <source src="${image.getPath()}" type="video/mp4">
+                                </video>
+<#--
                                 <video width="320" height="240" controls>
                                     <source src="${image.getPath()}" type="video/mp4">
                                     <source src="movie.ogg" type="video/ogg">
                                     Your browser does not support the video tag.
                                 </video>
+                                -->
                             </td>
                             <td width="50%">
                                 <i>${image.getFilename()}</i>
