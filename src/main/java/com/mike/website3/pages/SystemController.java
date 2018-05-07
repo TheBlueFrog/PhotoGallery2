@@ -34,8 +34,7 @@ public class SystemController extends BaseController {
                 return showErrorPage("Unauthorized Access", request, model);
 
             model.addAttribute("recentLogins", MySystemState.getInstance().getTodaysLogins());
-            model.addAttribute("dbSnapshot", dbSnapshotOutput);
-            model.addAttribute("milkrunFilesRefreshOutput", milkrunFilesRefreshOutput);
+//            model.addAttribute("dbSnapshot", dbSnapshotOutput);
 
             Map<String, Object> charts = new HashMap<>();
             SystemCharts2.getFailFirstActivity(charts);
@@ -49,59 +48,6 @@ public class SystemController extends BaseController {
             return showExceptionPage(e, request, model);
         }
     }
-    @RequestMapping(value = "/admin2", method = RequestMethod.GET)
-    public String get12a(HttpServletRequest request, Model model) {
-
-        try {
-            User user = getSessionUser(request);
-            if ((user == null) || ( ! user.isAnAdmin()))
-                return showErrorPage("Unauthorized Access", request, model);
-
-            model.addAttribute("recentLogins", MySystemState.getInstance().getTodaysLogins());
-            model.addAttribute("dbSnapshot", dbSnapshotOutput);
-            model.addAttribute("milkrunFilesRefreshOutput", milkrunFilesRefreshOutput);
-
-            this.addAttributes(request, model);
-            return super.get(request, model, "admin2");
-        }
-        catch (Exception e) {
-            return showExceptionPage(e, request, model);
-        }
-    }
-
-//    @RequestMapping(value = "/system", method = RequestMethod.GET)
-//    public String get(HttpServletRequest request, Model model) {
-//        try {
-//            User user = getSessionUser(request);
-//            if ((user == null) || ( ! user.isAnAdmin()))
-//                return showErrorPage("Unauthorized Access", request, model);
-//
-//            model.addAttribute("systemCharts", SystemCharts.getSystemCharts ());
-//            model.addAttribute("chartData", Charts.getChartingData());
-//            this.addAttributes(request, model);
-//            return super.get(request, model, "system");
-//        }
-//        catch (Exception e) {
-//            return showExceptionPage(e, request, model);
-//        }
-//    }
-
-    @RequestMapping(value = "/system-charts2", method = RequestMethod.GET)
-    public String get11(HttpServletRequest request, Model model) {
-        try {
-            User user = getSessionUser(request);
-            if ((user == null) || ( ! user.isAnAdmin()))
-                return showErrorPage("Unauthorized Access", request, model);
-
-            model.addAttribute("systemCharts", new SystemCharts2().getModel());
-            this.addAttributes(request, model);
-            return super.get(request, model, "system-charts2");
-        }
-        catch (Exception e) {
-            return showExceptionPage(e, request, model);
-        }
-    }
-
 
     List<String> dbSnapshotOutput = new ArrayList<>();
 
@@ -122,23 +68,6 @@ public class SystemController extends BaseController {
 
             this.addAttributes(request, model);
             return super.get(request, model, "redirect:/admin");
-        }
-        catch (Exception e) {
-            return showExceptionPage(e, request, model);
-        }
-    }
-
-    List<String> milkrunFilesRefreshOutput = new ArrayList<>();
-
-
-    @RequestMapping(value = "/nrfpty", method = RequestMethod.GET)
-    public String get8(HttpServletRequest request, Model model) {
-        try {
-            User user = getSessionUser(request);
-            if ((user == null) || (!user.isAnAdmin()))
-                return showErrorPage("Unauthorized Access", request, model);
-
-            return super.get(request, model, "nrfpty");
         }
         catch (Exception e) {
             return showExceptionPage(e, request, model);
