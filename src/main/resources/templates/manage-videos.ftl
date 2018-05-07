@@ -19,10 +19,6 @@
             padding-bottom: 5px;
         }
 
-        div.items {
-            height: 500px;
-            overflow: scroll;
-        }
     </style>
 
 </head>
@@ -38,12 +34,6 @@
                     <#list session.getUser().getImages("MP4") as image >
                         <tr>
                             <td width="10%">
-                                <label><input type="checkbox" name="public" value=""
-                                              onchange="updatePublic('${image.getId()}', this.checked)"
-                                    <#if (image.isPublic()) >
-                                        checked
-                                    </#if>
-                                ></label>
                             </td>
                             <td width="25%">
                                 <video width="auto"
@@ -63,12 +53,21 @@
                             <td width="50%">
                                 <i>${image.getFilename()}</i>
                                 <br>
+                                <input type="checkbox" name="public" value=""
+                                       onchange="updatePublic('${image.getId()}', this.checked)"
+                                    <#if (image.isPublic()) >
+                                        checked
+                                    </#if>
+                                />
+                                <br>
                                 <input type="text"
                                        name="caption"
                                        value="${image.getCaption()}"
                                        size="50"
                                        onfocusout="updateCaption('${image.getId()}', this.value)"
                                 />
+                                <br>
+                                <button class="btn btn-sm" onclick="deleteItem('${image.getId()}')">Delete</button>
                             </td>
                         </tr>
                     </#list>

@@ -19,10 +19,6 @@
             padding-bottom: 5px;
         }
 
-        div.items {
-            height: 500px;
-            overflow: scroll;
-        }
     </style>
 
 </head>
@@ -61,6 +57,7 @@
                                            placeholder="Caption"
                                            onfocusout="updateCaption('${image.getId()}', this.value)"
                                     />
+                                    <br>
                                     <button class="btn btn-sm" onclick="deleteItem('${image.getId()}')">Delete</button>
                                 </td>
                                 <td width="5%">

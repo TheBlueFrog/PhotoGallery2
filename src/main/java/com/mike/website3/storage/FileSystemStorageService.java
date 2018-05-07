@@ -47,7 +47,7 @@ public class FileSystemStorageService implements StorageService {
 //            UserImage image = new UserImage(user, "", file.getOriginalFilename(), "Main");
 //            image.save();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
     }
