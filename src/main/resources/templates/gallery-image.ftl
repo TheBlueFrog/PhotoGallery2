@@ -31,7 +31,7 @@
         <#assign i = 0 >
         <#list images as image >
             <div class="w3-display-container mySlides">
-                <img src="${image.getPath()}" style="width:100%">
+                <img src="${image.getPath()}" style="height:800px; width:auto; horiz-align: center">
 
                 <#if (image.getCaption()?length > 0) >
                     <div class="w3-display-bottomleft w3-large w3-container w3-padding-16 w3-gray">
