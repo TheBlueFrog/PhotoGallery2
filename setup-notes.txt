@@ -15,3 +15,14 @@ sudo lsblkls
 sudo mount /dev/sdc users
 
 ls /mnt/disks
+
+
+
+rem
+rem gcloud compute scp C:\Users\miked\Downloads\xxxxxxxxx photo-ubuntu-16:/home/miked/  --project bot2-1321 --zone us-west1-b
+rem copy from /home/miked to /home/photo/static/users/minecraft
+rem if we made the name in the .sh constant we could skip the next two steps
+rem edit /home/photo/PhotoGallery2/photogallery2.sh to show the right name
+rem copy /home/photo/PhotoGallery2/photogallery2.sh to /usr/local/bin
+rem sudo systemctl stop photogallery2.service
+rem sudo systemctl start photogallery2.service

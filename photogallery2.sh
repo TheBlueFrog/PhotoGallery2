@@ -3,6 +3,9 @@
 # this file goes in
 # /usr/local/bin/photogallery2.sh
 
+# we assume the right disks are mounted
+#  sdb   /home/photo/static/users
+#
 
 # sudo lsblk
 # will show the available extra disks
@@ -10,7 +13,7 @@
 # get our extra big disk mounted, this is where
 # uploads are stored, this is safe to do multiple times (I think)
 #
-# the big disk must mount here /dev/sdc /home/photo/static/users
+# the big disk must mount here /dev/sdb /home/photo/static/users
 
 # run a minecraft server for the guys, in the background
 #
