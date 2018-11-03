@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# this file goes in
+# /usr/local/bin/photogallery2.sh
+
+
 # sudo lsblk
 # will show the available extra disks
 
@@ -11,7 +15,9 @@
 # run a minecraft server for the guys, in the background
 #
 cd /home/photo/static/users/minecraft
-java -jar minecraft_server.1.12.2.jar  nogui &
+java -Xmx1024M -Xms1024M -jar minecraft-server.1.13.1.jar  nogui &
+
+ps uax | grep java >> status.txt
 
 # start the photo server
 #
