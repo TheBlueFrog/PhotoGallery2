@@ -15,14 +15,18 @@
 #
 # the big disk must mount here /dev/sdb /home/photo/static/users
 
-# run a minecraft server for the guys, in the background
+# run a minecraft server for the guys, in the background, it's world is on
+# the big disk
 #
 cd /home/photo/static/users/minecraft
-java -Xmx1024M -Xms1024M -jar minecraft-server.1.13.1.jar  nogui &
+echo "hi" >> status.txt
+pwd >> status.txt
 
-ps uax | grep java >> status.txt
+nohup java -Xmx1024M -Xms1024M -jar minecraft-server.1.13.1.jar  nogui >> log.txt \&
+
+#ps uax | grep java >> status.txt
 
 # start the photo server
 #
-cd /home/photo/website
-java -jar website.jar --delayStartup
+#cd /home/photo/website
+#java -jar website.jar --delayStartup
