@@ -1,4 +1,27 @@
 
+COVID stuff
+
+# start the VM photo-ubuntu
+# ssh into it
+
+su photo
+
+cd /home/photo/website
+
+# had to dump the /tmp/spring.log file, wrong permissions
+
+java -jar website.jar --delayStartup &
+
+# you can then hit
+http://mikesfunstuff.com:8080/
+
+# on the site, you can get into the db if you are 'photo'
+psql
+
+
+
+------------------ old ---------------
+
 1   dump the existing database
 2   start the app, let it build the db
 3   insert into database_config (timestamp, defect, text) values ( now(), 'CodeBuild', '0.1');
@@ -16,15 +39,4 @@ sudo mount /dev/sdc users
 
 ls /mnt/disks
 
-
-
-Michael Collins <mike.d.collins@gmail.com>
-Mar 10, 2017, 9:45 PM
-to John
-
-Appears that the new domain is up, this should be stable for the long term.  I'm still
-working out how to get rid of the :8080 bit.  The configuration is not something I've
-done before.
-
-http://mikesfunstuff.com:8080
 

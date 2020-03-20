@@ -44,3 +44,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+.idea/jarRepositories.xml
